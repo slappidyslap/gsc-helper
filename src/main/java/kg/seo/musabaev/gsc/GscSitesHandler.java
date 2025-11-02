@@ -1,15 +1,4 @@
-package kg.seo.musabaev.searchconsole;
-
-import com.google.api.services.searchconsole.v1.model.SearchAnalyticsQueryResponse;
-import com.google.api.services.searchconsole.v1.model.WmxSite;
-import kg.seo.musabaev.excel.ExcelReportBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
+package kg.seo.musabaev.gsc;
 
 /**
  * Основной обработчик для сбора данных из Google Search Console
@@ -17,7 +6,7 @@ import java.util.concurrent.CompletableFuture;
  */
 @Deprecated
 class GscSitesHandler {
-
+/*
     private static final Logger log = LoggerFactory.getLogger(GscSitesHandler.class);
 
     private final SearchConsoleService searchConsoleService;
@@ -32,11 +21,11 @@ class GscSitesHandler {
         this.endDate = endDate.toString();
     }
 
-    /**
+    *//**
      * Запускает процесс сбора данных из GSC и формирования отчета
      *
      * @return CompletableFuture для асинхронного выполнения
-     */
+     *//*
     public CompletableFuture<Void> start() {
         log.info("Начат сбор данных из GSC за период {} - {}", startDate, endDate);
 
@@ -54,8 +43,8 @@ class GscSitesHandler {
                 try {
                     SearchAnalyticsQueryResponse response = searchConsoleService.getAnalytics(
                             siteUrl,
-                            startDate,
-                            endDate
+                            null,
+                            null
                     );
 
                     if (response == null) {
@@ -84,12 +73,12 @@ class GscSitesHandler {
         });
     }
 
-    /**
+    *//**
      * Сохраняет Excel файл по указанному пути
      *
      * @param path путь для сохранения файла
-     */
+     *//*
     public void saveExcelFile(File path) {
         excelBuilder.save(path);
-    }
+    }*/
 }

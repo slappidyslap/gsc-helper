@@ -1,4 +1,4 @@
-package kg.seo.musabaev.searchconsole;
+package kg.seo.musabaev.gsc.domain;
 
 public enum GscResourceType {
     DOMAIN("Доменный ресурс"),

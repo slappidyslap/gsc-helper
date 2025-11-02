@@ -76,7 +76,7 @@ public class TableDataLocalFileSaver implements TableDataOutputProcessor {
             log.error(Constants.LOCAL_FILE_NOT_FOUND_EXCEPTION + "{}", savePath, e);
             throw new LocalFileNotFoundException(savePath);
         } catch (IOException e) {
-            log.error("Ошибка ввода-вывода при сохранении Excel файла", e);
+            log.error("Ошибка ввода-вывода при обработке выходных данных таблицы", e);
             throw new TableBuilderException(e);
         }
     }

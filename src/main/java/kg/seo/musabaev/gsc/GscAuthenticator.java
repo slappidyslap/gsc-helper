@@ -1,0 +1,193 @@
+package kg.seo.musabaev.gsc;
+
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
+import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.gson.GsonFactory;
+import com.google.api.client.util.store.FileDataStoreFactory;
+import com.google.api.services.searchconsole.v1.SearchConsole;
+import kg.seo.musabaev.gsc.exception.CredentialsFileNotFoundException;
+import kg.seo.musabaev.gsc.exception.GscApiException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.GeneralSecurityException;
+
+import static com.google.api.client.util.Preconditions.checkNotNull;
+import static java.util.Collections.singleton;
+import static kg.seo.musabaev.util.Constants.APP_HOME;
+
+/**
+ * Класс-обёртка для авторизации Google Search Console API.
+ * Отвечает за авторизацию клиента через OAuth 2.0
+ * <p>
+ * При инициализации использует локальные файлы:
+ * <ul>
+ *   <li>credentials.json — файл с данными клиента OAuth</li> // TODO
+ *   <li>tokens — директория для хранения токенов доступа</li>
+ * </ul>
+ * </p>
+ * <p>
+ * Авторизация выполняется с помощью {@link AuthorizationCodeInstalledApp}
+ * и запуска локального сервера для получения кода авторизации.
+ * </p>
+ */
+public class GscAuthenticator {
+
+    private final Logger log = LoggerFactory.getLogger(GscAuthenticator.class);
+
+    private final String APPLICATION_NAME;
+    private final String CREDENTIALS_FILE_PATH;
+    private final File GOOGLE_TOKENS_FILE;
+    private final HttpTransport HTTP_TRANSPORT;
+    private final JsonFactory JSON_FACTORY;
+
+    public GscAuthenticator() {
+        try {
+            APPLICATION_NAME = "GSC Helper";
+            CREDENTIALS_FILE_PATH = new File(APP_HOME, "credentials.json").getAbsolutePath();
+            GOOGLE_TOKENS_FILE = new File(APP_HOME, "tokens");
+            HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+            JSON_FACTORY = GsonFactory.getDefaultInstance();
+        } catch (GeneralSecurityException e) {
+            log.error("Ошибка типа GeneralSecurityException при инициализации {}", GscAuthenticator.class.getName(), e);
+            throw new GscApiException(e);
+        } catch (IOException e) {
+            log.error("Ошибка ввода-вывода при инициализации {}", GscAuthenticator.class.getName(), e);
+            throw new GscApiException(e);
+        }
+    }
+
+    /**
+     * Инициализирует и возвращает объект клиента Search Console.
+     *
+     * @return инициализированный {@link SearchConsole} клиент
+     */
+    public SearchConsole build() {
+        log.info("Выполняется вход в Google аккаунт...");
+
+        GoogleClientSecrets secrets = buildClientSecrets();
+        log.info("GoogleClientSecrets создан");
+        GoogleAuthorizationCodeFlow flow = buildAuthorizationCodeFlow(secrets);
+        log.info("GoogleAuthorizationCodeFlow создан");
+        LocalServerReceiver server = buildLocalServer();
+        log.info("LocalServerReceiver создан");
+        Credential credential = buildAuthorizationCodeInstalledApp(flow, server);
+        log.info("AuthorizationCodeInstalledApp (Credential) создан");
+
+        log.info("Вход в Google аккаунт выполнен");
+
+        SearchConsole searchConsole = buildSearchConsole(credential);
+        log.info("SearchConsole создан");
+        return searchConsole;
+    }
+
+    /**
+     * Загружает клиентские секреты OAuth из файла credentials.json.
+     *
+     * @return {@link GoogleClientSecrets} для OAuth
+     * @throws CredentialsFileNotFoundException если файл credentials.json не найден
+     * @throws GscApiException                  при ошибках чтения файла
+     */
+    private GoogleClientSecrets buildClientSecrets() {
+        InputStream in;
+        try {
+            in = Files.newInputStream(Paths.get(CREDENTIALS_FILE_PATH));
+            checkNotNull(in);
+            return GoogleClientSecrets.load(
+                    JSON_FACTORY,
+                    new InputStreamReader(in));
+        } catch (NullPointerException e) {
+            log.warn("Файл credentials.json не найден");
+            throw new CredentialsFileNotFoundException();
+        } catch (IOException e) {
+            log.error("Ошибка ввода-вывода при создании GoogleClientSecrets", e);
+            throw new GscApiException(e);
+        }
+    }
+
+    /**
+     * Создаёт и настраивает {@link GoogleAuthorizationCodeFlow} для OAuth 2.0 авторизации.
+     * Используется scope с правами только для чтения вебмастерских данных.
+     *
+     * @param secrets клиентские секреты OAuth
+     * @return настроенный {@link GoogleAuthorizationCodeFlow}
+     * @throws GscApiException при ошибках IO
+     */
+    private GoogleAuthorizationCodeFlow buildAuthorizationCodeFlow(GoogleClientSecrets secrets) {
+        try {
+            return new GoogleAuthorizationCodeFlow.Builder(
+                    HTTP_TRANSPORT,
+                    JSON_FACTORY,
+                    secrets,
+                    singleton("https://www.googleapis.com/auth/webmasters.readonly") // scopes
+            )
+                    .setDataStoreFactory(new FileDataStoreFactory(GOOGLE_TOKENS_FILE))
+                    .setAccessType("offline")
+                    .build();
+        } catch (IOException e) {
+            log.error("Ошибка ввода-вывода при создании GoogleAuthorizationCodeFlow", e);
+            throw new GscApiException(e);
+        }
+    }
+
+    /**
+     * Создаёт локальный сервер для обработки OAuth авторизации.
+     * Порт задается автоматически.
+     *
+     * @return {@link LocalServerReceiver}
+     */
+    private LocalServerReceiver buildLocalServer() {
+        return new LocalServerReceiver.Builder()
+                .setPort(-1)
+                .build();
+    }
+
+    /**
+     * Выполняет авторизацию пользователя через локальный сервер,
+     * используя {@link AuthorizationCodeInstalledApp}.
+     *
+     * @param flow   объект {@link GoogleAuthorizationCodeFlow} для авторизации
+     * @param server локальный сервер {@link LocalServerReceiver}
+     * @return авторизационные данные {@link Credential}
+     * @throws GscApiException при ошибках IO
+     */
+    private Credential buildAuthorizationCodeInstalledApp(
+            GoogleAuthorizationCodeFlow flow,
+            LocalServerReceiver server) {
+        try {
+            return new AuthorizationCodeInstalledApp(flow, server)
+                    .authorize("user");
+        } catch (IOException e) {
+            log.error("Ошибка ввода-вывода при создании AuthorizationCodeInstalledApp (Credential)", e);
+            throw new GscApiException(e);
+        }
+    }
+
+    /**
+     * Создаёт клиент GSC API с переданными учётными данными.
+     *
+     * @param credential авторизационные данные
+     * @return клиент {@link SearchConsole}
+     */
+    private SearchConsole buildSearchConsole(Credential credential) {
+        return new SearchConsole.Builder(
+                HTTP_TRANSPORT,
+                JSON_FACTORY,
+                credential
+        )
+                .setApplicationName(APPLICATION_NAME)
+                .build();
+    }
+}

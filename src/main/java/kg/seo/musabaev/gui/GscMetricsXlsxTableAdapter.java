@@ -1,9 +1,9 @@
 package kg.seo.musabaev.gui;
 
 import kg.seo.musabaev.api.TableDataLocalFileSaver;
-import kg.seo.musabaev.xlsx.ApachePoiXlsxBuilder;
 import kg.seo.musabaev.api.exception.TableBuilderException;
-import kg.seo.musabaev.searchconsole.SiteMetrics;
+import kg.seo.musabaev.gsc.domain.SiteMetrics;
+import kg.seo.musabaev.xlsx.ApachePoiXlsxBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +23,7 @@ public class GscMetricsXlsxTableAdapter {
     public GscMetricsXlsxTableAdapter() {
         this.xlsxBuilder = new ApachePoiXlsxBuilder("Метрики");
         this.xlsxSaver = new TableDataLocalFileSaver(xlsxBuilder);
+        log.info("Начата обработка метрик GSC в xlsx таблицу");
         xlsxBuilder.createHeader(
                 "Тип ресурса",
                 "URL",
@@ -30,6 +31,7 @@ public class GscMetricsXlsxTableAdapter {
                 "Показы",
                 "CTR",
                 "Средняя позиция");
+        log.info("Названия колонок добавлены в xlsx таблицу");
     }
 
     /**
@@ -38,8 +40,6 @@ public class GscMetricsXlsxTableAdapter {
      * @param metrics метрики сайта
      */
     public void addSiteMetrics(SiteMetrics metrics) {
-        log.debug("Добавление метрик для сайта: {}", metrics.url());
-
         xlsxBuilder.addRow(
                 metrics.type().rus(),
                 metrics.url(),
@@ -47,8 +47,7 @@ public class GscMetricsXlsxTableAdapter {
                 metrics.impressions(),
                 metrics.ctr(),
                 metrics.avgPosition());
-
-        log.debug("Метрики для сайта {} успешно добавлены", metrics.url());
+        log.info("Метрики для сайта {} успешно добавлены в xlsx таблицу:\n{}", metrics.url(), metrics);
     }
 
     /**
@@ -57,9 +56,8 @@ public class GscMetricsXlsxTableAdapter {
      * @param metricsList список метрик сайтов
      */
     public void addAllSiteMetrics(List<SiteMetrics> metricsList) {
-        log.info("Добавление метрик для {} сайтов", metricsList.size());
         metricsList.forEach(this::addSiteMetrics);
-        log.info("Все метрики успешно добавлены");
+        log.info("Всех метрики для {} сайтов добавлены в xlsx таблицу", metricsList.size());
     }
 
     /**
@@ -67,6 +65,7 @@ public class GscMetricsXlsxTableAdapter {
      */
     public void autoSizeColumns() {
         xlsxBuilder.autoSizeColumns(xlsxBuilder.getRowCount());
+        log.info("Все колонки xlsx таблицы выровнены по ширине");
     }
 
     /**
@@ -78,6 +77,6 @@ public class GscMetricsXlsxTableAdapter {
      */
     public void save(File savePath) {
         xlsxSaver.save(savePath, xlsxBuilder.build());
+        log.info("Таблица в формате xlsx сохранена в {}", savePath.getAbsolutePath());
     }
-
 }

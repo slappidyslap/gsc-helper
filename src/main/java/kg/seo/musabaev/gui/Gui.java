@@ -5,7 +5,7 @@ import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import de.milchreis.uibooster.UiBooster;
 import de.milchreis.uibooster.model.UiBoosterOptions;
-import kg.seo.musabaev.searchconsole.GoogleSearchConsole;
+import kg.seo.musabaev.gsc.GscAuthenticator;
 import net.miginfocom.swing.MigLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,7 +111,7 @@ public class Gui {
             } finally {
                 submitButton.setEnabled(true);
             }
-            GoogleSearchConsole searchConsole = new GoogleSearchConsole();
+            GscAuthenticator searchConsole = new GscAuthenticator();
             GscXlsxReportGenerator reportGenerator = new GscXlsxReportGenerator(searchConsole);
             reportGenerator.generateAndSave(startDate, endDate, savePath);
             /*gsc.start()
@@ -191,7 +191,7 @@ public class Gui {
         JMenu menu = new JMenu("Полезное");
 
         JMenuItem logsMenu = new JMenuItem("Открыть логи");
-        logsMenu.addActionListener(e -> {
+        logsMenu.addActionListener(event -> {
             LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
             String curTimestamp = context.getProperty("currentTimestamp");
             try {
@@ -200,21 +200,21 @@ public class Gui {
                                 ".gsc-helper" + File.separator +
                                 "logs" + File.separator +
                                 format("log-%s.txt", curTimestamp)));
-            } catch (IOException ex) {
-                log.error("", ex);
+            } catch (IOException e) {
+                log.error(e.getMessage(), e);
                 showErrorDialog("Из-за неизвестных мне причин я не могу открыть файл лога");
             }
         });
 
         JMenuItem deleteFolderTokensMenu = new JMenuItem("Удалить папку tokens");
-        deleteFolderTokensMenu.addActionListener(e -> {
+        deleteFolderTokensMenu.addActionListener(event -> {
             if (uiBooster.showConfirmDialog("Вы уверены?", "Удалить папку tokens")) {
                 try {
                     Files.delete(Paths.get(APP_HOME.getAbsolutePath(), "tokens", "StoredCredential"));
                     Files.delete(Paths.get(APP_HOME.getAbsolutePath(), "tokens"));
                     log.info("Файл tokens был удален");
-                } catch (IOException ex) {
-                    log.error("", ex);
+                } catch (IOException e) {
+                    log.error(e.getMessage(), e);
                     showErrorDialog("Из-за неизвестных мне причин я не могу удалить папку tokens");
                 }
             }
@@ -232,11 +232,11 @@ public class Gui {
             public void println(String x) {
                 Preconditions.checkNotNull(x);
                 if (x.contains("https://accounts.google.com/o/oauth2/auth")) {
-                    log.debug("==========LINK TO LOG IN TO GOOGLE==========");
-                    log.debug(x);
-                    log.debug("==========LINK TO LOG IN TO GOOGLE==========");
+                    log.info("==========LINK TO LOG IN TO GOOGLE==========");
+                    log.info(x);
+                    log.info("==========LINK TO LOG IN TO GOOGLE==========");
                 } else {
-                    log.debug(x);
+                    log.info(x);
                 }
             }
         };

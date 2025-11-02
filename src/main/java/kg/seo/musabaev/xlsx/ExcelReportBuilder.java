@@ -1,6 +1,8 @@
-package kg.seo.musabaev.excel;
+package kg.seo.musabaev.xlsx;
 
-import kg.seo.musabaev.searchconsole.SiteMetrics;
+import kg.seo.musabaev.api.exception.TableBuilderException;
+import kg.seo.musabaev.api.exception.LocalFileNotFoundException;
+import kg.seo.musabaev.gsc.domain.SiteMetrics;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -71,8 +73,8 @@ public class ExcelReportBuilder {
      * Сохраняет Excel файл по указанному пути
      *
      * @param file путь для сохранения файла
-     * @throws ExcelReportSaveException если файл или папка не существует
-     * @throws ExcelReportException если произошла ошибка при сохранении
+     * @throws LocalFileNotFoundException если файл или папка не существует
+     * @throws TableBuilderException если произошла ошибка при сохранении
      */
     public void save(File file) {
         try (FileOutputStream fileOut = new FileOutputStream(file)) {
@@ -81,10 +83,10 @@ public class ExcelReportBuilder {
 
         } catch (FileNotFoundException e) {
             log.warn("Файл или папка не существует: {}", file.getAbsolutePath(), e);
-            throw new ExcelReportSaveException(file);
+            throw new LocalFileNotFoundException(file);
         } catch (IOException e) {
             log.error("Ошибка ввода-вывода при сохранении Excel файла", e);
-            throw new ExcelReportException(e);
+            throw new TableBuilderException(e);
         } finally {
             closeWorkbook();
         }
@@ -97,10 +99,10 @@ public class ExcelReportBuilder {
     private void closeWorkbook() {
         try {
             workbook.close();
-            log.debug("Apache POI Workbook закрыт");
+            log.info("Apache POI Workbook закрыт");
         } catch (IOException e) {
             log.warn("Ошибка при закрытии workbook", e);
-            throw new ExcelReportException(e);
+            throw new TableBuilderException(e);
         }
     }
 
@@ -115,8 +117,8 @@ public class ExcelReportBuilder {
      * Автоматически подбирает ширину столбцов
      */
     public void autoSizeColumns() {
-        log.debug("Автоматическая настройка ширины столбцов...");
+        log.info("Автоматическая настройка ширины столбцов...");
         IntStream.range(0, COLUMNS_COUNT).forEach(sheet::autoSizeColumn);
-        log.debug("Ширина столбцов настроена");
+        log.info("Ширина столбцов настроена");
     }
 }

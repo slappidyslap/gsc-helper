@@ -64,8 +64,9 @@ public class ApachePoiXlsxBuilder implements TableBuilder {
             } else if (value instanceof String) {
                 dataRow.createCell(i).setCellValue((String) value);
             } else {
-                log.error("Недопустимое значение передано в addRow: {}", value);
-                throw new TableBuilderException("Illegal argument: " + value);
+                String s = "Недопустимое значение передано при добавлении строки данных в таблицу: ";
+                log.error("{}{}", s, value);
+                throw new TableBuilderException(s + value);
             }
         }
     }
@@ -110,6 +111,7 @@ public class ApachePoiXlsxBuilder implements TableBuilder {
         try {
             workbook.close();
         } catch (IOException e) {
+            log.error("Ошибка ввода-вывода при закрытии workbook", e);
             throw new TableBuilderException(e);
         }
     }

@@ -2,9 +2,9 @@ package kg.seo.musabaev.gui;
 
 import com.google.api.services.searchconsole.v1.model.SearchAnalyticsQueryResponse;
 import com.google.api.services.searchconsole.v1.model.WmxSite;
-import kg.seo.musabaev.searchconsole.GoogleSearchConsole;
-import kg.seo.musabaev.searchconsole.SearchConsoleService;
-import kg.seo.musabaev.searchconsole.SiteMetrics;
+import kg.seo.musabaev.gsc.GscAuthenticator;
+import kg.seo.musabaev.gsc.GscService;
+import kg.seo.musabaev.gsc.domain.SiteMetrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,11 +20,11 @@ public class GscXlsxReportGenerator {
 
     private static final Logger log = LoggerFactory.getLogger(GscXlsxReportGenerator.class);
 
-    private final SearchConsoleService gsc;
+    private final GscService gsc;
     private final GscMetricsXlsxTableAdapter xlsx;
 
-    public GscXlsxReportGenerator(GoogleSearchConsole searchConsole) {
-        this.gsc = new SearchConsoleService(searchConsole);
+    public GscXlsxReportGenerator(GscAuthenticator searchConsole) {
+        this.gsc = new GscService(searchConsole);
         this.xlsx = new GscMetricsXlsxTableAdapter();
     }
 
@@ -57,8 +57,8 @@ public class GscXlsxReportGenerator {
             try {
                 SearchAnalyticsQueryResponse response = gsc.getAnalytics(
                         siteUrl,
-                        startDate.toString(),
-                        endDate.toString());
+                        startDate,
+                        endDate);
 
                 if (response == null) {
                     log.warn("Сайт {} пропущен - не подтвержден", siteUrl);

@@ -4,8 +4,8 @@ import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import de.milchreis.uibooster.UiBooster;
 import de.milchreis.uibooster.model.UiBoosterOptions;
 import kg.seo.musabaev.api.exception.LocalFileNotFoundException;
-import kg.seo.musabaev.searchconsole.CredentialsFileNotFoundException;
-import kg.seo.musabaev.searchconsole.GscSitesNotFoundException;
+import kg.seo.musabaev.gsc.exception.CredentialsFileNotFoundException;
+import kg.seo.musabaev.gsc.exception.GscSitesNotFoundException;
 
 /**
  * Глобальный обработчик необработанных исключений для приложения.
