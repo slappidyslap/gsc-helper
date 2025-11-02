@@ -94,8 +94,8 @@ public class GscService {
                     .query(siteUrl, request)
                     .execute();
 
-            log.info("Аналитика успешно получена для сайта: {}", siteUrl);
-            log.info("Ответ от GSC API:\n{}", response.toPrettyString());
+            log.info("Аналитика успешно получена для сайта {}. Ответ:\n{}",
+                    siteUrl, response.toPrettyString());
 
             return response;
         } catch (GoogleJsonResponseException e) {
@@ -103,7 +103,7 @@ public class GscService {
                 log.warn("Сайт {} не подтвержден (403 Forbidden)", siteUrl);
                 return null;
             }
-            log.error("Ошибка GSC API для сайта {}. Код: {}, Сообщение: {}",
+            log.error("Ошибка GSC API для сайта {}. HTTP Status Code: {}. Сообщение: {}",
                     siteUrl, e.getStatusCode(), e.getStatusMessage(), e);
             throw new GscApiException(e);
         } catch (IOException e) {

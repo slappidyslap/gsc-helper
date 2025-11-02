@@ -31,7 +31,8 @@ public class GscXlsxReportGenerator {
     /**
      * Запускает процесс извлечение метрик, генерации отчета и сохранения в xlsx файл
      */
-    public CompletableFuture<Void> generateAndSave(LocalDate startDate, LocalDate endDate, String savePath) {
+    public CompletableFuture<Void> generateAndSave(
+            LocalDate startDate, LocalDate endDate, String savePath) {
         return CompletableFuture.runAsync(() -> {
             fetchMetricsAndGenerateReport(startDate, endDate);
             save(savePath);
@@ -45,21 +46,18 @@ public class GscXlsxReportGenerator {
         log.info("Начата генерация отчета GSC за период {} - {}", startDate, endDate);
 
         List<WmxSite> sites = gsc.getSites();
-        log.info("Получено сайтов для обработки: {}", sites.size());
+        log.info("Получено {} сайтов для обработки", sites.size());
 
         int processedCount = 0;
         int skippedCount = 0;
-
         for (WmxSite site : sites) {
             String siteUrl = site.getSiteUrl();
             log.info("Обработка сайта: {}", siteUrl);
-
             try {
                 SearchAnalyticsQueryResponse response = gsc.getAnalytics(
                         siteUrl,
                         startDate,
                         endDate);
-
                 if (response == null) {
                     log.warn("Сайт {} пропущен - не подтвержден", siteUrl);
                     skippedCount++;
@@ -72,14 +70,15 @@ public class GscXlsxReportGenerator {
                 processedCount++;
                 log.info("Сайт {} успешно обработан ({}/{})",
                         siteUrl, processedCount, sites.size());
-            } catch (Exception e) {
+            } catch (Exception e) { // FIXME Перехватывает все исключения. globalExceptionHandler не успевает обрабоать
                 log.error("Ошибка при обработке сайта: {}", siteUrl, e);
                 skippedCount++;
             }
         }
         xlsx.autoSizeColumns();
-        log.info("Генерация отчета завершена. Обработано: {}, Пропущено: {}",
-                processedCount, skippedCount);
+
+        log.info("Генерация отчета завершена. Всего: {}, обработано: {}, пропущено: {}",
+                sites.size(), processedCount, skippedCount);
     }
 
     /**
@@ -89,7 +88,7 @@ public class GscXlsxReportGenerator {
      */
     public void save(String savePath) {
         File file = new File(savePath);
-        log.info("Сохранение отчета в файл: {}", file.getAbsolutePath());
         xlsx.save(file);
+        log.info("Отчета в формате xlsx сохранен в: {}", file.getAbsolutePath());
     }
 }
