@@ -3,11 +3,9 @@ package kg.seo.musabaev;
 import ch.qos.logback.classic.LoggerContext;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
-import com.google.api.client.util.Preconditions;
 import de.milchreis.uibooster.UiBooster;
 import de.milchreis.uibooster.model.UiBoosterOptions;
 import net.miginfocom.swing.MigLayout;
-import org.apache.commons.io.output.NullOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import raven.datetime.component.date.DatePicker;
@@ -18,7 +16,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -37,8 +34,16 @@ public class Gui {
     private final JPanel formPanel;
     private final JLabel dateRangeLabel;
     private final JTextField dateRangeInput;
+
+    private final JLabel savePathLabel;
+    private final JTextField savePathInput;
+
     private final DatePicker datePicker;
     private final JButton submitButton;
+
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private String savePath;
 
     public Gui() {
         FlatMacLightLaf.setup();
@@ -54,7 +59,7 @@ public class Gui {
         frame.setJMenuBar(buildMenuBar());
         frame.setTitle("GSC Helper");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(480, 200);
+        frame.setSize(650, 200);
         frame.setLocationRelativeTo(null);
         frame.setLayout(new MigLayout("ins 12 13 6 13", "[grow]", "[][grow][]"));
 
@@ -71,17 +76,31 @@ public class Gui {
         datePicker.setCloseAfterSelected(true);
         datePicker.setEditor(dateRangeInput);
 
+        savePathLabel = new JLabel("Путь сохранения отчета:");
+
+        savePathInput = new JTextField();
+
+        JToolBar toolBar = new JToolBar();
+        JButton btn = new JButton("ы");
+        toolBar.add(btn);
+        btn.addActionListener(e -> {
+            File file = uiBooster.showFileSelection(
+                    format("Отчет GSC за период %s и %s.xlsx", startDate, endDate),
+                    "Файл Excel", "xlsx");
+            savePathInput.setText(file.getAbsolutePath());
+        });
+        savePathInput.putClientProperty("JTextField.trailingComponent", toolBar);
+
         submitButton = new JButton();
         submitButton.setText("Принять");
 
         // Настройка слушателей
         submitButton.addActionListener($ -> {
             SwingUtilities.invokeLater(() -> submitButton.setEnabled(false));
-            LocalDate startDate;
-            LocalDate endDate;
             try {
                 startDate = datePicker.getSelectedDateRange()[0];
                 endDate = datePicker.getSelectedDateRange()[1];
+                savePath = savePathInput.getText();
             } catch (NullPointerException e) {
                 showErrorDialog("Введите диапазон дат");
                 return;
@@ -91,9 +110,10 @@ public class Gui {
             } finally {
                 submitButton.setEnabled(true);
             }
-            // TODO
-            /*GscReportGenerator reportGenerator = new GscReportGenerator()
-            gsc.start()
+            GoogleSearchConsole searchConsole = new GoogleSearchConsole();
+            GscReportGenerator reportGenerator = new GscReportGenerator(searchConsole);
+            reportGenerator.generateAndSave(startDate, endDate, savePath);
+            /*gsc.start()
                     .thenRun(() -> SwingUtilities.invokeLater(() -> {
                         File dir = uiBooster.showFileSelection(format("Отчет GSC за период %s и %s.xlsx", startDate, endDate), "Файл Excel", "xlsx");
                         gsc.saveExcelFile(dir);
@@ -120,6 +140,9 @@ public class Gui {
         // Добавляем компоненты
         formPanel.add(dateRangeLabel);
         formPanel.add(dateRangeInput, "growx, pushx, wrap");
+
+        formPanel.add(savePathLabel);
+        formPanel.add(savePathInput, "growx, pushx, wrap");
 
         frame.add(formPanel, "growx, wrap");
         frame.add(new JLabel(""), "grow, wrap");
@@ -178,7 +201,7 @@ public class Gui {
                         System.getProperty("user.home") + File.separator +
                                 ".gsc-helper" + File.separator +
                                 "logs" + File.separator +
-                                String.format("log-%s.txt", curTimestamp)));
+                                format("log-%s.txt", curTimestamp)));
             } catch (IOException ex) {
                 log.error("", ex);
                 showErrorDialog("Из-за неизвестных мне причин я не могу открыть файл лога");
@@ -207,7 +230,7 @@ public class Gui {
 
     public static void main(String[] args) {
         log.info("Программа запущена");
-        PrintStream printStream = new PrintStream(new NullOutputStream()) {
+        /*PrintStream printStream = new PrintStream(new NullOutputStream()) {
             @Override
             public void println(String x) {
                 Preconditions.checkNotNull(x);
@@ -220,7 +243,7 @@ public class Gui {
                 }
             }
         };
-        System.setOut(printStream);
+        System.setOut(printStream);*/
         new Gui();
     }
 }

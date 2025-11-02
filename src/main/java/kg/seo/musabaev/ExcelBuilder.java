@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 /**
- * Универсальный класс для Excel с минимальным функционалом
+ * Универсальный класс для создания Excel файлов с минимальным функционалом
  */
 public class ExcelBuilder {
 

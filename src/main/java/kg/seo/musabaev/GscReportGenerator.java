@@ -28,7 +28,7 @@ public class GscReportGenerator {
     /**
      * Запускает процесс извлечение метрик, генерации отчета и сохранения в Excel файл
      */
-    public CompletableFuture<Void> generateAndSave(LocalDate startDate, LocalDate endDate, File savePath) {
+    public CompletableFuture<Void> generateAndSave(LocalDate startDate, LocalDate endDate, String savePath) {
         return CompletableFuture.runAsync(() -> {
             fetchMetricsAndGenerateReport(startDate, endDate);
             save(savePath);
@@ -85,9 +85,10 @@ public class GscReportGenerator {
     /**
      * Сохраняет сгенерированный отчет в Excel файл
      *
-     * @param file путь для сохранения файла
+     * @param savePath путь для сохранения файла
      */
-    public void save(File file) {
+    public void save(String savePath) {
+        File file = new File(savePath);
         log.info("Сохранение отчета в файл: {}", file.getAbsolutePath());
         excel.save(file);
     }
