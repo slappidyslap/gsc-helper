@@ -1,18 +1,7 @@
 package kg.seo.musabaev;
 
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
-import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.Preconditions;
-import com.google.api.client.util.store.FileDataStoreFactory;
-import com.google.api.services.searchconsole.v1.SearchConsole;
 import com.google.api.services.searchconsole.v1.model.*;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -21,22 +10,20 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.security.GeneralSecurityException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.IntStream;
 
-import static java.util.Collections.singleton;
-import static kg.seo.musabaev.Constants.APP_HOME;
-
 public class GscSitesHandler {
 
     private final Logger log = LoggerFactory.getLogger(GscSitesHandler.class);
     private final Workbook workbook = new XSSFWorkbook();
+    private final GoogleSearchConsole searchConsole = new GoogleSearchConsole();
     private final String startDate;
     private final String endDate;
 
@@ -48,15 +35,6 @@ public class GscSitesHandler {
     public CompletableFuture<Void> start() {
         log.info("Начат сбор данных");
         return CompletableFuture.runAsync(() -> {
-            SearchConsole searchConsole; // По идее это только сервис Google
-            try {
-                searchConsole = buildGoogle();
-            } catch (CredentialsFileNotFoundException e) {
-                throw e;
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-
             log.debug("Создаем Excel файл и заполняем header...");
             Sheet sheet = workbook.createSheet("Метрики");
             Row headerRow = sheet.createRow(0);
@@ -75,8 +53,6 @@ public class GscSitesHandler {
                 sites = sitesResp.getSiteEntry();
                 Preconditions.checkNotNull(sites);
             } catch (NullPointerException e) {
-                // Пока не ясно, еще при каких обстоятельствах
-                // происходит такое исключение, кроме отсутствия сайтов
                 throw new GscSitesNotFoundException();
             }
 
@@ -94,13 +70,13 @@ public class GscSitesHandler {
                 SearchAnalyticsQueryResponse queryResp = null;
                 try {
                     log.debug("Запрашиваем метрики из GSC...");
-                    queryResp = searchConsole.searchanalytics()
+                    queryResp = searchConsole.searchAnalytics()
                             .query(SITE_URL, queryReq)
                             .execute();
                     log.debug("Метрики были получены. Ответ от GSC:\n{}", queryResp.toPrettyString());
                 } catch (GoogleJsonResponseException e) {
                     if (e.getStatusCode() == 403) {
-                        log.info("Данный сайт еще потвержден");
+                        log.info("Данный сайт еще подтвержден");
                         continue;
                     }
                 } catch (Exception e) {
@@ -171,46 +147,7 @@ public class GscSitesHandler {
         }
     }
 
-    private SearchConsole buildGoogle() throws GeneralSecurityException, IOException, CredentialsFileNotFoundException {
-        log.info("Выполняется вход в Google аккаунт...");
 
-        final String APPLICATION_NAME = "GSC Helper";
-        final HttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
-        final String CREDENTIALS_FILE_PATH = new File(APP_HOME, "credentials.json").getAbsolutePath();
-
-        InputStream in;
-        try {
-            in = Files.newInputStream(Paths.get(CREDENTIALS_FILE_PATH));
-            Preconditions.checkNotNull(in);
-        } catch (NullPointerException e) {
-            log.info("Файл credentials.json не найден");
-            throw new CredentialsFileNotFoundException();
-        }
-
-        GoogleClientSecrets clientSecrets =
-                GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
-
-        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
-                HTTP_TRANSPORT,
-                JSON_FACTORY,
-                clientSecrets,
-                singleton("https://www.googleapis.com/auth/webmasters.readonly")
-        )
-                .setDataStoreFactory(new FileDataStoreFactory(new File(APP_HOME, "tokens")))
-                .setAccessType("offline")
-                .build();
-        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(-1).build();
-        Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
-
-        log.info("Вход в Google аккаунт выполнен");
-
-        return new SearchConsole.Builder(
-                GoogleNetHttpTransport.newTrustedTransport(),
-                JSON_FACTORY,
-                credential
-        ).setApplicationName(APPLICATION_NAME).build();
-    }
 
     private void fillHeader(Row headerRow) {
         headerRow.createCell(0).setCellValue("Тип ресурса");
