@@ -16,6 +16,7 @@ import java.util.stream.IntStream;
 /**
  * Класс для создания Excel отчетов с метриками сайтов из GSC
  */
+@Deprecated
 public class ExcelReportBuilder {
 
     private static final Logger log = LoggerFactory.getLogger(ExcelReportBuilder.class);

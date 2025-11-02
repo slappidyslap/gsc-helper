@@ -1,7 +1,9 @@
 package kg.seo.musabaev;
 
-public class CredentialsFileNotFoundException extends RuntimeException {
+import static kg.seo.musabaev.Constants.CREDENTIALS_FILE_NOT_FOUND_EXCEPTION;
+
+public class CredentialsFileNotFoundException extends BaseErrorDialogException {
     public CredentialsFileNotFoundException() {
-        super("Файл credentials.json не найден");
+        super(CREDENTIALS_FILE_NOT_FOUND_EXCEPTION);
     }
 }

@@ -2,8 +2,10 @@ package kg.seo.musabaev;
 
 import java.io.File;
 
-public class ExcelReportSaveException extends RuntimeException {
+import static kg.seo.musabaev.Constants.EXCEL_REPORT_SAVE_EXCEPTION;
+
+public class ExcelReportSaveException extends BaseErrorDialogException {
     public ExcelReportSaveException(File f) {
-        super("Не удалось найти путь для сохранения: " + f.getAbsolutePath());
+        super(EXCEL_REPORT_SAVE_EXCEPTION + f.getAbsolutePath());
     }
 }

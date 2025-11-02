@@ -1,9 +1,9 @@
 package kg.seo.musabaev;
 
+import static kg.seo.musabaev.Constants.GSC_SITES_NOT_FOUNT_EXCEPTION;
+
 public class GscSitesNotFoundException extends RuntimeException {
     public GscSitesNotFoundException() {
-        super("Это исключение происходит, когда сайты из GSC не были извлечены. " +
-                "Скорее всего вы авторизовались через не тот аккаунт. " +
-                "Если вы уверены, что сайты есть, то создайте тикет в Jira");
+        super(GSC_SITES_NOT_FOUNT_EXCEPTION);
     }
 }

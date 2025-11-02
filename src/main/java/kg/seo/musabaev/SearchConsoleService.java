@@ -48,7 +48,7 @@ public class SearchConsoleService {
             throw new GscSitesNotFoundException();
         } catch (IOException e) {
             log.error("Ошибка ввода-вывода при запросе списка сайтов", e);
-            throw new GscApiException("Ошибка соединения с GSC API", e);
+            throw new GscApiException(e);
         }
     }
 
@@ -92,13 +92,10 @@ public class SearchConsoleService {
             }
             log.error("Ошибка Google API для сайта {}. Код: {}, Сообщение: {}",
                     siteUrl, e.getStatusCode(), e.getStatusMessage(), e);
-            throw new GscApiException(
-                    format("Ошибка при получении данных для %s:", siteUrl),
-                    e
-            );
+            throw new GscApiException(e);
         } catch (IOException e) {
             log.error("Ошибка ввода-вывода при запросе аналитики для сайта: {}", siteUrl, e);
-            throw new GscApiException("Ошибка соединения с GSC API для сайта: " + siteUrl, e);
+            throw new GscApiException(e);
         }
     }
 
