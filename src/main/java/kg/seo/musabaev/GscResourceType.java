@@ -6,6 +6,10 @@ public enum GscResourceType {
 
     public final String rus;
 
+    public String rus() {
+        return rus;
+    }
+
     GscResourceType(String rus) {
         this.rus = rus;
     }
