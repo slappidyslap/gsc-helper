@@ -3,7 +3,7 @@ package kg.seo.musabaev.gui;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import de.milchreis.uibooster.UiBooster;
 import de.milchreis.uibooster.model.UiBoosterOptions;
-import kg.seo.musabaev.excel.ExcelReportSaveException;
+import kg.seo.musabaev.api.exception.LocalFileNotFoundException;
 import kg.seo.musabaev.searchconsole.CredentialsFileNotFoundException;
 import kg.seo.musabaev.searchconsole.GscSitesNotFoundException;
 
@@ -14,14 +14,14 @@ import kg.seo.musabaev.searchconsole.GscSitesNotFoundException;
  * отображения ошибок в виде диалоговых окон через {@link UiBooster}.
  * <br><br>
  * Если исключение относится к одному из известных типов
- * ({@link ExcelReportSaveException}, {@link CredentialsFileNotFoundException},
+ * ({@link LocalFileNotFoundException}, {@link CredentialsFileNotFoundException},
  * {@link GscSitesNotFoundException}), пользователю показывается простое окно
  * с текстом ошибки.
  * <br>
  * Для всех остальных исключений выводится окно с полным стек трейсом.
  * </p>
  *
- * @see ExcelReportSaveException
+ * @see LocalFileNotFoundException
  * @see CredentialsFileNotFoundException
  * @see GscSitesNotFoundException
  */
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler implements Thread.UncaughtExceptionHandler {
 
     @Override
     public void uncaughtException(Thread t, Throwable e) {
-        if (e instanceof ExcelReportSaveException ||
+        if (e instanceof LocalFileNotFoundException ||
                 e instanceof CredentialsFileNotFoundException ||
                 e instanceof GscSitesNotFoundException) {
             showErrorDialog(e.getMessage());

@@ -1,6 +1,6 @@
 package kg.seo.musabaev.searchconsole;
 
-import static kg.seo.musabaev.Constants.CREDENTIALS_FILE_NOT_FOUND_EXCEPTION;
+import static kg.seo.musabaev.util.Constants.CREDENTIALS_FILE_NOT_FOUND_EXCEPTION;
 
 public class CredentialsFileNotFoundException extends RuntimeException {
     public CredentialsFileNotFoundException() {

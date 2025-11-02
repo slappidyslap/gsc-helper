@@ -1,4 +1,4 @@
-package kg.seo.musabaev;
+package kg.seo.musabaev.util;
 
 import java.io.File;
 
@@ -12,7 +12,7 @@ public class Constants {
             "Сайты из GSC для генерации отчета не существуют. " +
             "Скорее всего, вы авторизовались через не тот аккаунт.";
 
-    public static final String EXCEL_REPORT_SAVE_EXCEPTION =
+    public static final String LOCAL_FILE_NOT_FOUND_EXCEPTION =
             "Не удалось найти путь для сохранения: ";
 
     public static final String CREDENTIALS_FILE_NOT_FOUND_EXCEPTION =

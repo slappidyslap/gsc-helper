@@ -22,7 +22,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 
 import static java.lang.String.format;
-import static kg.seo.musabaev.Constants.APP_HOME;
+import static kg.seo.musabaev.util.Constants.APP_HOME;
 import static raven.datetime.component.date.DatePicker.DateSelectionMode.BETWEEN_DATE_SELECTED;
 
 public class Gui {
@@ -112,7 +112,7 @@ public class Gui {
                 submitButton.setEnabled(true);
             }
             GoogleSearchConsole searchConsole = new GoogleSearchConsole();
-            GscReportGenerator reportGenerator = new GscReportGenerator(searchConsole);
+            GscXlsxReportGenerator reportGenerator = new GscXlsxReportGenerator(searchConsole);
             reportGenerator.generateAndSave(startDate, endDate, savePath);
             /*gsc.start()
                     .thenRun(() -> SwingUtilities.invokeLater(() -> {

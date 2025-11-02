@@ -23,7 +23,7 @@ import java.nio.file.Paths;
 
 import static com.google.api.client.util.Preconditions.checkNotNull;
 import static java.util.Collections.singleton;
-import static kg.seo.musabaev.Constants.APP_HOME;
+import static kg.seo.musabaev.util.Constants.APP_HOME;
 
 public class GoogleSearchConsole {
 

@@ -1,5 +1,7 @@
-package kg.seo.musabaev.excel;
+package kg.seo.musabaev.xlsx;
 
+import kg.seo.musabaev.api.TableBuilder;
+import kg.seo.musabaev.api.exception.TableBuilderException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -7,25 +9,24 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.IntStream;
 
 /**
- * Универсальный класс для создания Excel файлов с минимальным функционалом
+ * Класс для создания xlsx файлов с помощью Apache POI с минимальным функционалом
  */
-public class ExcelBuilder {
+public class ApachePoiXlsxBuilder implements TableBuilder {
 
-    private static final Logger log = LoggerFactory.getLogger(ExcelBuilder.class);
+    private static final Logger log = LoggerFactory.getLogger(ApachePoiXlsxBuilder.class);
 
     private final Workbook workbook;
     private final Sheet sheet;
     private int currentRow;
 
-    public ExcelBuilder(String sheetName) {
+    public ApachePoiXlsxBuilder(String sheetName) {
         this.workbook = new XSSFWorkbook();
         this.sheet = workbook.createSheet(sheetName);
         this.currentRow = 0;
@@ -36,6 +37,7 @@ public class ExcelBuilder {
      *
      * @param headers массив названий колонок
      */
+    @Override
     public void createHeader(String... headers) {
         Row headerRow = sheet.createRow(currentRow++);
         for (int i = 0; i < headers.length; i++) {
@@ -48,6 +50,7 @@ public class ExcelBuilder {
      *
      * @param values значения ячеек
      */
+    @Override
     public void addRow(Object... values) {
         Row dataRow = sheet.createRow(currentRow++);
 
@@ -61,7 +64,8 @@ public class ExcelBuilder {
             } else if (value instanceof String) {
                 dataRow.createCell(i).setCellValue((String) value);
             } else {
-                throw new IllegalArgumentException("Illegal argument: " + value);
+                log.error("Недопустимое значение передано в addRow: {}", value);
+                throw new TableBuilderException("Illegal argument: " + value);
             }
         }
     }
@@ -76,24 +80,26 @@ public class ExcelBuilder {
     }
 
     /**
-     * Сохраняет Excel файл по указанному пути
-     *
-     * @param file путь для сохранения файла
-     * @throws ExcelReportException если файл не найден или папка не существует
-     * @throws ExcelReportException если произошла ошибка при сохранении
+     * Автоматически подбирает ширину столбцов
      */
-    public void save(File file) {
-        try (FileOutputStream fileOut = new FileOutputStream(file)) {
-            workbook.write(fileOut);
+    public void autoSizeColumns(int columnCount) {
+        IntStream.range(0, columnCount).forEach(sheet::autoSizeColumn);
+    }
 
-        } catch (FileNotFoundException e) {
-            log.error("Файл не найден или папка не существует: {}", file.getAbsolutePath(), e);
-            throw new ExcelReportSaveException(file);
-        } catch (IOException e) {
-            log.error("Ошибка ввода-вывода при сохранении Excel файла", e);
-            throw new ExcelReportException(e);
-        } finally {
+    /**
+     * Формирует выходное представление таблицы в виде массива байт.
+     *
+     * @return массив байт с данными таблицы
+     */
+    @Override
+    public byte[] build() {
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            workbook.write(out);
             closeWorkbook();
+            return out.toByteArray();
+        } catch (IOException e) {
+            log.error("Ошибка ввода-вывода при преобразования xlsx файла в байтовый массив", e);
+            throw new TableBuilderException(e);
         }
     }
 
@@ -104,15 +110,19 @@ public class ExcelBuilder {
         try {
             workbook.close();
         } catch (IOException e) {
-            throw new ExcelReportException(e);
+            throw new TableBuilderException(e);
         }
     }
 
     /**
-     * Автоматически подбирает ширину столбцов
+     * Сохраняет Excel файл по указанному пути
+     *
+     * @param file путь для сохранения файла
+     * @throws TableBuilderException если файл не найден или папка не существует
+     * @throws TableBuilderException если произошла ошибка при сохранении
      */
-    public void autoSizeColumns(int columnCount) {
-        IntStream.range(0, columnCount).forEach(sheet::autoSizeColumn);
+    @Deprecated
+    public void save(File file) {
     }
 
     /**

@@ -14,22 +14,22 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Генератор Excel отчетов по метрикам сайтов из Google Search Console
+ * Генератор отчетов в формате xlsx (Excel) по метрикам сайтов из Google Search Console
  */
-public class GscReportGenerator {
+public class GscXlsxReportGenerator {
 
-    private static final Logger log = LoggerFactory.getLogger(GscReportGenerator.class);
+    private static final Logger log = LoggerFactory.getLogger(GscXlsxReportGenerator.class);
 
     private final SearchConsoleService gsc;
-    private final GscMetricsExcelReportAdapter excel;
+    private final GscMetricsXlsxTableAdapter xlsx;
 
-    public GscReportGenerator(GoogleSearchConsole searchConsole) {
+    public GscXlsxReportGenerator(GoogleSearchConsole searchConsole) {
         this.gsc = new SearchConsoleService(searchConsole);
-        this.excel = new GscMetricsExcelReportAdapter();
+        this.xlsx = new GscMetricsXlsxTableAdapter();
     }
 
     /**
-     * Запускает процесс извлечение метрик, генерации отчета и сохранения в Excel файл
+     * Запускает процесс извлечение метрик, генерации отчета и сохранения в xlsx файл
      */
     public CompletableFuture<Void> generateAndSave(LocalDate startDate, LocalDate endDate, String savePath) {
         return CompletableFuture.runAsync(() -> {
@@ -67,32 +67,29 @@ public class GscReportGenerator {
                 }
 
                 SiteMetrics metrics = gsc.getMetrics(siteUrl, response);
-                excel.addSiteMetrics(metrics);
+                xlsx.addSiteMetrics(metrics);
 
                 processedCount++;
                 log.info("Сайт {} успешно обработан ({}/{})",
                         siteUrl, processedCount, sites.size());
-
             } catch (Exception e) {
                 log.error("Ошибка при обработке сайта: {}", siteUrl, e);
                 skippedCount++;
             }
         }
-
-        excel.autoSizeColumns();
-
+        xlsx.autoSizeColumns();
         log.info("Генерация отчета завершена. Обработано: {}, Пропущено: {}",
                 processedCount, skippedCount);
     }
 
     /**
-     * Сохраняет сгенерированный отчет в Excel файл
+     * Сохраняет сгенерированный отчет в xlsx файл
      *
      * @param savePath путь для сохранения файла
      */
     public void save(String savePath) {
         File file = new File(savePath);
         log.info("Сохранение отчета в файл: {}", file.getAbsolutePath());
-        excel.save(file);
+        xlsx.save(file);
     }
 }
