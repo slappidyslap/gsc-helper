@@ -95,12 +95,7 @@ public class Gui {
             gsc.start()
                     .thenRun(() -> SwingUtilities.invokeLater(() -> {
                         File dir = uiBooster.showFileSelection(format("Отчет GSC за период %s и %s.xlsx", startDate, endDate), "Файл Excel", "xlsx");
-                        try {
-                            gsc.saveExcelFile(dir);
-                        } catch (IOException e) {
-                            log.error("", e);
-                            showExceptionDialog(e);
-                        }
+                        gsc.saveExcelFile(dir);
                         submitButton.setEnabled(true);
                     }))
                     .exceptionally(ex -> {

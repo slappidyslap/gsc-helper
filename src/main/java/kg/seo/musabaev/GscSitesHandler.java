@@ -1,7 +1,6 @@
 package kg.seo.musabaev;
 
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
-import com.google.api.client.util.Preconditions;
 import com.google.api.services.searchconsole.v1.model.*;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -18,6 +17,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.IntStream;
+
+import static com.google.api.client.util.Preconditions.checkArgument;
+import static com.google.api.client.util.Preconditions.checkNotNull;
 
 public class GscSitesHandler {
 
@@ -51,7 +53,7 @@ public class GscSitesHandler {
             List<WmxSite> sites;
             try {
                 sites = sitesResp.getSiteEntry();
-                Preconditions.checkNotNull(sites);
+                checkNotNull(sites);
             } catch (NullPointerException e) {
                 throw new GscSitesNotFoundException();
             }
@@ -98,8 +100,8 @@ public class GscSitesHandler {
                 log.debug("Вставил ссылку: {}", url);
 
                 List<ApiDataRow> rows = queryResp.getRows();
-                Preconditions.checkNotNull(rows);
-                Preconditions.checkArgument(!rows.isEmpty());
+                checkNotNull(rows);
+                checkArgument(!rows.isEmpty());
 
                 ApiDataRow row = rows.get(0);
                 Row dataRow = sheet.getRow(i);
@@ -131,7 +133,7 @@ public class GscSitesHandler {
         });
     }
 
-    public void saveExcelFile(File path) throws IOException {
+    public void saveExcelFile(File path) {
         log.debug("Сохранение Excel файла...");
 
         try {
@@ -142,7 +144,8 @@ public class GscSitesHandler {
             log.info("Excel файл успешно сохранен по пути: {}", path);
         } catch (FileNotFoundException e) {
             log.info("Папка для сохранения не был выбран");
-        } catch (Exception e) {
+        } catch (IOException e) {
+            log.error("Общее исключение при сохранении Excel файла", e);
             throw new RuntimeException(e);
         }
     }
