@@ -91,7 +91,8 @@ public class Gui {
             } finally {
                 submitButton.setEnabled(true);
             }
-            GscSitesHandler gsc = new GscSitesHandler(startDate, endDate);
+            // TODO
+            /*GscReportGenerator reportGenerator = new GscReportGenerator()
             gsc.start()
                     .thenRun(() -> SwingUtilities.invokeLater(() -> {
                         File dir = uiBooster.showFileSelection(format("Отчет GSC за период %s и %s.xlsx", startDate, endDate), "Файл Excel", "xlsx");
@@ -112,7 +113,7 @@ public class Gui {
                         });
                         return null;
                     });
-            submitButton.setEnabled(true);
+            submitButton.setEnabled(true);*/
         });
 //        addFocusListenersToComponents(frame);
 
