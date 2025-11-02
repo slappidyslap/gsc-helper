@@ -1,6 +1,11 @@
-package kg.seo.musabaev;
+package kg.seo.musabaev.gui;
 
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import de.milchreis.uibooster.UiBooster;
+import de.milchreis.uibooster.model.UiBoosterOptions;
+import kg.seo.musabaev.excel.ExcelReportSaveException;
+import kg.seo.musabaev.searchconsole.CredentialsFileNotFoundException;
+import kg.seo.musabaev.searchconsole.GscSitesNotFoundException;
 
 /**
  * Глобальный обработчик необработанных исключений для приложения.
@@ -22,7 +27,8 @@ import de.milchreis.uibooster.UiBooster;
  */
 public class GlobalExceptionHandler implements Thread.UncaughtExceptionHandler {
 
-    private final UiBooster uiBooster = new UiBooster();
+    private final UiBooster uiBooster = new UiBooster(
+            new UiBoosterOptions(new FlatMacLightLaf(), null, null));
 
     @Override
     public void uncaughtException(Thread t, Throwable e) {

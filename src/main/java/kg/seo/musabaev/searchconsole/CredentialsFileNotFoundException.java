@@ -1,4 +1,4 @@
-package kg.seo.musabaev;
+package kg.seo.musabaev.searchconsole;
 
 import static kg.seo.musabaev.Constants.CREDENTIALS_FILE_NOT_FOUND_EXCEPTION;
 

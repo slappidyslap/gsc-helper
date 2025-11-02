@@ -1,10 +1,11 @@
-package kg.seo.musabaev;
+package kg.seo.musabaev.gui;
 
 import ch.qos.logback.classic.LoggerContext;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import de.milchreis.uibooster.UiBooster;
 import de.milchreis.uibooster.model.UiBoosterOptions;
+import kg.seo.musabaev.searchconsole.GoogleSearchConsole;
 import net.miginfocom.swing.MigLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -149,10 +150,7 @@ public class Gui {
 
         frame.add(submitButton, "growx, wrap");
 
-        SwingUtilities.invokeLater(() -> {
-            frame.setVisible(true);
-            frame.getContentPane().requestFocusInWindow();
-        });
+        setupExceptionsHandler();
     }
 
     private void showExceptionDialog(Throwable e) {
@@ -228,9 +226,8 @@ public class Gui {
         return menuBar;
     }
 
-    public static void main(String[] args) {
-        log.info("Программа запущена");
-        /*PrintStream printStream = new PrintStream(new NullOutputStream()) {
+    /*public static void main(String[] args) {
+        PrintStream printStream = new PrintStream(new NullOutputStream()) {
             @Override
             public void println(String x) {
                 Preconditions.checkNotNull(x);
@@ -243,8 +240,18 @@ public class Gui {
                 }
             }
         };
-        System.setOut(printStream);*/
-        new Gui();
-        Thread.setDefaultUncaughtExceptionHandler(new GlobalExceptionHandler()); // https://stackoverflow.com/questions/73207244/java-swing-swingworker-uncaught-exceptions-are-not-getting-picked-up-by-thread
+        System.setOut(printStream);
+    }*/
+
+    private void setupExceptionsHandler() {
+        // https://stackoverflow.com/questions/73207244/java-swing-swingworker-uncaught-exceptions-are-not-getting-picked-up-by-thread
+        Thread.setDefaultUncaughtExceptionHandler(new GlobalExceptionHandler());
+    }
+
+    public void show() {
+        SwingUtilities.invokeLater(() -> {
+            frame.setVisible(true);
+            frame.getContentPane().requestFocusInWindow();
+        });
     }
 }

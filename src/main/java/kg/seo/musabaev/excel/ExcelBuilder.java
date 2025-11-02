@@ -1,4 +1,4 @@
-package kg.seo.musabaev;
+package kg.seo.musabaev.excel;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;

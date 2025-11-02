@@ -1,4 +1,4 @@
-package kg.seo.musabaev;
+package kg.seo.musabaev.searchconsole;
 
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.services.searchconsole.v1.model.*;
@@ -10,7 +10,6 @@ import java.util.List;
 
 import static com.google.api.client.util.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkArgument;
-import static java.lang.String.format;
 
 /**
  * Сервис для работы с Google Search Console API

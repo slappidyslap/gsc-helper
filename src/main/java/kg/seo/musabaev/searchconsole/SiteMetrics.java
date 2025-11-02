@@ -1,4 +1,4 @@
-package kg.seo.musabaev;
+package kg.seo.musabaev.searchconsole;
 
 import java.util.Objects;
 

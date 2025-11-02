@@ -1,7 +1,10 @@
-package kg.seo.musabaev;
+package kg.seo.musabaev.gui;
 
 import com.google.api.services.searchconsole.v1.model.SearchAnalyticsQueryResponse;
 import com.google.api.services.searchconsole.v1.model.WmxSite;
+import kg.seo.musabaev.searchconsole.GoogleSearchConsole;
+import kg.seo.musabaev.searchconsole.SearchConsoleService;
+import kg.seo.musabaev.searchconsole.SiteMetrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
