@@ -1,4 +1,4 @@
-package kg.seo.musabaev.api;
+package kg.seo.musabaev.api.table;
 
 /**
  * Интерфейс для обработки выходных данных табличного отчёта.

@@ -1,4 +1,4 @@
-package kg.seo.musabaev.api;
+package kg.seo.musabaev.api.table;
 
 import kg.seo.musabaev.util.Constants;
 import kg.seo.musabaev.api.exception.LocalFileNotFoundException;

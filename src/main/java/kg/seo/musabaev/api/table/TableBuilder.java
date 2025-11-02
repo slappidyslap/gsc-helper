@@ -1,4 +1,4 @@
-package kg.seo.musabaev.api;
+package kg.seo.musabaev.api.table;
 
 /**
  * Интерфейс для построения табличных данных с минимальным функционалом.
