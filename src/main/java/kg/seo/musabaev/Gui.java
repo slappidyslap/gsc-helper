@@ -245,5 +245,6 @@ public class Gui {
         };
         System.setOut(printStream);*/
         new Gui();
+        Thread.setDefaultUncaughtExceptionHandler(new GlobalExceptionHandler()); // https://stackoverflow.com/questions/73207244/java-swing-swingworker-uncaught-exceptions-are-not-getting-picked-up-by-thread
     }
 }
