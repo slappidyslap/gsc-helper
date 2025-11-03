@@ -1,7 +1,7 @@
 package kg.musabaev.gsc_helper.gui.service;
 
-import kg.musabaev.gsc_helper.api.gsc.collector.GscMetricsCollector;
 import kg.musabaev.gsc_helper.api.adapter.GscMetricsTableAdapter;
+import kg.musabaev.gsc_helper.api.gsc.collector.BaseGscMetricsBetweenDateCollector;
 import kg.musabaev.gsc_helper.api.gsc.collector.domain.SiteMetricsList;
 import kg.musabaev.gsc_helper.api.table.output.OutputProcessorConfig;
 import kg.musabaev.gsc_helper.api.table.output.TableDataOutputProcessor;
@@ -20,11 +20,11 @@ public class ReportService {
 
     private static final Logger log = LoggerFactory.getLogger(ReportService.class);
 
-    private final GscMetricsCollector metricsCollector;
+    private final BaseGscMetricsBetweenDateCollector metricsCollector;
     private final GscMetricsTableAdapter gscXlsxAdapter;
 
     public ReportService(
-            GscMetricsCollector metricsCollector,
+            BaseGscMetricsBetweenDateCollector metricsCollector,
             GscMetricsTableAdapter gscXlsxAdapter) {
         checkNotNull(metricsCollector);
         checkNotNull(gscXlsxAdapter);
@@ -45,7 +45,10 @@ public class ReportService {
         
         log.info("Начата генерация отчета GSC за период {} - {}", startDate, endDate);
 
-        SiteMetricsList collectedMetrics = metricsCollector.collect(); // fixme даты не передаем
+        SiteMetricsList collectedMetrics = metricsCollector
+                .collectBetweenDate(startDate, endDate);
+        metricsCollector.collect();
+
         byte[] report = gscXlsxAdapter.adapt(collectedMetrics);
 
         log.info("Отчет успешно сгенерирован");

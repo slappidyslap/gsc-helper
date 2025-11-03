@@ -1,16 +1,16 @@
 package kg.musabaev.gsc_helper.core.gsc.collector;
 
 import com.google.api.services.searchconsole.v1.model.WmxSite;
-import kg.musabaev.gsc_helper.api.gsc.domain.GscAnalyticsResponse;
 import kg.musabaev.gsc_helper.api.gsc.GscApiBuilder;
 import kg.musabaev.gsc_helper.api.gsc.GscService;
-import kg.musabaev.gsc_helper.api.gsc.collector.GscMetricsCollector;
-import kg.musabaev.gsc_helper.core.gsc.exception.SiteNotVerifiedException;
-import kg.musabaev.gsc_helper.api.gsc.domain.GscResourceType;
-import kg.musabaev.gsc_helper.api.gsc.domain.SiteMetrics;
+import kg.musabaev.gsc_helper.api.gsc.collector.BaseGscMetricsBetweenDateCollector;
 import kg.musabaev.gsc_helper.api.gsc.collector.domain.FailedSiteMetrics;
 import kg.musabaev.gsc_helper.api.gsc.collector.domain.SiteMetricsList;
+import kg.musabaev.gsc_helper.api.gsc.domain.GscAnalyticsResponse;
+import kg.musabaev.gsc_helper.api.gsc.domain.GscResourceType;
+import kg.musabaev.gsc_helper.api.gsc.domain.SiteMetrics;
 import kg.musabaev.gsc_helper.core.gsc.GscServiceImpl;
+import kg.musabaev.gsc_helper.core.gsc.exception.SiteNotVerifiedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,20 +23,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Сервис для сбора метрик всех сайтов из Google Search Console API за указанный период.
  */
-public class GscMetricsBetweenDateCollector implements GscMetricsCollector {
+public class GscMetricsBetweenDateCollectorImpl extends BaseGscMetricsBetweenDateCollector {
 
-    private static final Logger log = LoggerFactory.getLogger(GscMetricsBetweenDateCollector.class);
+    private static final Logger log = LoggerFactory.getLogger(GscMetricsBetweenDateCollectorImpl.class);
 
     private final GscService gsc;
 
-    private LocalDate startDate;
-    private LocalDate endDate;
-
-    public GscMetricsBetweenDateCollector(GscApiBuilder gscApiBuilder) {
+    public GscMetricsBetweenDateCollectorImpl(GscApiBuilder gscApiBuilder) {
+        super();
         checkNotNull(gscApiBuilder);
         this.gsc = new GscServiceImpl(gscApiBuilder);
-        startDate = LocalDate.now();
-        endDate = LocalDate.now();
     }
 
     /**
@@ -47,12 +43,12 @@ public class GscMetricsBetweenDateCollector implements GscMetricsCollector {
      * @param endDate дата окончания периода
      * @return результат сбора метрик. Объект {@link SiteMetricsList}
      */
+    @Override
     public SiteMetricsList collectBetweenDate(LocalDate startDate, LocalDate endDate) {
         checkNotNull(startDate);
         checkNotNull(endDate);
-
-        this.startDate = startDate;
-        this.endDate = endDate;
+        super.setStartDate(startDate);
+        super.setEndDate(endDate);
 
         log.info("Начат сбор метрик GSC за период {} - {}", startDate, endDate);
 
@@ -105,17 +101,6 @@ public class GscMetricsBetweenDateCollector implements GscMetricsCollector {
     }
 
     /**
-     * Собирает метрики всех сайтов.
-     * Обрабатывает все ошибки и ложит их в контейнер {@link FailedSiteMetrics}.
-     *
-     * @return результат сбора метрик. Объект {@link SiteMetricsList}
-     */
-    @Override
-    public SiteMetricsList collect() {
-        return collectBetweenDate(startDate, endDate);
-    }
-
-    /**
      * Создает объект {@link FailedSiteMetrics}
      * @param siteUrl ссылка на сайт
      * @param t исключение, которое произошло при сборке метрик сайта
@@ -136,21 +121,5 @@ public class GscMetricsBetweenDateCollector implements GscMetricsCollector {
         GscResourceType type = gsc.getResourceType(siteUrl);
         String cleanUrl = gsc.getCleanUrl(siteUrl);
         return new SiteNotVerifiedException(type, cleanUrl);
-    }
-
-    public LocalDate startDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate endDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
     }
 }
