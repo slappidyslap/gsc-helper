@@ -3,6 +3,9 @@ package kg.musabaev.gsc_helper.gui.service;
 import kg.musabaev.gsc_helper.api.gsc.collector.GscMetricsCollector;
 import kg.musabaev.gsc_helper.api.adapter.GscMetricsTableAdapter;
 import kg.musabaev.gsc_helper.api.gsc.collector.domain.SiteMetricsList;
+import kg.musabaev.gsc_helper.api.table.output.OutputProcessorConfig;
+import kg.musabaev.gsc_helper.api.table.output.TableDataOutputProcessor;
+import kg.musabaev.gsc_helper.core.table.output.TableDataOutputProcessorFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +14,7 @@ import java.time.LocalDate;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Сервис для генерации отчетов GSC в табличном формате (xlsx, csv, json)
+ * Сервис для генерации отчетов GSC в табличном формате (xlsx, csv, json) и обработки после
  */
 public class ReportService {
 
@@ -37,15 +40,49 @@ public class ReportService {
      * @return байтовый массив табличных данных
      */
     public byte[] generateReport(LocalDate startDate, LocalDate endDate) {
+        checkNotNull(startDate);
+        checkNotNull(endDate);
+        
         log.info("Начата генерация отчета GSC за период {} - {}", startDate, endDate);
 
-        SiteMetricsList collectedMetrics = metricsCollector.collect();
-        byte[] report = gscXlsxAdapter.process(collectedMetrics);
-
-        // saver todo
+        SiteMetricsList collectedMetrics = metricsCollector.collect(); // fixme даты не передаем
+        byte[] report = gscXlsxAdapter.adapt(collectedMetrics);
 
         log.info("Отчет успешно сгенерирован");
 
         return report;
+    }
+
+    /**
+     * Выполняет обработку байтового массив данных
+     * готового отчёта с использованием фабрики {@link TableDataOutputProcessorFactory}.
+     *
+     * <p>Тип обработки определяется конфигурацией {@link OutputProcessorConfig}</p>
+     *
+     * @param config конфигурация обработчика выходных данных
+     * @param reportData байтовый массив табличного отчёта для обработки
+     */
+    public void processReportOutput(OutputProcessorConfig config, byte[] reportData) {
+        log.info("Начата обработка байтового массива данных отчета");
+        checkNotNull(config);
+        checkNotNull(reportData);
+        TableDataOutputProcessor outputProcessor = TableDataOutputProcessorFactory.create(config);
+        outputProcessor.process(reportData);
+        log.info("Отчет был обработан реализацией {} - {}",
+                TableDataOutputProcessor.class.getName(), outputProcessor.getClass().getName());
+    }
+
+    /**
+     * Выполняет полный цикл создания и обработки отчёта за указанный период.
+     *
+     * @param startDate дата начала периода
+     * @param endDate дата окончания периода
+     * @param processorConfig конфигурация обработчика выходных данных
+     */
+    public void generateAndProcessReport(
+            LocalDate startDate,
+            LocalDate endDate,
+            OutputProcessorConfig processorConfig) {
+        processReportOutput(processorConfig, generateReport(startDate, endDate));
     }
 }

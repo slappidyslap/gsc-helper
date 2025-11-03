@@ -21,5 +21,5 @@ public interface GscMetricsTableAdapter {
      *
      * @return байтовый массив табличных данных.
      */
-    byte[] process(SiteMetricsList metrics);
+    byte[] adapt(SiteMetricsList metrics);
 }

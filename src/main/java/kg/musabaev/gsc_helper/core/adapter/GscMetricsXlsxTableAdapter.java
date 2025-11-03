@@ -115,7 +115,7 @@ public class GscMetricsXlsxTableAdapter implements GscMetricsTableAdapter {
      * @return байтовый массив xlsx сформированного xlsx файла.
      */
     @Override
-    public byte[] process(SiteMetricsList allSitesMetrics) {
+    public byte[] adapt(SiteMetricsList allSitesMetrics) {
         log.info("Начата обработка метрик из GSC в xlsx файл");
 
         addHeaders();

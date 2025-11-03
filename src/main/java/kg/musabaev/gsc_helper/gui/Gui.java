@@ -8,6 +8,7 @@ import de.milchreis.uibooster.model.UiBoosterOptions;
 import kg.musabaev.gsc_helper.core.gsc.GscApiAuthorizationCodeFlowBuilder;
 import kg.musabaev.gsc_helper.core.gsc.collector.GscMetricsBetweenDateCollector;
 import kg.musabaev.gsc_helper.core.adapter.GscMetricsXlsxTableAdapter;
+import kg.musabaev.gsc_helper.core.table.output.file.local.TableDataOutputLocalFileSaver;
 import kg.musabaev.gsc_helper.core.table.xlsx.ApachePoiXlsxBuilder;
 import kg.musabaev.gsc_helper.gui.exception.GlobalExceptionHandler;
 import kg.musabaev.gsc_helper.gui.service.ReportService;
@@ -52,11 +53,17 @@ public class Gui {
     private String savePath;
 
     public Gui() {
-        new ReportService(
+        // test
+        ReportService reportService = new ReportService(
                 new GscMetricsBetweenDateCollector(
                         new GscApiAuthorizationCodeFlowBuilder()),
                 new GscMetricsXlsxTableAdapter(
                         new ApachePoiXlsxBuilder("Метрики")));
+        reportService.generateAndProcessReport(
+                LocalDate.now(),
+                LocalDate.now(),
+                new TableDataOutputLocalFileSaver.Config(
+                        new File("~")));
 
         FlatMacLightLaf.setup();
         FlatRobotoFont.install();

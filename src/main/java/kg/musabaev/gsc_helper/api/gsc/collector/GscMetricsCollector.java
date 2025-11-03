@@ -6,6 +6,7 @@ import kg.musabaev.gsc_helper.api.gsc.collector.domain.SiteMetricsList;
 /**
  * Интерфейс для сбора метрик всех сайтов из Google Search Console API.
  */
+@FunctionalInterface
 public interface GscMetricsCollector {
 
     /**

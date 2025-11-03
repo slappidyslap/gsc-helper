@@ -149,7 +149,7 @@
                     <transformers>
                         <transformer
                                 implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                            <mainClass>kg.musabaev.gsc_helper.gui.Gui</mainClass>
+                            <mainClass>kg.musabaev.gsc_helper.Main</mainClass>
                         </transformer>
                     </transformers>
                     <shadedArtifactAttached>true</shadedArtifactAttached>
