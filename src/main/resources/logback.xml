@@ -16,7 +16,7 @@
             <Pattern>%d{HH:mm:ss} %-5level %logger{36} - %msg%n</Pattern>
         </encoder>
     </appender>
-    <logger name="kg.seo.musabaev" level="DEBUG" additivity="false">
+    <logger name="kg.musabaev.gsc_helper" level="DEBUG" additivity="false">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </logger>
