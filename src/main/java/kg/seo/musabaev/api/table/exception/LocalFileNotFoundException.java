@@ -1,4 +1,4 @@
-package kg.seo.musabaev.api.exception;
+package kg.seo.musabaev.api.table.exception;
 
 import java.io.File;
 

@@ -1,7 +1,7 @@
 package kg.seo.musabaev.gui;
 
 import kg.seo.musabaev.api.table.TableDataLocalFileSaver;
-import kg.seo.musabaev.api.exception.TableBuilderException;
+import kg.seo.musabaev.api.table.exception.TableBuilderException;
 import kg.seo.musabaev.api.table.XlsxTableBuilder;
 import kg.seo.musabaev.gsc.domain.SiteMetrics;
 import kg.seo.musabaev.xlsx.ApachePoiXlsxBuilder;
@@ -73,7 +73,7 @@ public class GscMetricsXlsxTableAdapter {
      * Сохраняет xlsx файл по указанному пути
      *
      * @param savePath путь для сохранения файла
-     * @throws kg.seo.musabaev.api.exception.LocalFileNotFoundException если файл не найден или папка не существует
+     * @throws kg.seo.musabaev.api.table.exception.LocalFileNotFoundException если файл не найден или папка не существует
      * @throws TableBuilderException если произошла ошибка при сохранении
      */
     public void save(File savePath) {

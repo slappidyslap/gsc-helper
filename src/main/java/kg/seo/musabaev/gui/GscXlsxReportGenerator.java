@@ -2,6 +2,7 @@ package kg.seo.musabaev.gui;
 
 import com.google.api.services.searchconsole.v1.model.SearchAnalyticsQueryResponse;
 import com.google.api.services.searchconsole.v1.model.WmxSite;
+import kg.seo.musabaev.api.gsc.GscAnalyticsResponse;
 import kg.seo.musabaev.api.gsc.GscApiBuilder;
 import kg.seo.musabaev.api.gsc.GscService;
 import kg.seo.musabaev.gsc.GscServiceImpl;
@@ -17,6 +18,7 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Генератор отчетов в формате xlsx (Excel) по метрикам сайтов из Google Search Console
  */
+@Deprecated
 public class GscXlsxReportGenerator {
 
     private static final Logger log = LoggerFactory.getLogger(GscXlsxReportGenerator.class);
@@ -55,7 +57,7 @@ public class GscXlsxReportGenerator {
             String siteUrl = site.getSiteUrl();
             log.info("Обработка сайта: {}", siteUrl);
             try {
-                SearchAnalyticsQueryResponse response = gsc.getAnalytics(
+                GscAnalyticsResponse response = gsc.getAnalytics(
                         siteUrl,
                         startDate,
                         endDate);
@@ -65,7 +67,7 @@ public class GscXlsxReportGenerator {
                     continue;
                 }
 
-                SiteMetrics metrics = gsc.getMetrics(siteUrl, response);
+                SiteMetrics metrics = gsc.getMetrics(response);
                 xlsx.addSiteMetrics(metrics);
 
                 processedCount++;

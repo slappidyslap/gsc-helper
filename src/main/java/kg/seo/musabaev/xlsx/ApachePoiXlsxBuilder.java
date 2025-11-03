@@ -1,6 +1,6 @@
 package kg.seo.musabaev.xlsx;
 
-import kg.seo.musabaev.api.exception.TableBuilderException;
+import kg.seo.musabaev.api.table.exception.TableBuilderException;
 import kg.seo.musabaev.api.table.XlsxTableBuilder;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;

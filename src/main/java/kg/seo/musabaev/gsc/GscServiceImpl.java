@@ -3,6 +3,7 @@ package kg.seo.musabaev.gsc;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.services.searchconsole.v1.SearchConsole;
 import com.google.api.services.searchconsole.v1.model.*;
+import kg.seo.musabaev.api.gsc.GscAnalyticsResponse;
 import kg.seo.musabaev.api.gsc.GscApiBuilder;
 import kg.seo.musabaev.api.gsc.GscService;
 import kg.seo.musabaev.gsc.domain.GscResourceType;
@@ -21,10 +22,11 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * Сервисный класс-обёртка для взаимодействия с Google Search Console API.
+ * Сервис жестко привязан к авторизованному пользователю в {@link GscApiBuilder}.
+ * Если нужно достать метрики сайтов подтвержденные другим пользователем,
+ * нужно использовать другой объект {@link GscApiBuilder}
  * <p>
- * Использует {@link GscApiAuthorizationCodeFlowBuilder} для авторизации и выполнения запросов.
- * Предоставляет удобные методы для получения списка сайтов, аналитики и извлечения метрик,
- * обрабатывая ошибки и преобразуя данные в бизнес-объекты.
+ * Использует объект {@link SearchConsole} созданный {@link GscApiBuilder} для выполнения запросов.
  * </p>
  */
 public class GscServiceImpl implements GscService {
@@ -73,13 +75,13 @@ public class GscServiceImpl implements GscService {
      * @param siteUrl   URL сайта
      * @param startDate дата начала периода
      * @param endDate   дата окончания периода
-     * @return ответ {@link SearchAnalyticsQueryResponse} с метриками
+     * @return объект {@link GscAnalyticsResponse} с ответом от API и ссылкой на сайт
      *         или {@code null}, если сайт не подтверждён (HTTP 403)
      * @throws NullPointerException если параметры {@code siteUrl}, {@code startDate} или {@code endDate} равны {@code null}
      * @throws GscApiException      при ошибках API
      */
     @Override
-    public SearchAnalyticsQueryResponse getAnalytics(
+    public GscAnalyticsResponse getAnalytics(
             String siteUrl,
             LocalDate startDate,
             LocalDate endDate) {
@@ -101,7 +103,7 @@ public class GscServiceImpl implements GscService {
             log.info("Аналитика успешно получена для сайта {}. Ответ:\n{}",
                     siteUrl, response.toPrettyString());
 
-            return response;
+            return new GscAnalyticsResponse(response, siteUrl);
         } catch (GoogleJsonResponseException e) {
             if (e.getStatusCode() == 403) {
                 log.warn("Сайт {} не подтвержден (403 Forbidden)", siteUrl);
@@ -119,22 +121,23 @@ public class GscServiceImpl implements GscService {
     /**
      * Извлекает основные метрики сайта из ответа GSC API.
      *
-     * @param siteUrl  URL сайта, для которого извлекаются метрики
-     * @param response ответ {@link SearchAnalyticsQueryResponse} от API
+     * @param response объект {@link GscAnalyticsResponse} с ответом от API и ссылкой на сайт
      * @return объект {@link SiteMetrics} с ключевыми метриками сайта
      * @throws NullPointerException     если {@code siteUrl}, {@code response} или {@code response.getRows()} равны {@code null}
      * @throws IllegalArgumentException если ответ не содержит данных
      */
     @Override
-    public SiteMetrics getMetrics(String siteUrl, SearchAnalyticsQueryResponse response) {
+    public SiteMetrics getMetrics(GscAnalyticsResponse response) {
+        String siteUrl = response.siteUrl();
+        SearchAnalyticsQueryResponse analytics = response.analytics();
         checkNotNull(siteUrl);
         checkNotNull(response);
-        checkNotNull(response.getRows());
-        checkArgument(!response.getRows().isEmpty());
+        checkNotNull(analytics.getRows());
+        checkArgument(!analytics.getRows().isEmpty());
 
         log.info("Извлечение метрик для сайта: {}", siteUrl);
 
-        List<ApiDataRow> rows = response.getRows();
+        List<ApiDataRow> rows = analytics.getRows();
 
         ApiDataRow dataRow = rows.get(0);
         GscResourceType resourceType = getResourceType(siteUrl);
@@ -163,7 +166,7 @@ public class GscServiceImpl implements GscService {
      * @param siteUrl URL сайта
      * @return тип ресурса {@link GscResourceType}
      */
-    private GscResourceType getResourceType(String siteUrl) {
+    public GscResourceType getResourceType(String siteUrl) {
         return siteUrl.contains("sc-domain:") ?
                 GscResourceType.DOMAIN :
                 GscResourceType.WITH_PREFIX;
@@ -176,7 +179,7 @@ public class GscServiceImpl implements GscService {
      * @param siteUrl URL сайта с возможным префиксом
      * @return URL без префикса.
      */
-    private String getCleanUrl(String siteUrl) {
+    public String getCleanUrl(String siteUrl) {
         if (siteUrl.contains("sc-domain:"))
             return siteUrl.substring("sc-domain:".length());
         return siteUrl;

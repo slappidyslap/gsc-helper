@@ -1,8 +1,8 @@
 package kg.seo.musabaev.api.table;
 
 import kg.seo.musabaev.util.Constants;
-import kg.seo.musabaev.api.exception.LocalFileNotFoundException;
-import kg.seo.musabaev.api.exception.TableBuilderException;
+import kg.seo.musabaev.api.table.exception.LocalFileNotFoundException;
+import kg.seo.musabaev.api.table.exception.TableBuilderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

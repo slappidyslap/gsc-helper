@@ -1,7 +1,7 @@
 package kg.seo.musabaev.api.gsc;
 
-import com.google.api.services.searchconsole.v1.model.SearchAnalyticsQueryResponse;
 import com.google.api.services.searchconsole.v1.model.WmxSite;
+import kg.seo.musabaev.gsc.domain.GscResourceType;
 import kg.seo.musabaev.gsc.domain.SiteMetrics;
 
 import java.time.LocalDate;
@@ -25,9 +25,9 @@ public interface GscService {
      * @param siteUrl   URL сайта
      * @param startDate дата начала периода
      * @param endDate   дата окончания периода
-     * @return ответ {@link SearchAnalyticsQueryResponse} с метриками
+     * @return ответ {@link GscAnalyticsResponse} с метриками
      */
-    SearchAnalyticsQueryResponse getAnalytics(
+    GscAnalyticsResponse getAnalytics(
             String siteUrl,
             LocalDate startDate,
             LocalDate endDate);
@@ -35,9 +35,25 @@ public interface GscService {
     /**
      * Извлекает основные метрики сайта из ответа.
      *
-     * @param siteUrl  URL сайта, для которого извлекаются метрики
-     * @param response ответ {@link SearchAnalyticsQueryResponse} от API
+     * @param response объект {@link GscAnalyticsResponse} с ответом от API и ссылкой на сайт
      * @return объект {@link SiteMetrics} с метриками сайта
      */
-    SiteMetrics getMetrics(String siteUrl, SearchAnalyticsQueryResponse response);
+    SiteMetrics getMetrics(GscAnalyticsResponse response);
+
+    /**
+     * Определяет тип ресурса GSC: доменный ресурс или с префиксом URL.
+     *
+     * @param siteUrl URL сайта
+     * @return тип ресурса {@link GscResourceType}
+     */
+    GscResourceType getResourceType(String siteUrl);
+
+    /**
+     * Извлекает чистый URL сайта без префикса GSC.
+     * Например: {@code sc-domain:https://httpbin.org/} -> {@code `https://httpbin.org/`}
+     *
+     * @param siteUrl URL сайта с возможным префиксом
+     * @return URL без префикса.
+     */
+    String getCleanUrl(String siteUrl);
 }
