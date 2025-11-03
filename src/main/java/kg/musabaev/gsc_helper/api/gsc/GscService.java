@@ -4,7 +4,6 @@ import com.google.api.services.searchconsole.v1.model.WmxSite;
 import kg.musabaev.gsc_helper.api.gsc.domain.GscAnalyticsResponse;
 import kg.musabaev.gsc_helper.api.gsc.domain.GscResourceType;
 import kg.musabaev.gsc_helper.api.gsc.domain.SiteMetrics;
-import kg.musabaev.gsc_helper.api.gsc.exception.GscSitesNotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,7 +17,6 @@ public interface GscService {
      * Получает список сайтов, связанных с аккаунтом GSC.
      *
      * @return список сайтов {@link WmxSite}
-     * @throws GscSitesNotFoundException если список сайтов пуст
      */
     List<WmxSite> getSites();
 

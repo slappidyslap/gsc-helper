@@ -5,7 +5,7 @@ import de.milchreis.uibooster.UiBooster;
 import de.milchreis.uibooster.model.UiBoosterOptions;
 import kg.musabaev.gsc_helper.core.table.exception.LocalFileNotFoundException;
 import kg.musabaev.gsc_helper.core.gsc.exception.CredentialsFileNotFoundException;
-import kg.musabaev.gsc_helper.api.gsc.exception.GscSitesNotFoundException;
+import kg.musabaev.gsc_helper.core.gsc.exception.GscSitesNotFoundException;
 
 /**
  * Глобальный обработчик необработанных исключений для приложения.

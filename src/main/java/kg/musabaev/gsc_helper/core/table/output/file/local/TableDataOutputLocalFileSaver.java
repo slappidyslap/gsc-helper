@@ -1,10 +1,10 @@
 package kg.musabaev.gsc_helper.core.table.output.file.local;
 
+import kg.musabaev.gsc_helper.core.table.exception.TableDataOutputProcessException;
 import kg.musabaev.gsc_helper.api.table.output.OutputProcessorConfig;
 import kg.musabaev.gsc_helper.api.table.output.TableDataOutputProcessor;
 import kg.musabaev.gsc_helper.util.Constants;
 import kg.musabaev.gsc_helper.core.table.exception.LocalFileNotFoundException;
-import kg.musabaev.gsc_helper.core.table.exception.TableBuilderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +46,7 @@ public class TableDataOutputLocalFileSaver implements TableDataOutputProcessor {
             throw new LocalFileNotFoundException(savePath);
         } catch (IOException e) {
             log.error("Ошибка ввода-вывода при обработке выходных данных таблицы", e);
-            throw new TableBuilderException(e); // fixme
+            throw new TableDataOutputProcessException(e);
         }
     }
 

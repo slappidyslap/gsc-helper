@@ -3,13 +3,13 @@ package kg.musabaev.gsc_helper.core.gsc;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.services.searchconsole.v1.SearchConsole;
 import com.google.api.services.searchconsole.v1.model.*;
-import kg.musabaev.gsc_helper.api.gsc.domain.GscAnalyticsResponse;
 import kg.musabaev.gsc_helper.api.gsc.GscApiBuilder;
 import kg.musabaev.gsc_helper.api.gsc.GscService;
+import kg.musabaev.gsc_helper.api.gsc.domain.GscAnalyticsResponse;
 import kg.musabaev.gsc_helper.api.gsc.domain.GscResourceType;
 import kg.musabaev.gsc_helper.api.gsc.domain.SiteMetrics;
 import kg.musabaev.gsc_helper.core.gsc.exception.GscApiException;
-import kg.musabaev.gsc_helper.api.gsc.exception.GscSitesNotFoundException;
+import kg.musabaev.gsc_helper.core.gsc.exception.GscSitesNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +18,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * Сервисный класс-обёртка для взаимодействия с Google Search Console API.

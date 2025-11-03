@@ -1,4 +1,4 @@
-package kg.musabaev.gsc_helper.api.gsc.exception;
+package kg.musabaev.gsc_helper.core.gsc.exception;
 
 import static kg.musabaev.gsc_helper.util.Constants.GSC_SITES_NOT_FOUNT_EXCEPTION;
 
