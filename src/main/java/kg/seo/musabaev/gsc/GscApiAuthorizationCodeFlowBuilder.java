@@ -11,6 +11,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.searchconsole.v1.SearchConsole;
+import kg.seo.musabaev.api.gsc.GscApiBuilder;
 import kg.seo.musabaev.gsc.exception.CredentialsFileNotFoundException;
 import kg.seo.musabaev.gsc.exception.GscApiException;
 import org.slf4j.Logger;
@@ -29,8 +30,12 @@ import static java.util.Collections.singleton;
 import static kg.seo.musabaev.util.Constants.APP_HOME;
 
 /**
- * Класс-обёртка для авторизации Google Search Console API.
- * Отвечает за авторизацию клиента через OAuth 2.0
+ * Класс-обёртка для авторизации Google Search Console API через flow
+ * <a
+ *  href="https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow"
+ *  >
+ *  Authorization Code
+ * </a>
  * <p>
  * При инициализации использует локальные файлы:
  * <ul>
@@ -38,14 +43,10 @@ import static kg.seo.musabaev.util.Constants.APP_HOME;
  *   <li>tokens — директория для хранения токенов доступа</li>
  * </ul>
  * </p>
- * <p>
- * Авторизация выполняется с помощью {@link AuthorizationCodeInstalledApp}
- * и запуска локального сервера для получения кода авторизации.
- * </p>
  */
-public class GscAuthenticator {
+public class GscApiAuthorizationCodeFlowBuilder implements GscApiBuilder {
 
-    private final Logger log = LoggerFactory.getLogger(GscAuthenticator.class);
+    private final Logger log = LoggerFactory.getLogger(GscApiAuthorizationCodeFlowBuilder.class);
 
     private final String APPLICATION_NAME;
     private final String CREDENTIALS_FILE_PATH;
@@ -53,7 +54,8 @@ public class GscAuthenticator {
     private final HttpTransport HTTP_TRANSPORT;
     private final JsonFactory JSON_FACTORY;
 
-    public GscAuthenticator() {
+    public GscApiAuthorizationCodeFlowBuilder() {
+        String className = GscApiAuthorizationCodeFlowBuilder.class.getName();
         try {
             APPLICATION_NAME = "GSC Helper";
             CREDENTIALS_FILE_PATH = new File(APP_HOME, "credentials.json").getAbsolutePath();
@@ -61,10 +63,12 @@ public class GscAuthenticator {
             HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
             JSON_FACTORY = GsonFactory.getDefaultInstance();
         } catch (GeneralSecurityException e) {
-            log.error("Ошибка типа GeneralSecurityException при инициализации {}", GscAuthenticator.class.getName(), e);
+            log.error("Ошибка типа GeneralSecurityException при инициализации {}",
+                    className, e);
             throw new GscApiException(e);
         } catch (IOException e) {
-            log.error("Ошибка ввода-вывода при инициализации {}", GscAuthenticator.class.getName(), e);
+            log.error("Ошибка ввода-вывода при инициализации {}",
+                    className, e);
             throw new GscApiException(e);
         }
     }
@@ -74,6 +78,7 @@ public class GscAuthenticator {
      *
      * @return инициализированный {@link SearchConsole} клиент
      */
+    @Override
     public SearchConsole build() {
         log.info("Выполняется вход в Google аккаунт...");
 
@@ -89,7 +94,7 @@ public class GscAuthenticator {
         log.info("Вход в Google аккаунт выполнен");
 
         SearchConsole searchConsole = buildSearchConsole(credential);
-        log.info("SearchConsole создан");
+        log.info("Объект SearchConsole для работы с GSC API создан");
         return searchConsole;
     }
 
@@ -125,7 +130,8 @@ public class GscAuthenticator {
      * @return настроенный {@link GoogleAuthorizationCodeFlow}
      * @throws GscApiException при ошибках IO
      */
-    private GoogleAuthorizationCodeFlow buildAuthorizationCodeFlow(GoogleClientSecrets secrets) {
+    private GoogleAuthorizationCodeFlow buildAuthorizationCodeFlow(
+            GoogleClientSecrets secrets) {
         try {
             return new GoogleAuthorizationCodeFlow.Builder(
                     HTTP_TRANSPORT,
@@ -170,7 +176,8 @@ public class GscAuthenticator {
             return new AuthorizationCodeInstalledApp(flow, server)
                     .authorize("user");
         } catch (IOException e) {
-            log.error("Ошибка ввода-вывода при создании AuthorizationCodeInstalledApp (Credential)", e);
+            log.error("Ошибка ввода-вывода при создании " +
+                    "AuthorizationCodeInstalledApp (Credential)", e);
             throw new GscApiException(e);
         }
     }

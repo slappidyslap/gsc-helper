@@ -5,7 +5,7 @@ import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import de.milchreis.uibooster.UiBooster;
 import de.milchreis.uibooster.model.UiBoosterOptions;
-import kg.seo.musabaev.gsc.GscAuthenticator;
+import kg.seo.musabaev.gsc.GscApiAuthorizationCodeFlowBuilder;
 import net.miginfocom.swing.MigLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,7 +111,7 @@ public class Gui {
             } finally {
                 submitButton.setEnabled(true);
             }
-            GscAuthenticator searchConsole = new GscAuthenticator();
+            GscApiAuthorizationCodeFlowBuilder searchConsole = new GscApiAuthorizationCodeFlowBuilder();
             GscXlsxReportGenerator reportGenerator = new GscXlsxReportGenerator(searchConsole);
             reportGenerator.generateAndSave(startDate, endDate, savePath);
             /*gsc.start()

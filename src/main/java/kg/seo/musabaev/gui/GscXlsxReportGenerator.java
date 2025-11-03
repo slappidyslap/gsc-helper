@@ -2,8 +2,9 @@ package kg.seo.musabaev.gui;
 
 import com.google.api.services.searchconsole.v1.model.SearchAnalyticsQueryResponse;
 import com.google.api.services.searchconsole.v1.model.WmxSite;
-import kg.seo.musabaev.gsc.GscAuthenticator;
-import kg.seo.musabaev.gsc.GscService;
+import kg.seo.musabaev.api.gsc.GscApiBuilder;
+import kg.seo.musabaev.api.gsc.GscService;
+import kg.seo.musabaev.gsc.GscServiceImpl;
 import kg.seo.musabaev.gsc.domain.SiteMetrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +24,8 @@ public class GscXlsxReportGenerator {
     private final GscService gsc;
     private final GscMetricsXlsxTableAdapter xlsx;
 
-    public GscXlsxReportGenerator(GscAuthenticator searchConsole) {
-        this.gsc = new GscService(searchConsole);
+    public GscXlsxReportGenerator(GscApiBuilder gscApiBuilder) {
+        this.gsc = new GscServiceImpl(gscApiBuilder);
         this.xlsx = new GscMetricsXlsxTableAdapter();
     }
 

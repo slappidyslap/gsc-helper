@@ -3,6 +3,8 @@ package kg.seo.musabaev.gsc;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.services.searchconsole.v1.SearchConsole;
 import com.google.api.services.searchconsole.v1.model.*;
+import kg.seo.musabaev.api.gsc.GscApiBuilder;
+import kg.seo.musabaev.api.gsc.GscService;
 import kg.seo.musabaev.gsc.domain.GscResourceType;
 import kg.seo.musabaev.gsc.domain.SiteMetrics;
 import kg.seo.musabaev.gsc.exception.GscApiException;
@@ -20,20 +22,20 @@ import static com.google.common.base.Preconditions.checkArgument;
 /**
  * Сервисный класс-обёртка для взаимодействия с Google Search Console API.
  * <p>
- * Использует {@link GscAuthenticator} для авторизации и выполнения запросов.
+ * Использует {@link GscApiAuthorizationCodeFlowBuilder} для авторизации и выполнения запросов.
  * Предоставляет удобные методы для получения списка сайтов, аналитики и извлечения метрик,
  * обрабатывая ошибки и преобразуя данные в бизнес-объекты.
  * </p>
  */
-public class GscService {
+public class GscServiceImpl implements GscService {
 
-    private static final Logger log = LoggerFactory.getLogger(GscService.class);
+    private static final Logger log = LoggerFactory.getLogger(GscServiceImpl.class);
 
     private final SearchConsole searchConsole;
 
-    public GscService(GscAuthenticator gscAuthenticator) {
-        checkNotNull(gscAuthenticator);
-        this.searchConsole = gscAuthenticator.build();
+    public GscServiceImpl(GscApiBuilder gscApiBuilder) {
+        checkNotNull(gscApiBuilder);
+        this.searchConsole = gscApiBuilder.build();
     }
 
     /**
@@ -43,6 +45,7 @@ public class GscService {
      * @throws GscSitesNotFoundException если список сайтов пуст
      * @throws GscApiException           при ошибках взаимодействия с API
      */
+    @Override
     public List<WmxSite> getSites() {
         log.info("Запрос списка сайтов из GSC...");
 
@@ -75,6 +78,7 @@ public class GscService {
      * @throws NullPointerException если параметры {@code siteUrl}, {@code startDate} или {@code endDate} равны {@code null}
      * @throws GscApiException      при ошибках API
      */
+    @Override
     public SearchAnalyticsQueryResponse getAnalytics(
             String siteUrl,
             LocalDate startDate,
@@ -121,6 +125,7 @@ public class GscService {
      * @throws NullPointerException     если {@code siteUrl}, {@code response} или {@code response.getRows()} равны {@code null}
      * @throws IllegalArgumentException если ответ не содержит данных
      */
+    @Override
     public SiteMetrics getMetrics(String siteUrl, SearchAnalyticsQueryResponse response) {
         checkNotNull(siteUrl);
         checkNotNull(response);
