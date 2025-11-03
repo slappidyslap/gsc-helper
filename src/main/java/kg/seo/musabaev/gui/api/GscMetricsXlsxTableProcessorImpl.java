@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * Преобразователь Google Search Console метрик в формат для xlsx файла
+ * Преобразователь Google Search Console метрик в формат для xlsx файла.
  */
 public class GscMetricsXlsxTableProcessorImpl implements GscMetricsXlsxTableProcessor {
 
@@ -32,7 +32,7 @@ public class GscMetricsXlsxTableProcessorImpl implements GscMetricsXlsxTableProc
     }
 
     /**
-     * Добавляет метрики одного сайта в xlsx builder
+     * Добавляет метрики одного сайта в xlsx builder.
      *
      * @param metrics метрики сайта
      */
@@ -48,7 +48,7 @@ public class GscMetricsXlsxTableProcessorImpl implements GscMetricsXlsxTableProc
     }
 
     /**
-     * Добавляет метрики нескольких сайтов в xlsx builder
+     * Добавляет метрики нескольких сайтов в xlsx builder.
      *
      * @param metricsList список метрик сайтов
      */
@@ -74,7 +74,7 @@ public class GscMetricsXlsxTableProcessorImpl implements GscMetricsXlsxTableProc
 
     /**
      * Добавляет несколько деталей об ошибке,
-     * возникшее при получении метрик сайта, в xlsx builder
+     * возникшее при получении метрик сайта, в xlsx builder.
      *
      * @param failedSiteMetrics список деталей об ошибке
      */
@@ -84,18 +84,29 @@ public class GscMetricsXlsxTableProcessorImpl implements GscMetricsXlsxTableProc
     }
 
     /**
-     * Автоматически подбирает ширину столбцов
+     * Автоматически подбирает ширину столбцов.
      */
     public void autoSizeColumns() {
         xlsxBuilder.autoSizeColumns();
         log.info("Все колонки xlsx таблицы выровнены по ширине");
     }
 
+    /**
+     * Возвращает связанный {@link XlsxTableBuilder}, используемый для формирования табличных данных.
+     *
+     * @return объект {@link XlsxTableBuilder}
+     */
     @Override
     public XlsxTableBuilder getXlsxTableBuilder() {
         return xlsxBuilder;
     }
 
+    /**
+     * Преобразует объект {@link SiteMetricsList} в формат для xlsx файла
+     * и возвращает байтовый массив xlsx файл.
+     *
+     * @return байтовый массив xlsx сформированного xlsx файла.
+     */
     @Override
     public byte[] process(SiteMetricsList allSitesMetrics) {
         addAllSiteMetrics(allSitesMetrics.metrics());

@@ -20,7 +20,7 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Сервис для сбора метрик всех сайтов из Google Search Console API за указанный период
+ * Сервис для сбора метрик всех сайтов из Google Search Console API за указанный период.
  */
 public class GscMetricsBetweenDateCollector implements GscMetricsCollector {
 
@@ -40,7 +40,7 @@ public class GscMetricsBetweenDateCollector implements GscMetricsCollector {
 
     /**
      * Собирает метрики всех сайтов за указанный период.
-     * Обрабатывает все ошибки и ложит их в контейнер {@link FailedSiteMetrics}
+     * Обрабатывает все ошибки и ложит их в контейнер {@link FailedSiteMetrics}.
      *
      * @param startDate дата начала периода
      * @param endDate дата окончания периода
@@ -105,7 +105,7 @@ public class GscMetricsBetweenDateCollector implements GscMetricsCollector {
 
     /**
      * Собирает метрики всех сайтов.
-     * Обрабатывает все ошибки и ложит их в контейнер {@link FailedSiteMetrics}
+     * Обрабатывает все ошибки и ложит их в контейнер {@link FailedSiteMetrics}.
      *
      * @return результат сбора метрик. Объект {@link SiteMetricsList}
      */
