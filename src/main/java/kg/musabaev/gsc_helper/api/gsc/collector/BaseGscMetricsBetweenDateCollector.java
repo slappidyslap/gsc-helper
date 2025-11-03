@@ -5,6 +5,9 @@ import org.jetbrains.annotations.ApiStatus;
 
 import java.time.LocalDate;
 
+/**
+ * Абстрактный класс для сбора метрик всех сайтов из Google Search Console API за указанный период.
+ */
 public abstract class BaseGscMetricsBetweenDateCollector implements GscMetricsCollector {
 
     private LocalDate startDate = LocalDate.now();
