@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Класс для создания xlsx файлов с помощью Apache POI с минимальным функционалом
  */
@@ -27,6 +29,7 @@ public class ApachePoiXlsxBuilder implements XlsxTableBuilder {
     private int columnCount;
 
     public ApachePoiXlsxBuilder(String sheetName) {
+        checkNotNull(sheetName);
         this.workbook = new XSSFWorkbook();
         this.sheet = workbook.createSheet(sheetName);
         this.currentRow = 0;

@@ -4,6 +4,8 @@ import kg.seo.musabaev.gsc.domain.GscResourceType;
 
 import java.util.Objects;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public class FailedSiteMetrics {
 
     private final GscResourceType type;
@@ -11,9 +13,9 @@ public class FailedSiteMetrics {
     private final Throwable throwable;
 
     public FailedSiteMetrics(GscResourceType type, String url, Throwable throwable) {
-        this.type = type;
-        this.url = url;
-        this.throwable = throwable;
+        this.type = checkNotNull(type);
+        this.url = checkNotNull(url);
+        this.throwable = checkNotNull(throwable);
     }
 
     @Override

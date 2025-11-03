@@ -4,6 +4,8 @@ import com.google.api.services.searchconsole.v1.model.SearchAnalyticsQueryRespon
 
 import java.util.Objects;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * DTO с метриками сайта и ссылкой на сайт
  */
@@ -13,8 +15,8 @@ public class GscAnalyticsResponse {
     private final String siteUrl;
 
     public GscAnalyticsResponse(SearchAnalyticsQueryResponse analytics, String siteUrl) {
-        this.analytics = analytics;
-        this.siteUrl = siteUrl;
+        this.analytics = checkNotNull(analytics);
+        this.siteUrl = checkNotNull(siteUrl);
     }
 
     public SearchAnalyticsQueryResponse analytics() {

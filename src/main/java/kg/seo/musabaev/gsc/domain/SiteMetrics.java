@@ -2,6 +2,8 @@ package kg.seo.musabaev.gsc.domain;
 
 import java.util.Objects;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public class SiteMetrics {
 
     private final GscResourceType type;
@@ -12,8 +14,8 @@ public class SiteMetrics {
     private final double avgPosition;
 
     public SiteMetrics(GscResourceType type, String url, double clicks, double impressions, double ctr, double avgPosition) {
-        this.type = type;
-        this.url = url;
+        this.type = checkNotNull(type);
+        this.url = checkNotNull(url);
         this.clicks = clicks;
         this.impressions = impressions;
         this.ctr = ctr;

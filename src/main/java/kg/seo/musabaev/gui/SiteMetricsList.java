@@ -5,14 +5,16 @@ import kg.seo.musabaev.gsc.domain.SiteMetrics;
 import java.util.List;
 import java.util.Objects;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 public class SiteMetricsList {
 
     private final List<SiteMetrics> metrics;
     private final List<FailedSiteMetrics> failedSites;
 
     public SiteMetricsList(List<SiteMetrics> metrics, List<FailedSiteMetrics> failedSites) {
-        this.metrics = metrics;
-        this.failedSites = failedSites;
+        this.metrics = checkNotNull(metrics);
+        this.failedSites = checkNotNull(failedSites);
     }
 
     @Override
