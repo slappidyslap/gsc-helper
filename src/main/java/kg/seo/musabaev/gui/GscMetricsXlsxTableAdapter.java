@@ -14,6 +14,7 @@ import java.util.List;
 /**
  * Адаптер для преобразования Google Search Console метрик в формат для xlsx файла
  */
+@Deprecated
 public class GscMetricsXlsxTableAdapter {
 
     private static final Logger log = LoggerFactory.getLogger(GscMetricsXlsxTableAdapter.class);

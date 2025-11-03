@@ -1,4 +1,4 @@
-package kg.seo.musabaev.gui;
+package kg.seo.musabaev.gui.api.domain;
 
 import kg.seo.musabaev.gsc.domain.GscResourceType;
 
