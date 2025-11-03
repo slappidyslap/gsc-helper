@@ -6,6 +6,9 @@ import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import de.milchreis.uibooster.UiBooster;
 import de.milchreis.uibooster.model.UiBoosterOptions;
 import kg.seo.musabaev.gsc.GscApiAuthorizationCodeFlowBuilder;
+import kg.seo.musabaev.gui.api.GscMetricsBetweenDateCollector;
+import kg.seo.musabaev.gui.api.GscMetricsXlsxTableAdapterImpl;
+import kg.seo.musabaev.xlsx.ApachePoiXlsxBuilder;
 import net.miginfocom.swing.MigLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +50,12 @@ public class Gui {
     private String savePath;
 
     public Gui() {
+        new ReportService(
+                new GscMetricsBetweenDateCollector(
+                        new GscApiAuthorizationCodeFlowBuilder()),
+                new GscMetricsXlsxTableAdapterImpl(
+                        new ApachePoiXlsxBuilder("Метрики")));
+
         FlatMacLightLaf.setup();
         FlatRobotoFont.install();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 16));
@@ -112,8 +121,8 @@ public class Gui {
                 submitButton.setEnabled(true);
             }
             GscApiAuthorizationCodeFlowBuilder searchConsole = new GscApiAuthorizationCodeFlowBuilder();
-            GscXlsxReportGenerator reportGenerator = new GscXlsxReportGenerator(searchConsole);
-            reportGenerator.generateAndSave(startDate, endDate, savePath);
+//            GscXlsxReportGenerator reportGenerator = new GscXlsxReportGenerator(searchConsole);
+//            reportGenerator.generateAndSave(startDate, endDate, savePath);
             /*gsc.start()
                     .thenRun(() -> SwingUtilities.invokeLater(() -> {
                         File dir = uiBooster.showFileSelection(format("Отчет GSC за период %s и %s.xlsx", startDate, endDate), "Файл Excel", "xlsx");

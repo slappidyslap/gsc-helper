@@ -12,13 +12,13 @@ import java.util.List;
 /**
  * Преобразователь Google Search Console метрик в формат для xlsx файла.
  */
-public class GscMetricsXlsxTableProcessorImpl implements GscMetricsXlsxTableProcessor {
+public class GscMetricsXlsxTableAdapterImpl implements GscMetricsXlsxTableAdapter {
 
-    private static final Logger log = LoggerFactory.getLogger(GscMetricsXlsxTableProcessorImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(GscMetricsXlsxTableAdapterImpl.class);
 
     private final XlsxTableBuilder xlsxBuilder;
 
-    public GscMetricsXlsxTableProcessorImpl(XlsxTableBuilder xlsxBuilder) {
+    public GscMetricsXlsxTableAdapterImpl(XlsxTableBuilder xlsxBuilder) {
         this.xlsxBuilder = xlsxBuilder;
         log.info("Начата обработка метрик GSC в xlsx таблицу");
         xlsxBuilder.createHeader(
