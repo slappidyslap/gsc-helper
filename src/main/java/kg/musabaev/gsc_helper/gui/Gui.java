@@ -1,17 +1,13 @@
 package kg.musabaev.gsc_helper.gui;
 
 import ch.qos.logback.classic.LoggerContext;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import de.milchreis.uibooster.UiBooster;
 import de.milchreis.uibooster.model.UiBoosterOptions;
 import kg.musabaev.gsc_helper.core.gsc.GscApiAuthorizationCodeFlowBuilder;
-import kg.musabaev.gsc_helper.core.gsc.collector.GscMetricsBetweenDateCollectorImpl;
-import kg.musabaev.gsc_helper.core.adapter.GscMetricsXlsxTableAdapter;
-import kg.musabaev.gsc_helper.core.table.output.file.local.TableDataOutputLocalFileSaver;
-import kg.musabaev.gsc_helper.core.table.xlsx.ApachePoiXlsxBuilder;
 import kg.musabaev.gsc_helper.gui.exception.GlobalExceptionHandler;
-import kg.musabaev.gsc_helper.gui.service.ReportService;
 import net.miginfocom.swing.MigLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,15 +96,15 @@ public class Gui {
         savePathInput = new JTextField();
 
         JToolBar toolBar = new JToolBar();
-        JButton btn = new JButton("ы");
+        JButton btn = new JButton(new FlatSVGIcon("file-chooser-icon.svg", 0.8F));
         toolBar.add(btn);
+        savePathInput.putClientProperty("JTextField.trailingComponent", toolBar);
         btn.addActionListener(e -> {
             File file = uiBooster.showFileSelection(
                     format("Отчет GSC за период %s и %s.xlsx", startDate, endDate),
                     "Файл Excel", "xlsx");
             savePathInput.setText(file.getAbsolutePath());
         });
-        savePathInput.putClientProperty("JTextField.trailingComponent", toolBar);
 
         submitButton = new JButton();
         submitButton.setText("Принять");
@@ -266,7 +262,7 @@ public class Gui {
         Thread.setDefaultUncaughtExceptionHandler(new GlobalExceptionHandler());
     }
 
-    public void show() {
+    public void showFrame() {
         SwingUtilities.invokeLater(() -> {
             frame.setVisible(true);
             frame.getContentPane().requestFocusInWindow();

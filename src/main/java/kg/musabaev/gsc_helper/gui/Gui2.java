@@ -1,0 +1,51 @@
+package kg.musabaev.gsc_helper.gui;
+
+import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import kg.musabaev.gsc_helper.gui.component.FormPanel;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class Gui2 extends JFrame {
+
+    private final FormPanel form;
+
+    public Gui2() {
+        setupLaf();
+        setupAppIcon();
+
+        this.form = new FormPanel();
+
+        setupUi();
+    }
+
+    private void setupUi() {
+        super.setTitle("GSC Helper");
+        super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        super.setSize(650, 200);
+        super.setLocationRelativeTo(null);
+
+        super.add(form);
+    }
+
+    public void showFrame() {
+        SwingUtilities.invokeLater(() -> {
+            super.setVisible(true);
+            super.getContentPane().requestFocusInWindow();
+        });
+    }
+
+    private void setupLaf() {
+        FlatMacLightLaf.setup();
+        FlatRobotoFont.install();
+        UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 16));
+        UIManager.put("TextComponent.arc", 7);
+        UIManager.put("Button.arc", 7);
+    }
+
+    private void setupAppIcon() {
+        Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/icon.png"));
+        super.setIconImage(icon);
+    }
+}
