@@ -54,7 +54,7 @@ public class Gui {
 
     public Gui() {
         // test
-        ReportService reportService = new ReportService(
+        /*ReportService reportService = new ReportService(
                 new GscMetricsBetweenDateCollectorImpl(
                         new GscApiAuthorizationCodeFlowBuilder()),
                 new GscMetricsXlsxTableAdapter(
@@ -63,7 +63,7 @@ public class Gui {
                 LocalDate.now(),
                 LocalDate.now(),
                 new TableDataOutputLocalFileSaver.Config(
-                        new File("~")));
+                        new File("~")));*/
 
         FlatMacLightLaf.setup();
         FlatRobotoFont.install();

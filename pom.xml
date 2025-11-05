@@ -7,8 +7,14 @@
     <groupId>kg.musabaev.gsc_helper</groupId>
     <artifactId>gsc-helper</artifactId>
     <version>1.0.0</version>
+    <name>GSC Helper</name>
 
-    <name>gsc-helper</name>
+    <repositories>
+        <repository>
+            <id>project</id>
+            <url>file://${project.basedir}/repo</url>
+        </repository>
+    </repositories>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -28,20 +34,15 @@
     </properties>
 
     <dependencies>
-        <!--    Swing   -->
         <dependency>
-            <groupId>com.github.Milchreis</groupId>
-            <artifactId>UiBooster</artifactId>
-            <version>${uibooster.version}</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/libs/UiBooster-${uibooster.version}.jar</systemPath>
+            <groupId>local.com.github.milchreis</groupId>
+            <artifactId>uibooster</artifactId>
+            <version>1.20.2</version>
         </dependency>
         <dependency>
-            <groupId>raven.datetime</groupId>
+            <groupId>local.io.github.dj-raven</groupId>
             <artifactId>swing-datetime-picker</artifactId>
-            <version>${swing-datetime-picker.version}</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/libs/swing-datetime-picker-${swing-datetime-picker.version}.jar</systemPath>
+            <version>1.2.3</version>
         </dependency>
         <dependency>
             <groupId>com.formdev</groupId>
@@ -130,23 +131,19 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.googlecode.addjars-maven-plugin</groupId>
-                <artifactId>addjars-maven-plugin</artifactId>
-                <version>1.0.5</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.6.2</version>
                 <executions>
                     <execution>
                         <goals>
-                            <goal>add-jars</goal>
+                            <goal>java</goal>
                         </goals>
-                        <configuration>
-                            <resources>
-                                <resource>
-                                    <directory>${basedir}/libs</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <mainClass>kg.musabaev.gsc_helper.Main</mainClass>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -161,7 +158,7 @@
                         </transformer>
                     </transformers>
                     <shadedArtifactAttached>true</shadedArtifactAttached>
-                    <shadedClassifierName>launcher</shadedClassifierName>
+                    <finalName>${project.name}</finalName>
                 </configuration>
                 <executions>
                     <execution>
