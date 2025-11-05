@@ -1,6 +1,8 @@
 package kg.musabaev.gsc_helper;
 
+import kg.musabaev.gsc_helper.gui.Gui;
 import kg.musabaev.gsc_helper.gui.Gui2;
+import kg.musabaev.gsc_helper.gui.Gui3;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +13,7 @@ public class Main {
 
     public static void main(String[] args) {
         long startTime = currentTimeMillis();
-        Gui2 gui = new Gui2();
+        Gui3 gui = new Gui3();
         gui.showFrame();
         long duration = currentTimeMillis() - startTime;
         log.info("Программа запущено за {} секунд", duration / 1000.0);

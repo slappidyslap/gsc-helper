@@ -1,7 +1,8 @@
 package kg.musabaev.gsc_helper.gui;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
-import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import kg.musabaev.gsc_helper.gui.component.FormPanel;
 
 import javax.swing.*;
@@ -37,7 +38,7 @@ public class Gui2 extends JFrame {
     }
 
     private void setupLaf() {
-        FlatMacLightLaf.setup();
+        FlatDarkLaf.setup();
         FlatRobotoFont.install();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 16));
         UIManager.put("TextComponent.arc", 7);
