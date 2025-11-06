@@ -3,6 +3,7 @@ package kg.musabaev.gschelper.swinggui.component;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 import javax.swing.*;
+import java.io.File;
 
 public class FileChooser extends JTextField {
 
@@ -14,6 +15,10 @@ public class FileChooser extends JTextField {
         this.button = new JButton();
         setupUi();
         setupListeners();
+    }
+
+    public File savePath() {
+        return new File(super.getText());
     }
 
     protected void setupUi() {

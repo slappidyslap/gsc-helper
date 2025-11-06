@@ -5,6 +5,8 @@ import raven.datetime.component.date.DatePicker;
 
 import javax.swing.*;
 
+import java.time.LocalDate;
+
 import static raven.datetime.component.date.DatePicker.DateSelectionMode.BETWEEN_DATE_SELECTED;
 
 public class DateRangePicker extends JTextField {
@@ -14,6 +16,14 @@ public class DateRangePicker extends JTextField {
     public DateRangePicker() {
         this.datePicker = new DatePicker();
         setupUi();
+    }
+
+    public LocalDate startDate() {
+        return datePicker.getSelectedDateRange()[0];
+    }
+
+    public LocalDate endDate() {
+        return datePicker.getSelectedDateRange()[1];
     }
 
     protected void setupUi() {

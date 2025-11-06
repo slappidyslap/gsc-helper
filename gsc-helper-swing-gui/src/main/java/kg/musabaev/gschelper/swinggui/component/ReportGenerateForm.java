@@ -4,24 +4,28 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.time.LocalDate;
 
-public class FormPanel extends JPanel {
+import static com.google.common.base.Preconditions.checkNotNull;
+
+public class ReportGenerateForm extends JPanel {
     private final JLabel dateRangePickerLabel;
     private final DateRangePicker dateRangePicker;
 
     private final JLabel fileChooserLabel;
     private final FileChooser fileChooser;
 
-    private final JButton submit;
+    private final JButton submitButton;
+    private Listener listener;
 
-    public FormPanel() {
+    public ReportGenerateForm() {
         this.dateRangePickerLabel = new JLabel();
         this.dateRangePicker = new DateRangePicker();
         this.fileChooserLabel = new JLabel();
         this.fileChooser = new FileChooser();
-        this.submit = new JButton();
+        this.submitButton = new JButton();
         setupUi();
-        setupListeners();
     }
 
     private void setupUi() {
@@ -57,15 +61,23 @@ public class FormPanel extends JPanel {
     }
 
     private void setupSubmitButton() {
-        submit.setText("Принять");
+        submitButton.setText("Принять");
+        submitButton.addActionListener(e -> {
+            listener.generateReportClicked(
+                    dateRangePicker.startDate(),
+                    dateRangePicker.endDate(),
+                    fileChooser.savePath());
+        });
 
-        super.add(submit, "span 2 4, growx");
+        super.add(submitButton, "span 2 4, growx");
     }
 
-    private void setupListeners() {
-        submit.addActionListener(e -> {
-            new WarningDialog("Хопа на! ошибока! Так не делай!");
-            ExceptionDialog.show(new RuntimeException("sdfkjsdlf;a"));
-        });
+    public void setListener(Listener listener) {
+        checkNotNull(listener);
+        this.listener = listener;
+    }
+
+    public interface Listener {
+        void generateReportClicked(LocalDate startDate, LocalDate endDate, File savePath);
     }
 }

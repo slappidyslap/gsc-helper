@@ -19,4 +19,8 @@ public class WarningDialog {
         JDialog dialog = optionPane.createDialog(null, "Предупреждение");
         dialog.setVisible(true);
     }
+
+    private static void show(String message) {
+        new WarningDialog(message);
+    }
 }
