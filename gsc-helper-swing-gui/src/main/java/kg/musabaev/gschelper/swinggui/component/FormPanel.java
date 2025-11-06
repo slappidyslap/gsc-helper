@@ -63,6 +63,9 @@ public class FormPanel extends JPanel {
     }
 
     private void setupListeners() {
-
+        submit.addActionListener(e -> {
+            new WarningDialog("Хопа на! ошибока! Так не делай!");
+            ExceptionDialog.show(new RuntimeException("sdfkjsdlf;a"));
+        });
     }
 }

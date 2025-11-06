@@ -2,7 +2,7 @@ package kg.musabaev.gschelper.swinggui.component;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
-import kg.musabaev.gschelper.swinggui.MainViewModel;
+import kg.musabaev.gschelper.swinggui.viewmodel.MainViewModel;
 
 import javax.swing.*;
 

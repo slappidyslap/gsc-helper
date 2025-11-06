@@ -1,25 +1,24 @@
-package kg.musabaev.gschelper.swinggui;
+package kg.musabaev.gschelper.swinggui.view;
 
 import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+import kg.musabaev.gschelper.swinggui.component.WarningDialog;
+import kg.musabaev.gschelper.swinggui.viewmodel.MainViewModel;
 import kg.musabaev.gschelper.swinggui.component.FormPanel;
 import kg.musabaev.gschelper.swinggui.component.MenuBar;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class MainFrame extends JFrame {
+public class MainView extends JFrame {
 
     private final MainViewModel viewModel;
-    private final JMenuBar menuBar;
     private final FormPanel form;
 
-    public MainFrame() {
+    public MainView(MainViewModel viewModel) {
         setupLaf();
 
-        this.viewModel = new MainViewModel();
-        this.menuBar = new MenuBar(viewModel);
+        this.viewModel = viewModel;
         this.form = new FormPanel();
 
         setupAppIcon();
@@ -59,6 +58,6 @@ public class MainFrame extends JFrame {
     }
 
     private void setupMenuBar() {
-        super.setJMenuBar(menuBar);
+        super.setJMenuBar(new MenuBar(viewModel));
     }
 }

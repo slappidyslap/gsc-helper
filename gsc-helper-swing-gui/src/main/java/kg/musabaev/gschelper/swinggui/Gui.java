@@ -51,7 +51,7 @@ public class Gui {
 
     public Gui() {
         // test
-        /*ReportService reportService = new ReportService(
+        /*ReportServiceImpl reportService = new ReportServiceImpl(
                 new GscMetricsBetweenDateCollectorImpl(
                         new GscApiAuthorizationCodeFlowBuilder()),
                 new GscMetricsXlsxTableAdapter(
