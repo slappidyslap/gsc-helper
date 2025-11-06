@@ -11,8 +11,6 @@ import java.awt.*;
 
 public class MainFrame extends JFrame {
 
-    public static JFrame root = null;
-
     private final MainViewModel viewModel;
     private final JMenuBar menuBar;
     private final FormPanel form;
@@ -20,7 +18,6 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         setupLaf();
 
-        root = this;
         this.viewModel = new MainViewModel();
         this.menuBar = new MenuBar(viewModel);
         this.form = new FormPanel();
@@ -62,6 +59,6 @@ public class MainFrame extends JFrame {
     }
 
     private void setupMenuBar() {
-        super.setJMenuBar(menuBar); // todo
+        super.setJMenuBar(menuBar);
     }
 }

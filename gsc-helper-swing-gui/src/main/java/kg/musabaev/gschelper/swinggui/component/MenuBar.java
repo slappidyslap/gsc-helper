@@ -2,7 +2,6 @@ package kg.musabaev.gschelper.swinggui.component;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
-import kg.musabaev.gschelper.swinggui.MainFrame;
 import kg.musabaev.gschelper.swinggui.MainViewModel;
 
 import javax.swing.*;
@@ -40,7 +39,7 @@ public class MenuBar extends JMenuBar {
             else
                 FlatDarkLaf.setup();
             viewModel.toggleDarkModeEnabled();
-            SwingUtilities.updateComponentTreeUI(MainFrame.root);
+            SwingUtilities.updateComponentTreeUI(SwingUtilities.getWindowAncestor(this));
         });
         openLogItem.addActionListener(e -> {});
         logoutGoogleItem.addActionListener(e -> {});
