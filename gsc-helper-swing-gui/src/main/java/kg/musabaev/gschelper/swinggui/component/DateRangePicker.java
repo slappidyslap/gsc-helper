@@ -17,6 +17,8 @@ public class DateRangePicker extends JTextField {
     }
 
     protected void setupUi() {
+        super.setEditable(false);
+
         datePicker.setDateSelectionMode(BETWEEN_DATE_SELECTED);
         datePicker.setUsePanelOption(true);
         datePicker.setCloseAfterSelected(true);

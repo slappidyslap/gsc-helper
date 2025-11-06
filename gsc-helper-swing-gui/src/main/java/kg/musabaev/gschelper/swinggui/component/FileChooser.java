@@ -13,11 +13,23 @@ public class FileChooser extends JTextField {
         this.toolBar = new JToolBar();
         this.button = new JButton();
         setupUi();
+        setupListeners();
     }
 
     protected void setupUi() {
+        super.setEditable(false);
         button.setIcon(new FlatSVGIcon("file-chooser-icon.svg", 0.7F));
         toolBar.add(button);
-        this.putClientProperty("JTextField.trailingComponent", toolBar);
+        super.putClientProperty("JTextField.trailingComponent", toolBar);
+    }
+
+    private void setupListeners() {
+        button.addActionListener(e -> {
+            JFileChooser chooser = new JFileChooser(); // todo native
+            int returnVal = chooser.showOpenDialog(button);
+            if(returnVal == JFileChooser.APPROVE_OPTION) {
+                super.setText(chooser.getSelectedFile().getAbsolutePath());
+            }
+        });
     }
 }
