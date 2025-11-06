@@ -76,7 +76,7 @@ def install(path, parsing):
     " -DartifactId=" + parsing["name"] + \
     " -Dversion=" + parsing["version"] + ("-SNAPSHOT" if parsing["snapshot"] else "") + \
     " -Dpackaging=jar" + \
-    " -DlocalRepositoryPath=repo" + \
+    " -DlocalRepositoryPath=repo1" + \
     " -DcreateChecksum=true" + \
     (" -Dclassifier=sources" if parsing["source"] else "")
   )
@@ -201,14 +201,20 @@ parser.add_argument('-i', '--interactive',
 parser.add_argument('-d', '--delete',
                     dest='delete', action='store_true', default=False,
                     help='Delete successfully installed libs in source location')
+parser.add_argument('-p', '--path',
+                    dest='path', default='lib',
+                    help='Path to directory with jar files')
 
 args = parser.parse_args()
 
+if not os.path.isdir(args.path):
+  print(f"Error: Directory '{args.path}' does not exist.")
+  exit(1)
 
 parsings = (
-  [(path, parse_interactively(path)) for path in jars("libs")]
+  [(path, parse_interactively(path)) for path in jars(args.path)]
   if args.interactive else
-  [(path, parse_by_eclipse_standard(path)) for path in jars("libs")]
+  [(path, parse_by_eclipse_standard(path)) for path in jars(args.path)]
 )
 
 unparsable_files = [r[0] for r in parsings if r[1] == None]
@@ -217,7 +223,6 @@ if unparsable_files:
   for f in unparsable_files:
     print("| - " + f)
   print("Make sure the files are in the following format: groupId.artifactId[.source]_version[.SNAPSHOT].jar")
-
 
 parsings = [p for p in parsings if p[1] != None]
 
