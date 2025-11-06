@@ -68,7 +68,7 @@ def maven_dependencies(parsing_results):
   return "\n".join([maven_dependency(a).strip() for a in unique_artifacts()])
 
 
-def install(path, parsing):
+def install(path, parsing, local_repository):
   os.system(
     "mvn install:install-file" + \
     " -Dfile=" + path + \
@@ -76,7 +76,7 @@ def install(path, parsing):
     " -DartifactId=" + parsing["name"] + \
     " -Dversion=" + parsing["version"] + ("-SNAPSHOT" if parsing["snapshot"] else "") + \
     " -Dpackaging=jar" + \
-    " -DlocalRepositoryPath=repo1" + \
+    " -DlocalRepositoryPath=" + local_repository + \
     " -DcreateChecksum=true" + \
     (" -Dclassifier=sources" if parsing["source"] else "")
   )
@@ -204,6 +204,9 @@ parser.add_argument('-d', '--delete',
 parser.add_argument('-p', '--path',
                     dest='path', default='lib',
                     help='Path to directory with jar files')
+parser.add_argument('-l', '--local-repository',
+                    dest='local_repository', default='repo',
+                    help='Local Maven repository folder where resolved dependencies will be stored')
 
 args = parser.parse_args()
 
@@ -227,7 +230,7 @@ if unparsable_files:
 parsings = [p for p in parsings if p[1] != None]
 
 for (path, parsing) in parsings:
-  install(path, parsing)
+  install(path, parsing, args.local_repository)
   if args.delete:
     os.remove(path)
 
