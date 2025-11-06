@@ -7,11 +7,11 @@ import kg.musabaev.gschelper.swinggui.component.FormPanel;
 import javax.swing.*;
 import java.awt.*;
 
-public class Gui2 extends JFrame {
+public class MainFrame extends JFrame {
 
     private final FormPanel form;
 
-    public Gui2() {
+    public MainFrame() {
         setupLaf();
         setupAppIcon();
 
@@ -31,6 +31,7 @@ public class Gui2 extends JFrame {
 
     public void showFrame() {
         SwingUtilities.invokeLater(() -> {
+            super.pack();
             super.setVisible(true);
             super.getContentPane().requestFocusInWindow();
         });

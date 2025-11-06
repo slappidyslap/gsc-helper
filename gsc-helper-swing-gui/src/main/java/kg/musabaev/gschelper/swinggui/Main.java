@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
         long startTime = currentTimeMillis();
-        Gui2 gui = new Gui2();
+        MainFrame gui = new MainFrame();
         gui.showFrame();
         long duration = currentTimeMillis() - startTime;
         log.info("Программа запущено за {} секунд", duration / 1000.0);

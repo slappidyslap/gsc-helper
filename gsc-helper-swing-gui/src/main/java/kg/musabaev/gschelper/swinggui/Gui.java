@@ -27,6 +27,7 @@ import static java.lang.String.format;
 import static kg.musabaev.gschelper.core.util.Constants.APP_HOME;
 import static raven.datetime.component.date.DatePicker.DateSelectionMode.BETWEEN_DATE_SELECTED;
 
+@Deprecated
 public class Gui {
 
     private static final Logger log = LoggerFactory.getLogger(Gui.class);

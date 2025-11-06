@@ -10,9 +10,10 @@ import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
-public class Gui3 extends JFrame {
+@Deprecated
+public class TestGui extends JFrame {
 
-    public Gui3() throws HeadlessException {
+    public TestGui() throws HeadlessException {
         FlatDarkLaf.setup();
         FlatRobotoFont.install();
         Font robotoFont = new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 16);
