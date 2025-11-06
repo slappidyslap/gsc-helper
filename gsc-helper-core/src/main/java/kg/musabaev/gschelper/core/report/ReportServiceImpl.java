@@ -1,8 +1,9 @@
-package kg.musabaev.gschelper.swinggui.service;
+package kg.musabaev.gschelper.core.report;
 
 import kg.musabaev.gschelper.api.adapter.GscMetricsTableAdapter;
 import kg.musabaev.gschelper.api.gsc.collector.BaseGscMetricsBetweenDateCollector;
 import kg.musabaev.gschelper.api.gsc.collector.domain.SiteMetricsList;
+import kg.musabaev.gschelper.api.report.ReportService;
 import kg.musabaev.gschelper.api.table.output.OutputProcessorConfig;
 import kg.musabaev.gschelper.api.table.output.TableDataOutputProcessor;
 import kg.musabaev.gschelper.core.table.output.TableDataOutputProcessorFactory;
@@ -14,16 +15,16 @@ import java.time.LocalDate;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Сервис для генерации отчетов GSC в табличном формате (xlsx, csv, json) и обработки после
+ * Сервис для генерации отчетов GSC в табличном формате (xlsx, csv, json) и обработки после.
  */
-public class ReportService {
+public class ReportServiceImpl implements ReportService {
 
-    private static final Logger log = LoggerFactory.getLogger(ReportService.class);
+    private static final Logger log = LoggerFactory.getLogger(ReportServiceImpl.class);
 
     private final BaseGscMetricsBetweenDateCollector metricsCollector;
     private final GscMetricsTableAdapter gscXlsxAdapter;
 
-    public ReportService(
+    public ReportServiceImpl(
             BaseGscMetricsBetweenDateCollector metricsCollector,
             GscMetricsTableAdapter gscXlsxAdapter) {
         checkNotNull(metricsCollector);
@@ -33,12 +34,13 @@ public class ReportService {
     }
 
     /**
-     * Генерирует отчет в указанном табличном формате
+     * Генерирует отчет в указанном табличном формате.
      *
      * @param startDate дата начала периода
      * @param endDate дата окончания периода
      * @return байтовый массив табличных данных
      */
+    @Override
     public byte[] generateReport(LocalDate startDate, LocalDate endDate) {
         checkNotNull(startDate);
         checkNotNull(endDate);
@@ -57,35 +59,24 @@ public class ReportService {
     }
 
     /**
-     * Выполняет обработку байтового массив данных
-     * готового отчёта с использованием фабрики {@link TableDataOutputProcessorFactory}.
+     * Выполняет обработку байтового массив данных.
      *
      * <p>Тип обработки определяется конфигурацией {@link OutputProcessorConfig}</p>
+     *
+     * <p>Конфигурация обработки можно создать с помощью {@link TableDataOutputProcessorFactory}</p>
      *
      * @param config конфигурация обработчика выходных данных
      * @param reportData байтовый массив табличного отчёта для обработки
      */
+    @Override
     public void processReportOutput(OutputProcessorConfig config, byte[] reportData) {
         log.info("Начата обработка байтового массива данных отчета");
         checkNotNull(config);
         checkNotNull(reportData);
+
         TableDataOutputProcessor outputProcessor = TableDataOutputProcessorFactory.create(config);
         outputProcessor.process(reportData);
         log.info("Отчет был обработан реализацией {} - {}",
                 TableDataOutputProcessor.class.getName(), outputProcessor.getClass().getName());
-    }
-
-    /**
-     * Выполняет полный цикл создания и обработки отчёта за указанный период.
-     *
-     * @param startDate дата начала периода
-     * @param endDate дата окончания периода
-     * @param processorConfig конфигурация обработчика выходных данных
-     */
-    public void generateAndProcessReport(
-            LocalDate startDate,
-            LocalDate endDate,
-            OutputProcessorConfig processorConfig) {
-        processReportOutput(processorConfig, generateReport(startDate, endDate));
     }
 }

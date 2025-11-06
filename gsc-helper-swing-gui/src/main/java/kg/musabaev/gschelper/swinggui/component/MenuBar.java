@@ -2,20 +2,21 @@ package kg.musabaev.gschelper.swinggui.component;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
-import kg.musabaev.gschelper.swinggui.viewmodel.MainViewModel;
+import kg.musabaev.gschelper.swinggui.viewmodel.ReportViewModel;
 
 import javax.swing.*;
 
+// fixme
 public class MenuBar extends JMenuBar {
 
-    private final MainViewModel viewModel;
+    private final ReportViewModel viewModel;
 
     private final JMenu usefulMenu;
     private final JMenuItem toggleDarkModeItem;
     private final JMenuItem openLogItem;
     private final JMenuItem logoutGoogleItem;
 
-    public MenuBar(MainViewModel viewModel) {
+    public MenuBar(ReportViewModel viewModel) {
         this.viewModel = viewModel;
         this.usefulMenu = new JMenu("Полезное");
         this.toggleDarkModeItem = new JMenuItem("Выкл/вкл тёмный режим");

@@ -33,11 +33,6 @@
         </dependency>
 
         <dependency>
-            <groupId>local.com.github.milchreis</groupId>
-            <artifactId>uibooster</artifactId>
-            <version>${uibooster.version}</version>
-        </dependency>
-        <dependency>
             <groupId>local.io.github.dj-raven</groupId>
             <artifactId>swing-datetime-picker</artifactId>
             <version>${swing-datetime-picker.version}</version>

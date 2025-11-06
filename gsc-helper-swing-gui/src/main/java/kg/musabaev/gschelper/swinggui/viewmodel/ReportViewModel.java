@@ -2,7 +2,7 @@ package kg.musabaev.gschelper.swinggui.viewmodel;
 
 import java.time.LocalDate;
 
-public class MainViewModel {
+public class ReportViewModel {
 
     private Boolean darkModeEnabled = true;
     private LocalDate startDate = null;

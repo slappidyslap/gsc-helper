@@ -4,10 +4,7 @@ import ch.qos.logback.classic.LoggerContext;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
-import de.milchreis.uibooster.UiBooster;
-import de.milchreis.uibooster.model.UiBoosterOptions;
 import kg.musabaev.gschelper.core.gsc.GscApiAuthorizationCodeFlowBuilder;
-import kg.musabaev.gschelper.swinggui.exception.GlobalExceptionHandler;
 import net.miginfocom.swing.MigLayout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,9 +28,9 @@ import static raven.datetime.component.date.DatePicker.DateSelectionMode.BETWEEN
 public class Gui {
 
     private static final Logger log = LoggerFactory.getLogger(Gui.class);
-    private static final UiBooster uiBooster = new UiBooster(
-            new UiBoosterOptions(new FlatMacLightLaf(), null, null)
-    );
+//    private static final UiBooster uiBooster = new UiBooster(
+//            new UiBoosterOptions(new FlatMacLightLaf(), null, null)
+//    );
     private final JFrame frame;
     private final JPanel formPanel;
     private final JLabel dateRangeLabel;
@@ -101,9 +98,9 @@ public class Gui {
         toolBar.add(btn);
         savePathInput.putClientProperty("JTextField.trailingComponent", toolBar);
         btn.addActionListener(e -> {
-            File file = uiBooster.showFileSelection(
+            File file = /*uiBooster.showFileSelection(
                     format("Отчет GSC за период %s и %s.xlsx", startDate, endDate),
-                    "Файл Excel", "xlsx");
+                    "Файл Excel", "xlsx");*/ null;
             savePathInput.setText(file.getAbsolutePath());
         });
 
@@ -165,19 +162,18 @@ public class Gui {
 
         frame.add(submitButton, "growx, wrap");
 
-        setupExceptionsHandler();
     }
 
     private void showExceptionDialog(Throwable e) {
-        uiBooster.showException(
-                "Произошла ошибка",
-                "Сообщение исключения",
-                (Exception) e
-        );
+//        uiBooster.showException(
+//                "Произошла ошибка",
+//                "Сообщение исключения",
+//                (Exception) e
+//        );
     }
 
     private void showErrorDialog(String s) {
-        uiBooster.showErrorDialog(s, "Ошибка");
+//        uiBooster.showErrorDialog(s, "Ошибка");
     }
 
     private void addFocusListenersToComponents(Container container) {
@@ -223,7 +219,7 @@ public class Gui {
 
         JMenuItem deleteFolderTokensMenu = new JMenuItem("Удалить папку tokens");
         deleteFolderTokensMenu.addActionListener(event -> {
-            if (uiBooster.showConfirmDialog("Вы уверены?", "Удалить папку tokens")) {
+            if (/*uiBooster.showConfirmDialog("Вы уверены?", "Удалить папку tokens")*/ true) {
                 try {
                     Files.delete(Paths.get(APP_HOME.getAbsolutePath(), "tokens", "StoredCredential"));
                     Files.delete(Paths.get(APP_HOME.getAbsolutePath(), "tokens"));
@@ -257,11 +253,6 @@ public class Gui {
         };
         System.setOut(printStream);
     }*/
-
-    private void setupExceptionsHandler() {
-        // https://stackoverflow.com/questions/73207244/java-swing-swingworker-uncaught-exceptions-are-not-getting-picked-up-by-thread
-        Thread.setDefaultUncaughtExceptionHandler(new GlobalExceptionHandler());
-    }
 
     public void showFrame() {
         SwingUtilities.invokeLater(() -> {

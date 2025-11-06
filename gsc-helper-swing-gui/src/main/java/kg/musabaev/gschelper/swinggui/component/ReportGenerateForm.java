@@ -62,14 +62,17 @@ public class ReportGenerateForm extends JPanel {
 
     private void setupSubmitButton() {
         submitButton.setText("Принять");
-        submitButton.addActionListener(e -> {
-            listener.generateReportClicked(
-                    dateRangePicker.startDate(),
-                    dateRangePicker.endDate(),
-                    fileChooser.savePath());
-        });
+        submitButton.addActionListener(e ->
+                listener.generateReportClicked(
+                        dateRangePicker.startDate(),
+                        dateRangePicker.endDate(),
+                        fileChooser.savePath()));
 
         super.add(submitButton, "span 2 4, growx");
+    }
+
+    public JButton submitButton() {
+        return submitButton;
     }
 
     public void setListener(Listener listener) {

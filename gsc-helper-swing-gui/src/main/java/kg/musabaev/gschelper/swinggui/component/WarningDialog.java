@@ -20,7 +20,7 @@ public class WarningDialog {
         dialog.setVisible(true);
     }
 
-    private static void show(String message) {
+    public static void show(String message) {
         new WarningDialog(message);
     }
 }
