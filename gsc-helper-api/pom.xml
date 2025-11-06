@@ -13,15 +13,6 @@
     <artifactId>gsc-helper-api</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <google-search-console.version>v1-rev20230920-2.0.0</google-search-console.version>
-        <apache-poi.version>5.2.5</apache-poi.version>
-        <jetbrains.annotations.version>26.0.2</jetbrains.annotations.version>
-    </properties>
-
     <dependencies>
         <!--    Google   -->
         <dependency>

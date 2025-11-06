@@ -13,23 +13,11 @@
     <artifactId>gsc-helper-core</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <google-api-client.version>1.33.1</google-api-client.version>
-        <google-search-console.version>v1-rev20230920-2.0.0</google-search-console.version>
-        <apache-poi.version>5.2.5</apache-poi.version>
-        <logback.version>1.5.20</logback.version>
-        <log4j-to-slf4j.version>2.25.2</log4j-to-slf4j.version>
-        <junit.version>4.13.1</junit.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>kg.musabaev.gschelper</groupId>
             <artifactId>gsc-helper-api</artifactId>
-            <version>1.0.0</version>
+            <version>${project.version}</version>
         </dependency>
 
         <!--    Google   -->

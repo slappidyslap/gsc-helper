@@ -12,7 +12,11 @@
 
     <artifactId>gsc-helper-swing-gui</artifactId>
     <packaging>jar</packaging>
-    <name>GSC Helper Swing GUI</name>
+
+    <properties>
+        <maven-shade-plugin.main-class>kg.musabaev.gschelper.swinggui.Main</maven-shade-plugin.main-class>
+        <jar.final-name>GSC Helper Swing GUI</jar.final-name>
+    </properties>
 
     <repositories>
         <repository>
@@ -21,36 +25,22 @@
         </repository>
     </repositories>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <uibooster.version>1.20.2</uibooster.version>
-        <swing-datetime-picker.version>1.2.3</swing-datetime-picker.version>
-        <flatlaf.version>3.6.2</flatlaf.version>
-        <flatlaf-fonts-roboto.version>2.137</flatlaf-fonts-roboto.version>
-        <miglayout-swing.version>5.3</miglayout-swing.version>
-        <logback.version>1.5.20</logback.version>
-        <log4j-to-slf4j.version>2.25.2</log4j-to-slf4j.version>
-        <junit.version>4.13.1</junit.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>kg.musabaev.gschelper</groupId>
             <artifactId>gsc-helper-core</artifactId>
-            <version>1.0.0</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>local.com.github.milchreis</groupId>
             <artifactId>uibooster</artifactId>
-            <version>1.20.2</version>
+            <version>${uibooster.version}</version>
         </dependency>
         <dependency>
             <groupId>local.io.github.dj-raven</groupId>
             <artifactId>swing-datetime-picker</artifactId>
-            <version>1.2.3</version>
+            <version>${swing-datetime-picker.version}</version>
         </dependency>
         <dependency>
             <groupId>com.formdev</groupId>
@@ -97,14 +87,6 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <!--    Other   -->
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>26.0.2</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
     <build>
@@ -112,7 +94,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>3.6.2</version>
+                <version>${exec-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>
@@ -121,23 +103,23 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>kg.musabaev.gschelper.swinggui.Main</mainClass>
+                    <mainClass>${maven-shade-plugin.main-class}</mainClass>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>${maven-shade-plugin.version}</version>
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <transformers>
                         <transformer
                                 implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                            <mainClass>kg.musabaev.gschelper.swinggui.Main</mainClass>
+                            <mainClass>${maven-shade-plugin.main-class}</mainClass>
                         </transformer>
                     </transformers>
                     <shadedArtifactAttached>true</shadedArtifactAttached>
-                    <finalName>${project.name}</finalName>
+                    <finalName>${jar.final-name}</finalName>
                 </configuration>
                 <executions>
                     <execution>

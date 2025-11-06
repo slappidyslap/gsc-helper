@@ -7,7 +7,6 @@
     <groupId>kg.musabaev.gschelper</groupId>
     <artifactId>gsc-helper</artifactId>
     <version>1.0.0</version>
-    <name>GSC Helper</name>
     <packaging>pom</packaging>
     <modules>
         <module>gsc-helper-api</module>
@@ -19,16 +18,26 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+
         <uibooster.version>1.20.2</uibooster.version>
         <swing-datetime-picker.version>1.2.3</swing-datetime-picker.version>
         <flatlaf.version>3.6.2</flatlaf.version>
         <flatlaf-fonts-roboto.version>2.137</flatlaf-fonts-roboto.version>
         <miglayout-swing.version>5.3</miglayout-swing.version>
+
         <google-api-client.version>1.33.1</google-api-client.version>
         <google-search-console.version>v1-rev20230920-2.0.0</google-search-console.version>
+
         <apache-poi.version>5.2.5</apache-poi.version>
+
         <logback.version>1.5.20</logback.version>
         <log4j-to-slf4j.version>2.25.2</log4j-to-slf4j.version>
+
         <junit.version>4.13.1</junit.version>
+
+        <jetbrains.annotations.version>26.0.2</jetbrains.annotations.version>
+
+        <exec-maven-plugin.version>3.6.2</exec-maven-plugin.version>
+        <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
     </properties>
 </project>
