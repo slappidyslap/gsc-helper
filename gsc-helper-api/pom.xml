@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>kg.musabaev.gschelper</groupId>
+        <artifactId>gsc-helper</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    
+    <artifactId>gsc-helper-api</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <google-search-console.version>v1-rev20230920-2.0.0</google-search-console.version>
+        <apache-poi.version>5.2.5</apache-poi.version>
+        <jetbrains.annotations.version>26.0.2</jetbrains.annotations.version>
+    </properties>
+
+    <dependencies>
+        <!--    Google   -->
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-searchconsole</artifactId>
+            <version>${google-search-console.version}</version>
+        </dependency>
+
+        <!--    Other   -->
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>${jetbrains.annotations.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>
