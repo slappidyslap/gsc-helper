@@ -28,10 +28,7 @@ public class ExceptionDialog extends JDialog {
         Icon icon = UIManager.getIcon("OptionPane.errorIcon");
         JLabel iconLabel = new JLabel(icon);
 
-        JLabel messageLabel = new JLabel(
-            "Произошло исключение: " +
-                throwable.getClass().getSimpleName() +
-                ". Сообщение: " + throwable.getMessage());
+        JLabel messageLabel = new JLabel("Произошло исключение");
         messagePanel.add(iconLabel);
         messagePanel.add(messageLabel);
         messagePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
