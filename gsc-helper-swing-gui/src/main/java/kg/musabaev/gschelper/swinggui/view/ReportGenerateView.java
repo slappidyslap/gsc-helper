@@ -3,20 +3,20 @@ package kg.musabaev.gschelper.swinggui.view;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import kg.musabaev.gschelper.swinggui.component.ExceptionDialog;
+import kg.musabaev.gschelper.swinggui.component.MenuBar;
 import kg.musabaev.gschelper.swinggui.component.ReportGenerateForm;
 import kg.musabaev.gschelper.swinggui.component.WarningDialog;
+import kg.musabaev.gschelper.swinggui.listener.impl.MenuBarListenerImpl;
+import kg.musabaev.gschelper.swinggui.listener.impl.ReportGenerateFormListenerImpl;
 import kg.musabaev.gschelper.swinggui.presenter.ReportGeneratePresenter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.time.LocalDate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class ReportGenerateView extends JFrame implements ReportGenerateForm.Listener {
+public class ReportGenerateView extends JFrame {
 
-//    private final ReportViewModel viewModel;
     private ReportGeneratePresenter presenter;
 
     private final ReportGenerateForm form;
@@ -25,16 +25,12 @@ public class ReportGenerateView extends JFrame implements ReportGenerateForm.Lis
         setupLaf();
 
         this.form = new ReportGenerateForm();
-        form.setListener(this);
+        form.setListener(new ReportGenerateFormListenerImpl(presenter));
 
         setupAppIcon();
         setupMenuBar();
         setupUi();
-    }
-
-    @Override
-    public void generateReportClicked(LocalDate startDate, LocalDate endDate, File savePath) {
-        presenter.onClickGenerateReport(startDate, endDate, savePath);
+        setupUncaughtExceptionHandler();
     }
 
     public void disableSubmitButton() {
@@ -85,7 +81,9 @@ public class ReportGenerateView extends JFrame implements ReportGenerateForm.Lis
     }
 
     private void setupMenuBar() {
-//        super.setJMenuBar(new MenuBar(viewModel));
+        MenuBar menuBar = new MenuBar();
+        menuBar.setListener(new MenuBarListenerImpl(this));
+        super.setJMenuBar(menuBar);
     }
 
     public void setReportGeneratePresenter(ReportGeneratePresenter presenter) {

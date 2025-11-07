@@ -1,23 +1,21 @@
 package kg.musabaev.gschelper.swinggui.component;
 
-import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatLightLaf;
-import kg.musabaev.gschelper.swinggui.viewmodel.ReportViewModel;
+import kg.musabaev.gschelper.swinggui.listener.MenuBarListener;
 
 import javax.swing.*;
 
-// fixme
-public class MenuBar extends JMenuBar {
+import static com.google.common.base.Preconditions.checkNotNull;
 
-    private final ReportViewModel viewModel;
+public class MenuBar extends JMenuBar {
 
     private final JMenu usefulMenu;
     private final JMenuItem toggleDarkModeItem;
     private final JMenuItem openLogItem;
     private final JMenuItem logoutGoogleItem;
 
-    public MenuBar(ReportViewModel viewModel) {
-        this.viewModel = viewModel;
+    private MenuBarListener listener;
+
+    public MenuBar() {
         this.usefulMenu = new JMenu("Полезное");
         this.toggleDarkModeItem = new JMenuItem("Выкл/вкл тёмный режим");
         this.openLogItem = new JMenuItem("Открыть логи");
@@ -35,14 +33,21 @@ public class MenuBar extends JMenuBar {
 
     private void setupListeners() {
         toggleDarkModeItem.addActionListener(e -> {
-            if (viewModel.darkModeEnabled())
-                FlatLightLaf.setup();
-            else
-                FlatDarkLaf.setup();
-            viewModel.toggleDarkModeEnabled();
-            SwingUtilities.updateComponentTreeUI(SwingUtilities.getWindowAncestor(this));
+            checkNotNull(listener);
+            listener.toggleDarkModeMenuItemClicked();
         });
-        openLogItem.addActionListener(e -> {});
-        logoutGoogleItem.addActionListener(e -> {});
+        openLogItem.addActionListener(e -> {
+            checkNotNull(listener);
+            listener.openLogMenuItemClicked();
+        });
+        logoutGoogleItem.addActionListener(e -> {
+            checkNotNull(listener);
+            listener.logoutGoogleItemMenuItemClicked();
+        });
+    }
+
+    public void setListener(MenuBarListener listener) {
+        checkNotNull(listener);
+        this.listener = listener;
     }
 }

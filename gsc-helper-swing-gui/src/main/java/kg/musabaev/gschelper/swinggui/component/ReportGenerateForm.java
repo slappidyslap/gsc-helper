@@ -1,11 +1,10 @@
 package kg.musabaev.gschelper.swinggui.component;
 
+import kg.musabaev.gschelper.swinggui.listener.ReportGenerateFormListener;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.time.LocalDate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -17,7 +16,7 @@ public class ReportGenerateForm extends JPanel {
     private final FileChooser fileChooser;
 
     private final JButton submitButton;
-    private Listener listener;
+    private ReportGenerateFormListener listener;
 
     public ReportGenerateForm() {
         this.dateRangePickerLabel = new JLabel();
@@ -75,12 +74,8 @@ public class ReportGenerateForm extends JPanel {
         return submitButton;
     }
 
-    public void setListener(Listener listener) {
+    public void setListener(ReportGenerateFormListener listener) {
         checkNotNull(listener);
         this.listener = listener;
-    }
-
-    public interface Listener {
-        void generateReportClicked(LocalDate startDate, LocalDate endDate, File savePath);
     }
 }
