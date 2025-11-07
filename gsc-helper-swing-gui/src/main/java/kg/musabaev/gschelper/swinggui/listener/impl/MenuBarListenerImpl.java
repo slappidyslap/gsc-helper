@@ -51,7 +51,7 @@ public class MenuBarListenerImpl implements MenuBarListener {
         try {
             Desktop.getDesktop().open(Paths.get(APP_HOME.getAbsolutePath(), // fixme
                     "logs",
-                    format("log-%s.txt", curTimestamp)).toFile());
+                    format("log-%s.log", curTimestamp)).toFile());
         } catch (IOException e) {
             log.error(e.getMessage(), e);
             ErrorDialog.show(
