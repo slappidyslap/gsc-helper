@@ -92,4 +92,9 @@ public class ReportGenerateView extends JFrame implements ReportGenerateForm.Lis
         checkNotNull(presenter);
         this.presenter = presenter;
     }
+
+    private void setupUncaughtExceptionHandler() {
+        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->
+                ExceptionDialog.show(throwable));
+    }
 }
