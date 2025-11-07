@@ -32,18 +32,12 @@ public class MenuBar extends JMenuBar {
     }
 
     private void setupListeners() {
-        toggleDarkModeItem.addActionListener(e -> {
-            checkNotNull(listener);
-            listener.toggleDarkModeMenuItemClicked();
-        });
-        openLogItem.addActionListener(e -> {
-            checkNotNull(listener);
-            listener.openLogMenuItemClicked();
-        });
-        logoutGoogleItem.addActionListener(e -> {
-            checkNotNull(listener);
-            listener.logoutGoogleItemMenuItemClicked();
-        });
+        toggleDarkModeItem.addActionListener(e ->
+            checkNotNull(listener).toggleDarkModeMenuItemClicked());
+        openLogItem.addActionListener(e ->
+            checkNotNull(listener).openLogMenuItemClicked());
+        logoutGoogleItem.addActionListener(e ->
+            checkNotNull(listener).logoutGoogleItemMenuItemClicked());
     }
 
     public void setListener(MenuBarListener listener) {

@@ -2,6 +2,8 @@ package kg.musabaev.gschelper.swinggui.view;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+import kg.musabaev.gschelper.swinggui.exception.AwtEventQueueExceptionHandler;
+import kg.musabaev.gschelper.swinggui.exception.GlobalExceptionHandler;
 import kg.musabaev.gschelper.swinggui.component.ExceptionDialog;
 import kg.musabaev.gschelper.swinggui.component.MenuBar;
 import kg.musabaev.gschelper.swinggui.component.ReportGenerateForm;
@@ -92,7 +94,9 @@ public class ReportGenerateView extends JFrame {
     }
 
     private void setupUncaughtExceptionHandler() {
-        Thread.setDefaultUncaughtExceptionHandler((thread, throwable) ->
-                ExceptionDialog.show(throwable));
+        Thread.setDefaultUncaughtExceptionHandler(
+                new GlobalExceptionHandler());
+        Toolkit.getDefaultToolkit().getSystemEventQueue().push(
+                new AwtEventQueueExceptionHandler());
     }
 }
