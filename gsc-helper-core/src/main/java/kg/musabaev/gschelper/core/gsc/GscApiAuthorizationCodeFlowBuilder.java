@@ -108,7 +108,7 @@ public class GscApiAuthorizationCodeFlowBuilder implements GscApiBuilder {
     private GoogleClientSecrets buildClientSecrets() {
         InputStream in;
         try {
-            in = Files.newInputStream(Paths.get(CREDENTIALS_FILE_PATH));
+            in = Files.newInputStream(Paths.get(CREDENTIALS_FILE_PATH)); // fixme
             checkNotNull(in);
             return GoogleClientSecrets.load(
                 JSON_FACTORY,
@@ -139,7 +139,7 @@ public class GscApiAuthorizationCodeFlowBuilder implements GscApiBuilder {
                 secrets,
                 singleton("https://www.googleapis.com/auth/webmasters.readonly") // scopes
             )
-                .setDataStoreFactory(new FileDataStoreFactory(GOOGLE_TOKENS_FILE))
+                .setDataStoreFactory(new FileDataStoreFactory(GOOGLE_TOKENS_FILE)) // fixme
                 .setAccessType("offline")
                 .build();
         } catch (IOException e) {

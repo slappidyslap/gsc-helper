@@ -74,6 +74,5 @@ public class MenuBarListenerImpl implements MenuBarListener {
                         "Программа не смогла выйти из аккаунта Google из за ошибки: " + e.getMessage());
             }
         }
-
     }
 }
