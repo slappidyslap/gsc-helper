@@ -40,7 +40,7 @@ public class GscMetricsBetweenDateCollectorImpl extends BaseGscMetricsBetweenDat
      * Обрабатывает все ошибки и ложит их в контейнер {@link FailedSiteMetrics}.
      *
      * @param startDate дата начала периода
-     * @param endDate дата окончания периода
+     * @param endDate   дата окончания периода
      * @return результат сбора метрик. Объект {@link SiteMetricsList}
      */
     @Override
@@ -64,15 +64,15 @@ public class GscMetricsBetweenDateCollectorImpl extends BaseGscMetricsBetweenDat
 
             try {
                 GscAnalyticsResponse response = gsc.getAnalytics(
-                        siteUrl,
-                        startDate,
-                        endDate);
+                    siteUrl,
+                    startDate,
+                    endDate);
 
                 if (response == null) {
                     log.warn("Сайт {} пропущен - не подтвержден", siteUrl);
                     failedSites.add(
-                            createFailedSiteMetrics(siteUrl,
-                                    createSiteNotVerifiedException(siteUrl)));
+                        createFailedSiteMetrics(siteUrl,
+                            createSiteNotVerifiedException(siteUrl)));
                     continue;
                 }
 
@@ -80,30 +80,31 @@ public class GscMetricsBetweenDateCollectorImpl extends BaseGscMetricsBetweenDat
                 collectedMetrics.add(metrics);
 
                 log.info("Сайт {} успешно обработан ({}/{})",
-                        siteUrl, collectedMetrics.size(), sites.size());
+                    siteUrl, collectedMetrics.size(), sites.size());
 
-            } catch (Exception e) { // FIXME Перехватывает все исключения. globalExceptionHandler не успевает обработать
+            } catch (Exception e) {
                 log.error("Ошибка при обработке сайта: {}", siteUrl, e);
                 failedSites.add(createFailedSiteMetrics(siteUrl, e));
             }
         }
 
         SiteMetricsList result = new SiteMetricsList(
-                collectedMetrics,
-                failedSites);
+            collectedMetrics,
+            failedSites);
 
         log.info("Сбор метрик завершен. Всего: {}, обработано: {}, ошибок: {}",
-                sites.size(),
-                collectedMetrics.size(),
-                failedSites.size());
+            sites.size(),
+            collectedMetrics.size(),
+            failedSites.size());
 
         return result;
     }
 
     /**
      * Создает объект {@link FailedSiteMetrics}
+     *
      * @param siteUrl ссылка на сайт
-     * @param t исключение, которое произошло при сборке метрик сайта
+     * @param t       исключение, которое произошло при сборке метрик сайта
      * @return объект {@link FailedSiteMetrics}
      */
     private FailedSiteMetrics createFailedSiteMetrics(String siteUrl, Throwable t) {
@@ -114,6 +115,7 @@ public class GscMetricsBetweenDateCollectorImpl extends BaseGscMetricsBetweenDat
 
     /**
      * Создает исключение {@link SiteNotVerifiedException}
+     *
      * @param siteUrl ссылка на сайт
      * @return исключение {@link SiteNotVerifiedException}
      */

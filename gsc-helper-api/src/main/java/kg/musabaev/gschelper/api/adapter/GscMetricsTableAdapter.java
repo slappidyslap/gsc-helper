@@ -1,7 +1,7 @@
 package kg.musabaev.gschelper.api.adapter;
 
-import kg.musabaev.gschelper.api.table.TableBuilder;
 import kg.musabaev.gschelper.api.gsc.collector.domain.SiteMetricsList;
+import kg.musabaev.gschelper.api.table.TableBuilder;
 
 /**
  * Интерфейс для преобразования Google Search Console метрик в табличный формат.

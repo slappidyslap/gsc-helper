@@ -28,10 +28,10 @@ public class Main {
 
     private static ReportService buildReportService() {
         return new ReportServiceImpl(
-                new GscMetricsBetweenDateCollectorImpl(
-                        new GscApiAuthorizationCodeFlowBuilder()),
-                new GscMetricsXlsxTableAdapter(
-                        new ApachePoiXlsxBuilder("Метрики")));
+            new GscMetricsBetweenDateCollectorImpl(
+                new GscApiAuthorizationCodeFlowBuilder()),
+            new GscMetricsXlsxTableAdapter(
+                new ApachePoiXlsxBuilder("Метрики")));
     }
 
     private static ReportGenerateView buildReportView() {

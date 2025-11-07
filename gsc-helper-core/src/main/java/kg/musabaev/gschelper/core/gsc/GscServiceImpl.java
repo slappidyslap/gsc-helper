@@ -43,7 +43,7 @@ public class GscServiceImpl implements GscService {
      * Получает список сайтов, связанных с аккаунтом GSC.
      *
      * @return список сайтов {@link WmxSite}
-     * @throws NullPointerException     если {@code response.getSiteEntry()} равны {@code null}
+     * @throws NullPointerException      если {@code response.getSiteEntry()} равны {@code null}
      * @throws GscSitesNotFoundException если список сайтов пуст
      * @throws GscApiException           при ошибках взаимодействия с API
      */
@@ -76,15 +76,15 @@ public class GscServiceImpl implements GscService {
      * @param startDate дата начала периода
      * @param endDate   дата окончания периода
      * @return объект {@link GscAnalyticsResponse} с ответом от API и ссылкой на сайт
-     *         или {@code null}, если сайт не подтверждён (HTTP 403)
+     * или {@code null}, если сайт не подтверждён (HTTP 403)
      * @throws NullPointerException если параметры {@code siteUrl}, {@code startDate} или {@code endDate} равны {@code null}
      * @throws GscApiException      при ошибках API
      */
     @Override
     public GscAnalyticsResponse getAnalytics(
-            String siteUrl,
-            LocalDate startDate,
-            LocalDate endDate) {
+        String siteUrl,
+        LocalDate startDate,
+        LocalDate endDate) {
         checkNotNull(siteUrl);
         checkNotNull(startDate);
         checkNotNull(endDate);
@@ -92,16 +92,16 @@ public class GscServiceImpl implements GscService {
         log.info("Запрос аналитики для сайта: {} за период {} - {}", siteUrl, startDate, endDate);
 
         SearchAnalyticsQueryRequest request = new SearchAnalyticsQueryRequest()
-                .setStartDate(startDate.toString())
-                .setEndDate(endDate.toString());
+            .setStartDate(startDate.toString())
+            .setEndDate(endDate.toString());
 
         try {
             SearchAnalyticsQueryResponse response = searchConsole.searchanalytics()
-                    .query(siteUrl, request)
-                    .execute();
+                .query(siteUrl, request)
+                .execute();
 
             log.info("Аналитика успешно получена для сайта {}. Ответ:\n{}",
-                    siteUrl, response.toPrettyString());
+                siteUrl, response.toPrettyString());
 
             return new GscAnalyticsResponse(response, siteUrl);
         } catch (GoogleJsonResponseException e) {
@@ -110,7 +110,7 @@ public class GscServiceImpl implements GscService {
                 return null;
             }
             log.error("Ошибка GSC API для сайта {}. HTTP Status Code: {}. Сообщение: {}",
-                    siteUrl, e.getStatusCode(), e.getStatusMessage(), e);
+                siteUrl, e.getStatusCode(), e.getStatusMessage(), e);
             throw new GscApiException(e);
         } catch (IOException e) {
             log.error("Ошибка ввода-вывода при запросе метрик сайта: {}", siteUrl, e);
@@ -123,7 +123,7 @@ public class GscServiceImpl implements GscService {
      *
      * @param response объект {@link GscAnalyticsResponse} с ответом от API и ссылкой на сайт
      * @return объект {@link SiteMetrics} с ключевыми метриками сайта
-     * @throws NullPointerException     если {@code siteUrl}, {@code response} или {@code response.getRows()} равны {@code null}
+     * @throws NullPointerException если {@code siteUrl}, {@code response} или {@code response.getRows()} равны {@code null}
      */
     @Override
     public SiteMetrics getMetrics(GscAnalyticsResponse response) {
@@ -146,15 +146,15 @@ public class GscServiceImpl implements GscService {
         double avgPosition = roundToOneDecimal(dataRow.getPosition());
 
         log.info("Метрики извлечены - Клики: {}, Показы: {}, CTR: {}%, Позиция: {}",
-                clicks, impressions, ctr, avgPosition);
+            clicks, impressions, ctr, avgPosition);
 
         return new SiteMetrics(
-                resourceType,
-                cleanUrl,
-                clicks,
-                impressions,
-                ctr,
-                avgPosition
+            resourceType,
+            cleanUrl,
+            clicks,
+            impressions,
+            ctr,
+            avgPosition
         );
     }
 
@@ -166,8 +166,8 @@ public class GscServiceImpl implements GscService {
      */
     public GscResourceType getResourceType(String siteUrl) {
         return siteUrl.contains("sc-domain:") ?
-                GscResourceType.DOMAIN :
-                GscResourceType.WITH_PREFIX;
+            GscResourceType.DOMAIN :
+            GscResourceType.WITH_PREFIX;
     }
 
     /**

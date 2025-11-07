@@ -42,8 +42,8 @@ public class GscAnalyticsResponse {
     @Override
     public String toString() {
         return "GscAnalyticsResponse{" +
-                "analytics=" + analytics +
-                ", siteUrl='" + siteUrl + '\'' +
-                '}';
+            "analytics=" + analytics +
+            ", siteUrl='" + siteUrl + '\'' +
+            '}';
     }
 }

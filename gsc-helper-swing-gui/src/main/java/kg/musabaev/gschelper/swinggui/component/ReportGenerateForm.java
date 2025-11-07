@@ -29,9 +29,9 @@ public class ReportGenerateForm extends JPanel {
 
     private void setupUi() {
         super.setLayout(new MigLayout(
-                /*layoutConstraints*/ "wrap 2",
-                /*colConstraints*/ "[][grow, 30:400:n]",
-                /*rowConstraints*/ "[][][grow][]"));
+            /*layoutConstraints*/ "wrap 2",
+            /*colConstraints*/ "[][grow, 30:400:n]",
+            /*rowConstraints*/ "[][][grow][]"));
         setupDateRangePickerInput();
         setupFileChooserInput();
         setupVerticalSpace();
@@ -62,10 +62,10 @@ public class ReportGenerateForm extends JPanel {
     private void setupSubmitButton() {
         submitButton.setText("Принять");
         submitButton.addActionListener(e ->
-                listener.generateReportClicked(
-                        dateRangePicker.startDate(),
-                        dateRangePicker.endDate(),
-                        fileChooser.savePath()));
+            listener.generateReportClicked(
+                dateRangePicker.startDate(),
+                dateRangePicker.endDate(),
+                fileChooser.savePath()));
 
         super.add(submitButton, "span 2 4, growx");
     }

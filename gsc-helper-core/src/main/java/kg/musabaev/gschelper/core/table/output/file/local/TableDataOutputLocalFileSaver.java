@@ -1,10 +1,10 @@
 package kg.musabaev.gschelper.core.table.output.file.local;
 
-import kg.musabaev.gschelper.core.table.exception.TableDataOutputProcessException;
 import kg.musabaev.gschelper.api.table.output.OutputProcessorConfig;
 import kg.musabaev.gschelper.api.table.output.TableDataOutputProcessor;
-import kg.musabaev.gschelper.core.util.Constants;
 import kg.musabaev.gschelper.core.table.exception.LocalFileNotFoundException;
+import kg.musabaev.gschelper.core.table.exception.TableDataOutputProcessException;
+import kg.musabaev.gschelper.core.util.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +52,7 @@ public class TableDataOutputLocalFileSaver implements TableDataOutputProcessor {
 
     /**
      * Возвращает конфиг к данному обработчику
+     *
      * @return объект {@link OutputProcessorConfig}
      */
     @Override
@@ -74,8 +75,8 @@ public class TableDataOutputLocalFileSaver implements TableDataOutputProcessor {
         @Override
         public String toString() {
             return "Config{" +
-                    "savePath=" + savePath +
-                    '}';
+                "savePath=" + savePath +
+                '}';
         }
 
         @Override

@@ -2,12 +2,12 @@ package kg.musabaev.gschelper.swinggui.view;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
-import kg.musabaev.gschelper.swinggui.exception.AwtEventQueueExceptionHandler;
-import kg.musabaev.gschelper.swinggui.exception.GlobalExceptionHandler;
 import kg.musabaev.gschelper.swinggui.component.ExceptionDialog;
 import kg.musabaev.gschelper.swinggui.component.MenuBar;
 import kg.musabaev.gschelper.swinggui.component.ReportGenerateForm;
 import kg.musabaev.gschelper.swinggui.component.WarningDialog;
+import kg.musabaev.gschelper.swinggui.exception.AwtEventQueueExceptionHandler;
+import kg.musabaev.gschelper.swinggui.exception.GlobalExceptionHandler;
 import kg.musabaev.gschelper.swinggui.listener.impl.MenuBarListenerImpl;
 import kg.musabaev.gschelper.swinggui.listener.impl.ReportGenerateFormListenerImpl;
 import kg.musabaev.gschelper.swinggui.presenter.ReportGeneratePresenter;
@@ -19,9 +19,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ReportGenerateView extends JFrame {
 
-    private ReportGeneratePresenter presenter;
-
     private final ReportGenerateForm form;
+    private ReportGeneratePresenter presenter;
 
     public ReportGenerateView() {
         setupLaf();
@@ -95,8 +94,8 @@ public class ReportGenerateView extends JFrame {
 
     private void setupUncaughtExceptionHandler() {
         Thread.setDefaultUncaughtExceptionHandler(
-                new GlobalExceptionHandler());
+            new GlobalExceptionHandler());
         Toolkit.getDefaultToolkit().getSystemEventQueue().push(
-                new AwtEventQueueExceptionHandler());
+            new AwtEventQueueExceptionHandler());
     }
 }

@@ -17,7 +17,7 @@ public abstract class BaseGscMetricsBetweenDateCollector implements GscMetricsCo
      * Собирает метрики всех сайтов за указанный период.
      *
      * @param startDate дата начала периода
-     * @param endDate дата окончания периода
+     * @param endDate   дата окончания периода
      * @return результат сбора метрик. Объект {@link SiteMetricsList}
      */
     public abstract SiteMetricsList collectBetweenDate(LocalDate startDate, LocalDate endDate);

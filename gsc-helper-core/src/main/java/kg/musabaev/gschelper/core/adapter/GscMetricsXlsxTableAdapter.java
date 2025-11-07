@@ -1,11 +1,11 @@
 package kg.musabaev.gschelper.core.adapter;
 
 import kg.musabaev.gschelper.api.adapter.GscMetricsTableAdapter;
-import kg.musabaev.gschelper.api.table.TableBuilder;
-import kg.musabaev.gschelper.api.table.xlsx.XlsxTableBuilder;
-import kg.musabaev.gschelper.api.gsc.domain.SiteMetrics;
 import kg.musabaev.gschelper.api.gsc.collector.domain.FailedSiteMetrics;
 import kg.musabaev.gschelper.api.gsc.collector.domain.SiteMetricsList;
+import kg.musabaev.gschelper.api.gsc.domain.SiteMetrics;
+import kg.musabaev.gschelper.api.table.TableBuilder;
+import kg.musabaev.gschelper.api.table.xlsx.XlsxTableBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,12 +29,12 @@ public class GscMetricsXlsxTableAdapter implements GscMetricsTableAdapter {
      */
     public void addHeaders() {
         xlsxBuilder.createHeader(
-                "Тип ресурса",
-                "URL",
-                "Клики",
-                "Показы",
-                "CTR",
-                "Средняя позиция");
+            "Тип ресурса",
+            "URL",
+            "Клики",
+            "Показы",
+            "CTR",
+            "Средняя позиция");
         log.info("Названия колонок добавлены в xlsx таблицу");
     }
 
@@ -45,12 +45,12 @@ public class GscMetricsXlsxTableAdapter implements GscMetricsTableAdapter {
      */
     public void addSiteMetrics(SiteMetrics metrics) {
         xlsxBuilder.addRow(
-                metrics.type().rus(),
-                metrics.url(),
-                metrics.clicks(),
-                metrics.impressions(),
-                metrics.ctr(),
-                metrics.avgPosition());
+            metrics.type().rus(),
+            metrics.url(),
+            metrics.clicks(),
+            metrics.impressions(),
+            metrics.ctr(),
+            metrics.avgPosition());
         log.info("Метрики для сайта {} успешно добавлены в xlsx таблицу", metrics.url());
     }
 
@@ -72,11 +72,11 @@ public class GscMetricsXlsxTableAdapter implements GscMetricsTableAdapter {
      */
     public void addFailedSiteMetrics(FailedSiteMetrics failedSite) {
         xlsxBuilder.addRow(
-                failedSite.type().rus(),
-                failedSite.url(),
-                failedSite.throwable());
+            failedSite.type().rus(),
+            failedSite.url(),
+            failedSite.throwable());
         log.info("Детали об ошибке, возникшее при получении метрик сайта {} успешно добавлены в xlsx таблицу",
-                failedSite.url());
+            failedSite.url());
     }
 
     /**

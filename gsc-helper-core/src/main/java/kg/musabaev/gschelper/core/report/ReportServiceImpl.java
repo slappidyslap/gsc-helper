@@ -25,8 +25,8 @@ public class ReportServiceImpl implements ReportService {
     private final GscMetricsTableAdapter gscXlsxAdapter;
 
     public ReportServiceImpl(
-            BaseGscMetricsBetweenDateCollector metricsCollector,
-            GscMetricsTableAdapter gscXlsxAdapter) {
+        BaseGscMetricsBetweenDateCollector metricsCollector,
+        GscMetricsTableAdapter gscXlsxAdapter) {
         checkNotNull(metricsCollector);
         checkNotNull(gscXlsxAdapter);
         this.metricsCollector = metricsCollector;
@@ -37,18 +37,18 @@ public class ReportServiceImpl implements ReportService {
      * Генерирует отчет в указанном табличном формате.
      *
      * @param startDate дата начала периода
-     * @param endDate дата окончания периода
+     * @param endDate   дата окончания периода
      * @return байтовый массив табличных данных
      */
     @Override
     public byte[] generateReport(LocalDate startDate, LocalDate endDate) {
         checkNotNull(startDate);
         checkNotNull(endDate);
-        
+
         log.info("Начата генерация отчета GSC за период {} - {}", startDate, endDate);
 
         SiteMetricsList collectedMetrics = metricsCollector
-                .collectBetweenDate(startDate, endDate);
+            .collectBetweenDate(startDate, endDate);
         metricsCollector.collect();
 
         byte[] report = gscXlsxAdapter.adapt(collectedMetrics);
@@ -65,7 +65,7 @@ public class ReportServiceImpl implements ReportService {
      *
      * <p>Конфигурация обработки можно создать с помощью {@link TableDataOutputProcessorFactory}</p>
      *
-     * @param config конфигурация обработчика выходных данных
+     * @param config     конфигурация обработчика выходных данных
      * @param reportData байтовый массив табличного отчёта для обработки
      */
     @Override
@@ -77,6 +77,6 @@ public class ReportServiceImpl implements ReportService {
         TableDataOutputProcessor outputProcessor = TableDataOutputProcessorFactory.create(config);
         outputProcessor.process(reportData);
         log.info("Отчет был обработан реализацией {} - {}",
-                TableDataOutputProcessor.class.getName(), outputProcessor.getClass().getName());
+            TableDataOutputProcessor.class.getName(), outputProcessor.getClass().getName());
     }
 }

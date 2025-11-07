@@ -15,14 +15,18 @@ public class ConfirmDialog extends JDialog {
         setupUi();
     }
 
+    public static boolean show(String message) {
+        return new ConfirmDialog(message).isConfirmed();
+    }
+
     private void setupUi() {
         JOptionPane optionPane = new JOptionPane(
-                message,
-                JOptionPane.QUESTION_MESSAGE,
-                JOptionPane.YES_NO_OPTION,
-                null,
-                OPTIONS,
-                OPTIONS[1]);
+            message,
+            JOptionPane.QUESTION_MESSAGE,
+            JOptionPane.YES_NO_OPTION,
+            null,
+            OPTIONS,
+            OPTIONS[1]);
         JDialog dialog = optionPane.createDialog(null, LOGOUT_FROM_GOOGLE);
         dialog.setVisible(true);
 
@@ -35,15 +39,11 @@ public class ConfirmDialog extends JDialog {
             confirmed = true;
         else
             throw new IllegalStateException(
-                    "Опция " + selectedOption + " не реализован " +
+                "Опция " + selectedOption + " не реализован " +
                     "окне подтверждения " + LOGOUT_FROM_GOOGLE);
     }
 
     public boolean isConfirmed() {
         return confirmed;
-    }
-
-    public static boolean show(String message) {
-        return new ConfirmDialog(message).isConfirmed();
     }
 }

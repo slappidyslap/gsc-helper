@@ -33,10 +33,10 @@ public class FailedSiteMetrics {
     @Override
     public String toString() {
         return "FailedSiteMetrics{" +
-                "type=" + type +
-                ", url='" + url + '\'' +
-                ", throwable=" + throwable +
-                '}';
+            "type=" + type +
+            ", url='" + url + '\'' +
+            ", throwable=" + throwable +
+            '}';
     }
 
     public GscResourceType type() {

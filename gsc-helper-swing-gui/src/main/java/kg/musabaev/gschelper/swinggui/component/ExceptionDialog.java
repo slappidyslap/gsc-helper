@@ -13,6 +13,10 @@ public class ExceptionDialog extends JDialog {
         setupUi(throwable);
     }
 
+    public static void show(Throwable t) {
+        new ExceptionDialog(t).setVisible(true);
+    }
+
     private void setupUi(Throwable throwable) {
         super.setTitle("Произошло исключение");
         super.setLayout(new BorderLayout(10, 10));
@@ -25,9 +29,9 @@ public class ExceptionDialog extends JDialog {
         JLabel iconLabel = new JLabel(icon);
 
         JLabel messageLabel = new JLabel(
-                "Произошло исключение: " +
-                        throwable.getClass().getSimpleName() +
-                        ". Сообщение: " + throwable.getMessage());
+            "Произошло исключение: " +
+                throwable.getClass().getSimpleName() +
+                ". Сообщение: " + throwable.getMessage());
         messagePanel.add(iconLabel);
         messagePanel.add(messageLabel);
         messagePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -57,9 +61,9 @@ public class ExceptionDialog extends JDialog {
 
         super.getRootPane().setDefaultButton(okButton);
         super.getRootPane().registerKeyboardAction(
-                e -> dispose(),
-                KeyStroke.getKeyStroke("ESCAPE"),
-                JComponent.WHEN_IN_FOCUSED_WINDOW);
+            e -> dispose(),
+            KeyStroke.getKeyStroke("ESCAPE"),
+            JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
 
     private String getStackTraceAsString(Throwable throwable) {
@@ -68,9 +72,5 @@ public class ExceptionDialog extends JDialog {
         throwable.printStackTrace(pw);
         System.out.println(sw);
         return sw.toString();
-    }
-
-    public static void show(Throwable t) {
-        new ExceptionDialog(t).setVisible(true);
     }
 }

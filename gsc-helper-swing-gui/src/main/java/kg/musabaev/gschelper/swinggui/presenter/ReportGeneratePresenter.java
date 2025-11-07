@@ -26,7 +26,7 @@ public class ReportGeneratePresenter {
 
             byte[] data = reportService.generateReport(startDate, endDate);
             reportService.processReportOutput(
-                    new TableDataOutputLocalFileSaver.Config(savePath), data);
+                new TableDataOutputLocalFileSaver.Config(savePath), data);
         } catch (Exception e) {
             handleException(e);
         } finally {
@@ -36,8 +36,8 @@ public class ReportGeneratePresenter {
 
     public void handleException(Exception e) {
         if (e instanceof LocalFileNotFoundException ||
-                e instanceof CredentialsFileNotFoundException ||
-                e instanceof GscSitesNotFoundException) {
+            e instanceof CredentialsFileNotFoundException ||
+            e instanceof GscSitesNotFoundException) {
             view.showWarningDialog(e.getMessage());
         } else {
             view.showExceptionDialog(e);

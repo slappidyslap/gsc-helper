@@ -32,9 +32,9 @@ import static kg.musabaev.gschelper.core.util.Constants.APP_HOME;
 /**
  * Класс-обёртка для авторизации Google Search Console API через flow
  * <a
- *  href="https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow"
- *  >
- *  Authorization Code
+ * href="https://auth0.com/docs/get-started/authentication-and-authorization-flow/authorization-code-flow"
+ * >
+ * Authorization Code
  * </a>
  * <p>
  * При инициализации использует локальные файлы:
@@ -64,11 +64,11 @@ public class GscApiAuthorizationCodeFlowBuilder implements GscApiBuilder {
             JSON_FACTORY = GsonFactory.getDefaultInstance();
         } catch (GeneralSecurityException e) {
             log.error("Ошибка типа GeneralSecurityException при инициализации {}",
-                    className, e);
+                className, e);
             throw new GscApiException(e);
         } catch (IOException e) {
             log.error("Ошибка ввода-вывода при инициализации {}",
-                    className, e);
+                className, e);
             throw new GscApiException(e);
         }
     }
@@ -111,8 +111,8 @@ public class GscApiAuthorizationCodeFlowBuilder implements GscApiBuilder {
             in = Files.newInputStream(Paths.get(CREDENTIALS_FILE_PATH));
             checkNotNull(in);
             return GoogleClientSecrets.load(
-                    JSON_FACTORY,
-                    new InputStreamReader(in));
+                JSON_FACTORY,
+                new InputStreamReader(in));
         } catch (NullPointerException e) {
             log.warn("Файл credentials.json не найден");
             throw new CredentialsFileNotFoundException();
@@ -131,17 +131,17 @@ public class GscApiAuthorizationCodeFlowBuilder implements GscApiBuilder {
      * @throws GscApiException при ошибках IO
      */
     private GoogleAuthorizationCodeFlow buildAuthorizationCodeFlow(
-            GoogleClientSecrets secrets) {
+        GoogleClientSecrets secrets) {
         try {
             return new GoogleAuthorizationCodeFlow.Builder(
-                    HTTP_TRANSPORT,
-                    JSON_FACTORY,
-                    secrets,
-                    singleton("https://www.googleapis.com/auth/webmasters.readonly") // scopes
+                HTTP_TRANSPORT,
+                JSON_FACTORY,
+                secrets,
+                singleton("https://www.googleapis.com/auth/webmasters.readonly") // scopes
             )
-                    .setDataStoreFactory(new FileDataStoreFactory(GOOGLE_TOKENS_FILE))
-                    .setAccessType("offline")
-                    .build();
+                .setDataStoreFactory(new FileDataStoreFactory(GOOGLE_TOKENS_FILE))
+                .setAccessType("offline")
+                .build();
         } catch (IOException e) {
             log.error("Ошибка ввода-вывода при создании GoogleAuthorizationCodeFlow", e);
             throw new GscApiException(e);
@@ -156,8 +156,8 @@ public class GscApiAuthorizationCodeFlowBuilder implements GscApiBuilder {
      */
     private LocalServerReceiver buildLocalServer() {
         return new LocalServerReceiver.Builder()
-                .setPort(-1)
-                .build();
+            .setPort(-1)
+            .build();
     }
 
     /**
@@ -170,14 +170,14 @@ public class GscApiAuthorizationCodeFlowBuilder implements GscApiBuilder {
      * @throws GscApiException при ошибках IO
      */
     private Credential buildAuthorizationCodeInstalledApp(
-            GoogleAuthorizationCodeFlow flow,
-            LocalServerReceiver server) {
+        GoogleAuthorizationCodeFlow flow,
+        LocalServerReceiver server) {
         try {
             return new AuthorizationCodeInstalledApp(flow, server)
-                    .authorize("user");
+                .authorize("user");
         } catch (IOException e) {
             log.error("Ошибка ввода-вывода при создании " +
-                    "AuthorizationCodeInstalledApp (Credential)", e);
+                "AuthorizationCodeInstalledApp (Credential)", e);
             throw new GscApiException(e);
         }
     }
@@ -190,11 +190,11 @@ public class GscApiAuthorizationCodeFlowBuilder implements GscApiBuilder {
      */
     private SearchConsole buildSearchConsole(Credential credential) {
         return new SearchConsole.Builder(
-                HTTP_TRANSPORT,
-                JSON_FACTORY,
-                credential
+            HTTP_TRANSPORT,
+            JSON_FACTORY,
+            credential
         )
-                .setApplicationName(APPLICATION_NAME)
-                .build();
+            .setApplicationName(APPLICATION_NAME)
+            .build();
     }
 }

@@ -19,7 +19,7 @@ public class FileChooser extends JTextField {
 
     public File savePath() {
         return new File(super.getText());
-    }
+    } // fixme absolute path, picked date range binding
 
     protected void setupUi() {
         super.setEditable(false);
@@ -32,7 +32,7 @@ public class FileChooser extends JTextField {
         button.addActionListener(e -> {
             JFileChooser chooser = new JFileChooser(); // todo native
             int returnVal = chooser.showOpenDialog(button);
-            if(returnVal == JFileChooser.APPROVE_OPTION) {
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
                 super.setText(chooser.getSelectedFile().getAbsolutePath());
             }
         });

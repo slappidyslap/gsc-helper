@@ -32,9 +32,9 @@ public class SiteMetricsList {
     @Override
     public String toString() {
         return "SiteMetricsList{" +
-                "metrics=" + metrics +
-                ", failedSites=" + failedSites +
-                '}';
+            "metrics=" + metrics +
+            ", failedSites=" + failedSites +
+            '}';
     }
 
     public List<SiteMetrics> metrics() {

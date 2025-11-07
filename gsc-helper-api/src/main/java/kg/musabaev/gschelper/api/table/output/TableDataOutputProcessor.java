@@ -7,6 +7,7 @@ public interface TableDataOutputProcessor {
 
     /**
      * Возвращает конфиг к данному обработчику
+     *
      * @return объект {@link OutputProcessorConfig}
      */
     OutputProcessorConfig getConfig();
@@ -16,7 +17,7 @@ public interface TableDataOutputProcessor {
      * Например, сохранить их в файл или передать другому сервису.
      *
      * @param data данные таблицы в формате массива байтов
-     * </p>
+     *             </p>
      */
     void process(byte[] data);
 }

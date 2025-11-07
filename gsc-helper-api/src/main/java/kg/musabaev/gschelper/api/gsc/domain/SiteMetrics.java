@@ -61,12 +61,12 @@ public class SiteMetrics {
     @Override
     public String toString() {
         return "SiteMetrics{" +
-                "type=" + type +
-                ", url='" + url + '\'' +
-                ", clicks=" + clicks +
-                ", impressions=" + impressions +
-                ", ctr=" + ctr +
-                ", avgPosition=" + avgPosition +
-                '}';
+            "type=" + type +
+            ", url='" + url + '\'' +
+            ", clicks=" + clicks +
+            ", impressions=" + impressions +
+            ", ctr=" + ctr +
+            ", avgPosition=" + avgPosition +
+            '}';
     }
 }

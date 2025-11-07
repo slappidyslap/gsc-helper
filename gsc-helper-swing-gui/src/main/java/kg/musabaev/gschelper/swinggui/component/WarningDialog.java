@@ -11,16 +11,16 @@ public class WarningDialog {
         setupUi();
     }
 
-    private void setupUi() {
-        JOptionPane optionPane = new JOptionPane(
-                message,
-                JOptionPane.WARNING_MESSAGE,
-                JOptionPane.DEFAULT_OPTION);
-        JDialog dialog = optionPane.createDialog(null, "Предупреждение");
-        dialog.setVisible(true);
-    }
-
     public static void show(String message) {
         new WarningDialog(message);
+    }
+
+    private void setupUi() {
+        JOptionPane optionPane = new JOptionPane(
+            message,
+            JOptionPane.WARNING_MESSAGE,
+            JOptionPane.DEFAULT_OPTION);
+        JDialog dialog = optionPane.createDialog(null, "Предупреждение");
+        dialog.setVisible(true);
     }
 }

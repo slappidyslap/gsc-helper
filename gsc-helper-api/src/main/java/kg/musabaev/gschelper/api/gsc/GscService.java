@@ -29,9 +29,9 @@ public interface GscService {
      * @return ответ {@link GscAnalyticsResponse} с метриками
      */
     GscAnalyticsResponse getAnalytics(
-            String siteUrl,
-            LocalDate startDate,
-            LocalDate endDate);
+        String siteUrl,
+        LocalDate startDate,
+        LocalDate endDate);
 
     /**
      * Извлекает основные метрики сайта из ответа.

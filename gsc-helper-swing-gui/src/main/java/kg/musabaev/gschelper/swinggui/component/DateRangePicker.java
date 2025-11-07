@@ -4,7 +4,6 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import raven.datetime.component.date.DatePicker;
 
 import javax.swing.*;
-
 import java.time.LocalDate;
 
 import static raven.datetime.component.date.DatePicker.DateSelectionMode.BETWEEN_DATE_SELECTED;
