@@ -1,6 +1,7 @@
 package kg.musabaev.gschelper.swinggui.component;
 
 import kg.musabaev.gschelper.swinggui.listener.ReportGenerateFormListener;
+import kg.musabaev.gschelper.swinggui.model.ReportGenerateFormModel;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -9,20 +10,25 @@ import java.awt.*;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ReportGenerateForm extends JPanel {
+
+    private final ReportGenerateFormModel model;
+
     private final JLabel dateRangePickerLabel;
-    private final DateRangePicker dateRangePicker;
+    private final DateRangePickerInput dateRangePickerInput;
 
     private final JLabel fileChooserLabel;
-    private final FileChooser fileChooser;
+    private final FileChooserInput fileChooserInput;
 
     private final JButton submitButton;
     private ReportGenerateFormListener listener;
 
-    public ReportGenerateForm() {
+    public ReportGenerateForm(ReportGenerateFormModel model) {
+        this.model = model;
+
         this.dateRangePickerLabel = new JLabel();
-        this.dateRangePicker = new DateRangePicker();
+        this.dateRangePickerInput = new DateRangePickerInput(model);
         this.fileChooserLabel = new JLabel();
-        this.fileChooser = new FileChooser();
+        this.fileChooserInput = new FileChooserInput(model);
         this.submitButton = new JButton();
         setupUi();
     }
@@ -42,14 +48,14 @@ public class ReportGenerateForm extends JPanel {
         dateRangePickerLabel.setText("Диапазон дат:");
 
         super.add(dateRangePickerLabel);
-        super.add(dateRangePicker, "growx");
+        super.add(dateRangePickerInput, "growx");
     }
 
     private void setupFileChooserInput() {
         fileChooserLabel.setText("Путь сохранения:");
 
         super.add(fileChooserLabel);
-        super.add(fileChooser, "growx");
+        super.add(fileChooserInput, "growx");
     }
 
     private void setupVerticalSpace() {
@@ -63,9 +69,9 @@ public class ReportGenerateForm extends JPanel {
         submitButton.setText("Принять");
         submitButton.addActionListener(e ->
             listener.generateReportClicked(
-                dateRangePicker.startDate(),
-                dateRangePicker.endDate(),
-                fileChooser.savePath()));
+                dateRangePickerInput.startDate(),
+                dateRangePickerInput.endDate(),
+                fileChooserInput.savePath()));
 
         super.add(submitButton, "span 2 4, growx");
     }

@@ -10,22 +10,28 @@ import kg.musabaev.gschelper.swinggui.exception.AwtEventQueueExceptionHandler;
 import kg.musabaev.gschelper.swinggui.exception.GlobalExceptionHandler;
 import kg.musabaev.gschelper.swinggui.listener.impl.MenuBarListenerImpl;
 import kg.musabaev.gschelper.swinggui.listener.impl.ReportGenerateFormListenerImpl;
+import kg.musabaev.gschelper.swinggui.model.ReportGenerateFormModel;
 import kg.musabaev.gschelper.swinggui.presenter.ReportGeneratePresenter;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.time.LocalDate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ReportGenerateView extends JFrame {
 
+    private final ReportGenerateFormModel model;
     private final ReportGenerateForm form;
+
     private ReportGeneratePresenter presenter;
 
-    public ReportGenerateView() {
+    public ReportGenerateView(ReportGenerateFormModel model) {
         setupLaf();
 
-        this.form = new ReportGenerateForm();
+        this.model = checkNotNull(model);
+        this.form = new ReportGenerateForm(model);
 
         setupAppIcon();
         setupMenuBar();
@@ -47,7 +53,7 @@ public class ReportGenerateView extends JFrame {
         super.setSize(650, 200);
         super.setLocationRelativeTo(null);
 
-        form.setListener(new ReportGenerateFormListenerImpl(presenter));
+        form.setListener(new ReportGenerateFormListenerImpl(this));
         super.add(form);
     }
 
@@ -97,5 +103,12 @@ public class ReportGenerateView extends JFrame {
 
     public void showExceptionDialog(Exception e) {
         ExceptionDialog.show(e);
+    }
+
+    public void onClickGenerateReport(LocalDate startDate, LocalDate endDate, File savePath) {
+        checkNotNull(startDate);
+        checkNotNull(endDate);
+        checkNotNull(savePath);
+        presenter.onClickGenerateReport(startDate, endDate, savePath);
     }
 }

@@ -3,6 +3,7 @@ package kg.musabaev.gschelper.swinggui.listener.impl;
 import kg.musabaev.gschelper.swinggui.listener.ReportGenerateFormListener;
 import kg.musabaev.gschelper.swinggui.presenter.ReportGeneratePresenter;
 import kg.musabaev.gschelper.swinggui.component.ReportGenerateForm;
+import kg.musabaev.gschelper.swinggui.view.ReportGenerateView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,10 +17,10 @@ import java.time.LocalDate;
 public class ReportGenerateFormListenerImpl implements ReportGenerateFormListener {
 
     private static final Logger log = LoggerFactory.getLogger(ReportGenerateFormListenerImpl.class);
-    private final ReportGeneratePresenter presenter;
+    private final ReportGenerateView view;
 
-    public ReportGenerateFormListenerImpl(ReportGeneratePresenter presenter) {
-        this.presenter = presenter;
+    public ReportGenerateFormListenerImpl(ReportGenerateView view) {
+        this.view = view;
     }
 
     /**
@@ -34,7 +35,7 @@ public class ReportGenerateFormListenerImpl implements ReportGenerateFormListene
      */
     @Override
     public void generateReportClicked(LocalDate startDate, LocalDate endDate, File savePath) {
-        presenter.onClickGenerateReport(startDate, endDate, savePath);
+        view.onClickGenerateReport(startDate, endDate, savePath);
         log.info(
             "Запрос на создания отчета за период {} - {} отправлена." +
                 "Отчет будет сохранен в {}",

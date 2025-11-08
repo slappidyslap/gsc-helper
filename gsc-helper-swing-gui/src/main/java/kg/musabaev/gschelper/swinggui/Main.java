@@ -8,6 +8,7 @@ import kg.musabaev.gschelper.core.gsc.GscApiAuthorizationCodeFlowBuilder;
 import kg.musabaev.gschelper.core.gsc.collector.GscMetricsBetweenDateCollectorImpl;
 import kg.musabaev.gschelper.core.report.ReportServiceImpl;
 import kg.musabaev.gschelper.core.table.xlsx.ApachePoiXlsxBuilder;
+import kg.musabaev.gschelper.swinggui.model.ReportGenerateFormModel;
 import kg.musabaev.gschelper.swinggui.presenter.ReportGeneratePresenter;
 import kg.musabaev.gschelper.swinggui.util.Constants;
 import kg.musabaev.gschelper.swinggui.view.ReportGenerateView;
@@ -54,7 +55,7 @@ public class Main {
     }
 
     private static ReportGenerateView buildReportView() {
-        ReportGenerateView view = new ReportGenerateView();
+        ReportGenerateView view = new ReportGenerateView(new ReportGenerateFormModel());
         ReportGeneratePresenter presenter = new ReportGeneratePresenter(view, buildReportService());
         view.setReportGeneratePresenter(presenter);
         return view;
