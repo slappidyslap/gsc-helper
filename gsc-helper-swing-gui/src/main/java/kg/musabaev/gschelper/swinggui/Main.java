@@ -2,14 +2,21 @@ package kg.musabaev.gschelper.swinggui;
 
 import kg.musabaev.gschelper.api.report.ReportService;
 import kg.musabaev.gschelper.core.adapter.GscMetricsXlsxTableAdapter;
+import kg.musabaev.gschelper.core.auth.GscAuthLocalFileCredentialsLoader;
+import kg.musabaev.gschelper.core.auth.GscAuthLocalFileDataStoreFactoryLoader;
 import kg.musabaev.gschelper.core.gsc.GscApiAuthorizationCodeFlowBuilder;
 import kg.musabaev.gschelper.core.gsc.collector.GscMetricsBetweenDateCollectorImpl;
 import kg.musabaev.gschelper.core.report.ReportServiceImpl;
 import kg.musabaev.gschelper.core.table.xlsx.ApachePoiXlsxBuilder;
 import kg.musabaev.gschelper.swinggui.presenter.ReportGeneratePresenter;
+import kg.musabaev.gschelper.swinggui.util.Constants;
 import kg.musabaev.gschelper.swinggui.view.ReportGenerateView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -29,9 +36,19 @@ public class Main {
     }
 
     private static ReportService buildReportService() {
+        Path credentialsFile;
+        try {
+            credentialsFile = Paths.get(Main.class.getClassLoader().getResource("credentials.json").toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
         return new ReportServiceImpl(
             new GscMetricsBetweenDateCollectorImpl(
-                new GscApiAuthorizationCodeFlowBuilder()),
+                new GscApiAuthorizationCodeFlowBuilder(
+                    Constants.APP_NAME,
+                    new GscAuthLocalFileDataStoreFactoryLoader(Constants.DATA_STORE_FOLDER),
+                    new GscAuthLocalFileCredentialsLoader(credentialsFile) // credentials.json
+                )),
             new GscMetricsXlsxTableAdapter(
                 new ApachePoiXlsxBuilder("Метрики")));
     }

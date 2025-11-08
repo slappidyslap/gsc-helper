@@ -7,6 +7,8 @@ import com.formdev.flatlaf.FlatLightLaf;
 import kg.musabaev.gschelper.swinggui.component.ConfirmDialog;
 import kg.musabaev.gschelper.swinggui.component.ErrorDialog;
 import kg.musabaev.gschelper.swinggui.listener.MenuBarListener;
+import kg.musabaev.gschelper.swinggui.util.Constants;
+import kg.musabaev.gschelper.swinggui.util.Utils;
 import kg.musabaev.gschelper.swinggui.view.ReportGenerateView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,12 +19,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
-import static kg.musabaev.gschelper.core.util.Constants.APP_HOME;
 
 public class MenuBarListenerImpl implements MenuBarListener {
 
@@ -49,9 +49,8 @@ public class MenuBarListenerImpl implements MenuBarListener {
         String currentTimestamp = "currentTimestamp";
         String curTimestamp = context.getProperty(currentTimestamp);
         try {
-            Desktop.getDesktop().open(Paths.get(APP_HOME.getAbsolutePath(), // fixme
-                    "logs",
-                    format("log-%s.log", curTimestamp)).toFile());
+            Path logFilePath = Utils.paths(Constants.LOGS_FOLDER, format("log-%s.log", curTimestamp));
+            Desktop.getDesktop().open(logFilePath.toFile());
         } catch (IOException e) {
             log.error(e.getMessage(), e);
             ErrorDialog.show(
@@ -62,7 +61,7 @@ public class MenuBarListenerImpl implements MenuBarListener {
     @Override
     public void logoutGoogleItemMenuItemClicked() {
         if (ConfirmDialog.show("Вы правда хотите выйти из Google аккаунта?")) {
-            try (Stream<Path> dirStream = Files.walk(Paths.get(APP_HOME.getAbsolutePath(), "tokens"))) {
+            try (Stream<Path> dirStream = Files.walk(Constants.APP_HOME)) {
                 dirStream
                         .sorted(Comparator.reverseOrder())
                         .map(Path::toFile)

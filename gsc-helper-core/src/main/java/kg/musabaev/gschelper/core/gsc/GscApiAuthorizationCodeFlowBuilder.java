@@ -9,25 +9,21 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
-import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.searchconsole.v1.SearchConsole;
 import kg.musabaev.gschelper.api.gsc.GscApiBuilder;
+import kg.musabaev.gschelper.api.gsc.auth.GscAuthCredentialsLoader;
+import kg.musabaev.gschelper.api.gsc.auth.GscAuthDataStoreFactoryLoader;
 import kg.musabaev.gschelper.core.gsc.exception.CredentialsFileNotFoundException;
 import kg.musabaev.gschelper.core.gsc.exception.GscApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Collections.singleton;
-import static kg.musabaev.gschelper.core.util.Constants.APP_HOME;
 
 /**
  * Класс-обёртка для авторизации Google Search Console API через flow
@@ -48,18 +44,24 @@ public class GscApiAuthorizationCodeFlowBuilder implements GscApiBuilder {
 
     private final Logger log = LoggerFactory.getLogger(GscApiAuthorizationCodeFlowBuilder.class);
 
+    private final GscAuthDataStoreFactoryLoader dataStoreFactoryLoader;
+    private final GscAuthCredentialsLoader credentialsLoader;
+
     private final String APPLICATION_NAME;
-    private final String CREDENTIALS_FILE_PATH;
-    private final File GOOGLE_TOKENS_FILE;
     private final HttpTransport HTTP_TRANSPORT;
     private final JsonFactory JSON_FACTORY;
 
-    public GscApiAuthorizationCodeFlowBuilder() {
+    public GscApiAuthorizationCodeFlowBuilder(
+        String applicationName,
+        GscAuthDataStoreFactoryLoader dataStoreFactoryLoader,
+        GscAuthCredentialsLoader credentialsLoader
+    ) {
+        this.dataStoreFactoryLoader = dataStoreFactoryLoader;
+        this.credentialsLoader = credentialsLoader;
+
         String className = GscApiAuthorizationCodeFlowBuilder.class.getName();
         try {
-            APPLICATION_NAME = "GSC Helper";
-            CREDENTIALS_FILE_PATH = new File(APP_HOME, "credentials.json").getAbsolutePath();
-            GOOGLE_TOKENS_FILE = new File(APP_HOME, "tokens");
+            APPLICATION_NAME = applicationName;
             HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
             JSON_FACTORY = GsonFactory.getDefaultInstance();
         } catch (GeneralSecurityException e) {
@@ -108,14 +110,9 @@ public class GscApiAuthorizationCodeFlowBuilder implements GscApiBuilder {
     private GoogleClientSecrets buildClientSecrets() {
         InputStream in;
         try {
-            in = Files.newInputStream(Paths.get(CREDENTIALS_FILE_PATH)); // fixme
-            checkNotNull(in);
             return GoogleClientSecrets.load(
                 JSON_FACTORY,
-                new InputStreamReader(in));
-        } catch (NullPointerException e) {
-            log.warn("Файл credentials.json не найден");
-            throw new CredentialsFileNotFoundException();
+                new InputStreamReader(credentialsLoader.load()));
         } catch (IOException e) {
             log.error("Ошибка ввода-вывода при создании GoogleClientSecrets", e);
             throw new GscApiException(e);
@@ -139,7 +136,7 @@ public class GscApiAuthorizationCodeFlowBuilder implements GscApiBuilder {
                 secrets,
                 singleton("https://www.googleapis.com/auth/webmasters.readonly") // scopes
             )
-                .setDataStoreFactory(new FileDataStoreFactory(GOOGLE_TOKENS_FILE)) // fixme
+                .setDataStoreFactory(dataStoreFactoryLoader.load())
                 .setAccessType("offline")
                 .build();
         } catch (IOException e) {

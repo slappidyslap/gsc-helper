@@ -4,7 +4,7 @@ import kg.musabaev.gschelper.api.table.output.OutputProcessorConfig;
 import kg.musabaev.gschelper.api.table.output.TableDataOutputProcessor;
 import kg.musabaev.gschelper.core.table.exception.LocalFileNotFoundException;
 import kg.musabaev.gschelper.core.table.exception.TableDataOutputProcessException;
-import kg.musabaev.gschelper.core.util.Constants;
+import kg.musabaev.gschelper.core.util.ExceptionMessages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +42,7 @@ public class TableDataOutputLocalFileSaver implements TableDataOutputProcessor {
         try (FileOutputStream out = new FileOutputStream(savePath)) {
             out.write(data);
         } catch (FileNotFoundException e) {
-            log.error(Constants.LOCAL_FILE_NOT_FOUND_EXCEPTION + "{}", savePath, e);
+            log.error(ExceptionMessages.LOCAL_FILE_NOT_FOUND_EXCEPTION + "{}", savePath, e);
             throw new LocalFileNotFoundException(savePath);
         } catch (IOException e) {
             log.error("Ошибка ввода-вывода при обработке выходных данных таблицы", e);
