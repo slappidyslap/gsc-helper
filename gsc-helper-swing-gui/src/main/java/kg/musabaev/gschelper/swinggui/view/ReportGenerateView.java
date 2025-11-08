@@ -26,7 +26,6 @@ public class ReportGenerateView extends JFrame {
         setupLaf();
 
         this.form = new ReportGenerateForm();
-        form.setListener(new ReportGenerateFormListenerImpl(presenter));
 
         setupAppIcon();
         setupMenuBar();
@@ -42,20 +41,13 @@ public class ReportGenerateView extends JFrame {
         form.submitButton().setEnabled(true);
     }
 
-    public void showWarningDialog(String message) {
-        WarningDialog.show(message);
-    }
-
-    public void showExceptionDialog(Exception e) {
-        ExceptionDialog.show(e);
-    }
-
     private void setupUi() {
         super.setTitle("GSC Helper");
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setSize(650, 200);
         super.setLocationRelativeTo(null);
 
+        form.setListener(new ReportGenerateFormListenerImpl(presenter));
         super.add(form);
     }
 
@@ -97,5 +89,13 @@ public class ReportGenerateView extends JFrame {
             new GlobalExceptionHandler());
         Toolkit.getDefaultToolkit().getSystemEventQueue().push(
             new AwtEventQueueExceptionHandler());
+    }
+
+    public void showWarningDialog(String message) {
+        WarningDialog.show(message);
+    }
+
+    public void showExceptionDialog(Exception e) {
+        ExceptionDialog.show(e);
     }
 }

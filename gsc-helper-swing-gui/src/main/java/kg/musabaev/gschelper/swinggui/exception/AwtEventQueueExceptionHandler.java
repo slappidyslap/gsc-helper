@@ -15,7 +15,9 @@ public class AwtEventQueueExceptionHandler extends EventQueue {
         try {
             super.dispatchEvent(newEvent);
         } catch (Throwable t) {
-            log.error(t.getMessage(), t);
+            log.error(
+                "Произошло исключение в AWT Event Queue при обработке события {}",
+                newEvent.getClass().getName(), t);
             ExceptionDialog.show(t);
             super.dispatchEvent(newEvent);
         }

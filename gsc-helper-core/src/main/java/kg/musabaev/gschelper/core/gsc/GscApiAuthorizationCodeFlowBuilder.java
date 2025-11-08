@@ -32,13 +32,8 @@ import static java.util.Collections.singleton;
  * >
  * Authorization Code
  * </a>
- * <p>
- * При инициализации использует локальные файлы:
- * <ul>
- *   <li>credentials.json — файл с данными клиента OAuth</li> // TODO
- *   <li>tokens — директория для хранения токенов доступа</li>
- * </ul>
- * </p>
+ * При инициализации требуют загрузчик учетных данных доступы (credentials)
+ * и загрузчик DataStoreFactory
  */
 public class GscApiAuthorizationCodeFlowBuilder implements GscApiBuilder {
 

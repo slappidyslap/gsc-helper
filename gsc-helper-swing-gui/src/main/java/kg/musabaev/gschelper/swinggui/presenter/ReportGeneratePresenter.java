@@ -23,7 +23,6 @@ public class ReportGeneratePresenter {
     public void onClickGenerateReport(LocalDate startDate, LocalDate endDate, File savePath) {
         try {
             view.disableSubmitButton();
-
             byte[] data = reportService.generateReport(startDate, endDate);
             reportService.processReportOutput(
                 new TableDataOutputLocalFileSaver.Config(savePath), data);

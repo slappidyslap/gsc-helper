@@ -15,10 +15,11 @@ public class GlobalExceptionHandler implements Thread.UncaughtExceptionHandler {
         if (thread.getName().contains("AWT-EventQueue"))
             ExceptionDialog.show(throwable);
         else {
-            log.error(throwable.getMessage(), throwable);
+            String threadName = Thread.currentThread().getName();
+            log.error("Произошла непредвиденная ошибка в потоке {}", threadName, throwable);
             SwingUtilities.invokeLater(() -> ExceptionDialog.show(new RuntimeException(
-                "Произошла непредвиденная ошибка в системном потоке. " +
-                    "Работа программы может быть нестабильной. " +
+                "Произошла непредвиденная ошибка в потоке " + threadName +
+                    ". Работа программы может быть нестабильной. " +
                     "Рекомендуется перезапустить приложение.", throwable)));
         }
     }
