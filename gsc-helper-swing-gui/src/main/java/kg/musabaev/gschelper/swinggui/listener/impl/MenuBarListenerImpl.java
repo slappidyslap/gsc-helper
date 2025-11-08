@@ -7,8 +7,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import kg.musabaev.gschelper.swinggui.component.ConfirmDialog;
 import kg.musabaev.gschelper.swinggui.component.ErrorDialog;
 import kg.musabaev.gschelper.swinggui.listener.MenuBarListener;
-import kg.musabaev.gschelper.swinggui.util.Constants;
-import kg.musabaev.gschelper.swinggui.util.Utils;
+import kg.musabaev.gschelper.swinggui.util.Paths;
 import kg.musabaev.gschelper.swinggui.view.ReportGenerateView;
 import kg.musabaev.gschelper.swinggui.component.MenuBar;
 import org.slf4j.Logger;
@@ -24,6 +23,7 @@ import java.util.Comparator;
 import java.util.stream.Stream;
 
 import static java.lang.String.format;
+import static kg.musabaev.gschelper.swinggui.util.Paths.paths;
 
 /**
  * Реализация {@link MenuBarListener},
@@ -62,7 +62,7 @@ public class MenuBarListenerImpl implements MenuBarListener {
         String currentTimestamp = "currentTimestamp";
         String curTimestamp = context.getProperty(currentTimestamp);
         try {
-            Path logFilePath = Utils.paths(Constants.LOGS_FOLDER, format("log-%s.log", curTimestamp));
+            Path logFilePath = paths(Paths.LOGS_FOLDER, format("log-%s.log", curTimestamp));
             Desktop.getDesktop().open(logFilePath.toFile());
             log.info("Текущий лог файл открыт");
         } catch (IOException e) {
@@ -77,7 +77,7 @@ public class MenuBarListenerImpl implements MenuBarListener {
     @Override
     public void logoutGoogleItemMenuItemClicked() {
         if (ConfirmDialog.show("Вы правда хотите выйти из Google аккаунта?")) {
-            try (Stream<Path> dirStream = Files.walk(Constants.APP_HOME)) {
+            try (Stream<Path> dirStream = Files.walk(Paths.APP_HOME)) {
                 dirStream
                     .sorted(Comparator.reverseOrder())
                     .map(Path::toFile)

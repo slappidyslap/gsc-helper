@@ -11,13 +11,13 @@ import kg.musabaev.gschelper.core.table.xlsx.ApachePoiXlsxBuilder;
 import kg.musabaev.gschelper.swinggui.model.ReportGenerateFormModel;
 import kg.musabaev.gschelper.swinggui.presenter.ReportGeneratePresenter;
 import kg.musabaev.gschelper.swinggui.util.Constants;
+import kg.musabaev.gschelper.swinggui.util.Paths;
 import kg.musabaev.gschelper.swinggui.view.ReportGenerateView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URISyntaxException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -39,7 +39,7 @@ public class Main {
     private static ReportService buildReportService() {
         Path credentialsFile;
         try {
-            credentialsFile = Paths.get(Main.class.getClassLoader().getResource("credentials.json").toURI());
+            credentialsFile = java.nio.file.Paths.get(Main.class.getClassLoader().getResource("credentials.json").toURI());
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -47,7 +47,7 @@ public class Main {
             new GscMetricsBetweenDateCollectorImpl(
                 new GscApiAuthorizationCodeFlowBuilder(
                     Constants.APP_NAME,
-                    new GscAuthLocalFileDataStoreFactoryLoader(Constants.DATA_STORE_FOLDER),
+                    new GscAuthLocalFileDataStoreFactoryLoader(Paths.DATA_STORE_FOLDER),
                     new GscAuthLocalFileCredentialsLoader(credentialsFile) // credentials.json
                 )),
             new GscMetricsXlsxTableAdapter(

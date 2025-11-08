@@ -5,3 +5,5 @@
 https://github.com/Milchreis/UiBooster?tab=readme-ov-file
 
 https://github.com/nikita-volkov/install-to-project-repo
+
+ReportGenerateFormModel one directional binding 
