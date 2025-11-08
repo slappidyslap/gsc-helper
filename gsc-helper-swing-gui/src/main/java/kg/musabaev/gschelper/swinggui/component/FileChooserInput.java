@@ -73,7 +73,7 @@ public class FileChooserInput extends JTextField {
 
         int result = chooser.showOpenDialog(button);
         if (result == JFileChooser.APPROVE_OPTION) {
-            model.setSavePath(chooser.getSelectedFile().getAbsolutePath());
+            model.setSavePath(Matcher.quoteReplacement(chooser.getSelectedFile().getAbsolutePath()));
         }
     }
 
@@ -86,10 +86,10 @@ public class FileChooserInput extends JTextField {
         if (model.DATE_RANGE_FIELD_NAME.equals(event.getPropertyName())) {
             // Если текста в JTextField нет/если пользователь не еще
             // выбрал путь к сохранению, то не меняем название файла
-            String text = super.getText().trim();
-            if (text.isEmpty()) return;
+            String path = super.getText().trim();
+            if (path.isEmpty()) return;
 
-            Matcher savePathMatcher = XlsxFiles.FILENAME_PATTERN.matcher(text);
+            Matcher savePathMatcher = XlsxFiles.FILENAME_PATTERN.matcher(path);
             // Если текст в JTextField есть/если пользователь выбрал
             // путь к сохранению, но название файла кастомное
             // (оригинальный смотрите XlsxFiles.FILENAME_PATTERN),
@@ -99,7 +99,7 @@ public class FileChooserInput extends JTextField {
             // Если текст в JTextField есть/если пользователь выбрал
             // путь к сохранению, и название файла матчится
             // к regex XlsxFiles.FILENAME_PATTERN, то меняем название файла
-            String updatedSavePath = text.replaceFirst(savePathMatcher.group(1), model.dateRange());
+            String updatedSavePath = path.replace(savePathMatcher.group(1), model.dateRange());
             model.setSavePath(updatedSavePath);
         }
     }
