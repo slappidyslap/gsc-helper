@@ -17,7 +17,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.nio.file.Path;
 
-public class ReportGenerateView extends JFrame {
+public class ReportGenerateView extends JFrame implements ReportGeneratePresenterViewContract {
 
     private final MenuBar menuBar;
     private final ReportGenerateForm form;
@@ -43,15 +43,6 @@ public class ReportGenerateView extends JFrame {
         super.add(form);
     }
 
-    public void showFrame() {
-        SwingUtilities.invokeLater(() -> {
-            super.pack();
-            SwingUtilities.updateComponentTreeUI(this);
-            super.setVisible(true);
-            super.getContentPane().requestFocusInWindow();
-        });
-    }
-
     private void setupLaf() {
         FlatDarkLaf.setup();
         FlatRobotoFont.install();
@@ -70,11 +61,6 @@ public class ReportGenerateView extends JFrame {
         super.setJMenuBar(menuBar);
     }
 
-    /*public void setReportGeneratePresenter(ReportGeneratePresenter presenter) {
-        checkNotNull(presenter);
-        this.presenter = presenter;
-    }*/
-
     private void setupUncaughtExceptionHandler() {
         Thread.setDefaultUncaughtExceptionHandler(
             new GlobalExceptionHandler());
@@ -82,33 +68,31 @@ public class ReportGenerateView extends JFrame {
             new AwtEventQueueExceptionHandler());
     }
 
-    /*public void onClickGenerateReport(LocalDate startDate, LocalDate endDate, File savePath) {
-        checkNotNull(startDate);
-        checkNotNull(endDate);
-        checkNotNull(savePath);
-//        presenter.onClickGenerateReport(startDate, endDate, savePath);
-    }*/
+    // ========= Методы для изменения данных =========
 
-    // ========= Методы для работы с модальными окнами =========
-
-    public void showWarningDialog(String message) {
-        WarningDialog.show(message);
-    }
-
-    public void showExceptionDialog(Exception e) {
-        ExceptionDialog.show(e);
-    }
-
-    // ========= Методы для работы с дочерними компонентами =========
-
+    @Override
     public void setSavePath(Path savePath) {
         form.savePathPickerInput().setSavePath(savePath);
     }
 
+    @Override
     public void setSuggestedFilename(String suggestedFilename) {
         form.savePathPickerInput().setSuggestedFilename(suggestedFilename);
     }
 
+    // ========= Методы для управления UI состоянием =========
+
+    @Override
+    public void showFrame() {
+        SwingUtilities.invokeLater(() -> {
+            super.pack();
+            SwingUtilities.updateComponentTreeUI(this);
+            super.setVisible(true);
+            super.getContentPane().requestFocusInWindow();
+        });
+    }
+
+    @Override
     public void disableSubmitButton() {
         if (form.submitButton().isEnabled())
             form.submitButton().setEnabled(false);
@@ -116,6 +100,7 @@ public class ReportGenerateView extends JFrame {
             throw new IllegalStateException("Кнопка подтверждения в форме уже выключен");
     }
 
+    @Override
     public void enableSubmitButton() {
         if (form.submitButton().isEnabled())
             throw new IllegalStateException("Кнопка подтверждения в форме уже включен");
@@ -123,28 +108,46 @@ public class ReportGenerateView extends JFrame {
             form.submitButton().setEnabled(true);
     }
 
+    // ========= Методы для отображения диалоговых окон =========
+
+    @Override
+    public void showWarningDialog(String message) {
+        WarningDialog.show(message);
+    }
+
+    @Override
+    public void showExceptionDialog(Exception e) {
+        ExceptionDialog.show(e);
+    }
+
     // ========= Методы для работы со слушателями в дочерних компонентах =========
 
+    @Override
     public void addGenerateReportFormSubmitListener(ReportGenerateFormSubmitListener l) {
         form.addGenerateReportFormSubmitListener(l);
     }
 
+    @Override
     public void removeGenerateReportFormSubmitListener(ReportGenerateFormSubmitListener l) {
         form.removeGenerateReportFormSubmitListener(l);
     }
 
+    @Override
     public void addSavePathChangeListener(SavePathChangeListener l) {
         form.savePathPickerInput().addSavePathChangeListener(l);
     }
 
+    @Override
     public void removeSavePathChangeListener(SavePathChangeListener l) {
         form.savePathPickerInput().removeSavePathChangeListener(l);
     }
 
+    @Override
     public void addDateRangeChangeListener(DateRangeChangeListener l) {
         form.dateRangePickerInput().addDateRangeChangeListener(l);
     }
 
+    @Override
     public void removeDateRangeChangeListener(DateRangeChangeListener l) {
         form.dateRangePickerInput().removeDateRangeChangeListener(l);
     }

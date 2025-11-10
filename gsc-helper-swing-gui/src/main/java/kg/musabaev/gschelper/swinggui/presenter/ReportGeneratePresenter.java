@@ -7,6 +7,7 @@ import kg.musabaev.gschelper.core.table.exception.LocalFileNotFoundException;
 import kg.musabaev.gschelper.core.table.output.file.local.TableDataOutputLocalFileSaver;
 import kg.musabaev.gschelper.swinggui.model.ReportGenerateModel;
 import kg.musabaev.gschelper.swinggui.util.XlsxFiles;
+import kg.musabaev.gschelper.swinggui.view.ReportGeneratePresenterViewContract;
 import kg.musabaev.gschelper.swinggui.view.ReportGenerateView;
 
 import java.nio.file.Path;
@@ -16,7 +17,7 @@ import java.util.regex.Matcher;
 
 public class ReportGeneratePresenter {
 
-    private final ReportGenerateView view;
+    private final ReportGeneratePresenterViewContract view;
     private final ReportGenerateModel model;
     private final ReportService reportService;
 

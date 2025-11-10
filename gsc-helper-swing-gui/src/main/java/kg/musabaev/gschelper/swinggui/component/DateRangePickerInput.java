@@ -12,7 +12,6 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static raven.datetime.component.date.DatePicker.DateSelectionMode.BETWEEN_DATE_SELECTED;
 
-@SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
 public class DateRangePickerInput extends JTextField {
 
     private final DatePicker datePicker;
@@ -45,17 +44,11 @@ public class DateRangePickerInput extends JTextField {
     }
 
     private void setupListeners() {
-        datePicker.addDateSelectionListener(dateEvent ->
-            fireDateRangeChange(startDate(), endDate()));
-
-        /*// Компонент DatePicker из сторонней библиотеки
+        // Компонент DatePicker из сторонней библиотеки
         // не вставляет новое значение в model (что абсолютно нормально).
         // Это строчка это исправляет
-        // model -> TextField.text (dateRange)
-        model.addPropertyChangeListener(event -> {
-            if (model.DATE_RANGE_FIELD_NAME.equals(event.getPropertyName()))
-                super.setText(((String) event.getNewValue()));
-        });*/
+        datePicker.addDateSelectionListener(dateEvent ->
+            fireDateRangeChange(startDate(), endDate()));
     }
 
     public void addDateRangeChangeListener(DateRangeChangeListener l) {
