@@ -9,6 +9,7 @@ import kg.musabaev.gschelper.core.gsc.collector.GscMetricsBetweenDateCollectorIm
 import kg.musabaev.gschelper.core.report.ReportServiceImpl;
 import kg.musabaev.gschelper.core.table.xlsx.ApachePoiXlsxBuilder;
 import kg.musabaev.gschelper.swinggui.model.ReportGenerateFormModel;
+import kg.musabaev.gschelper.swinggui.model.ReportGenerateModel;
 import kg.musabaev.gschelper.swinggui.presenter.ReportGeneratePresenter;
 import kg.musabaev.gschelper.swinggui.util.Constants;
 import kg.musabaev.gschelper.swinggui.util.Paths;
@@ -58,9 +59,9 @@ public class Main {
         ReportGenerateView view = new ReportGenerateView();
         ReportGeneratePresenter presenter = new ReportGeneratePresenter(
             view,
-            new ReportGenerateFormModel(),
+            new ReportGenerateModel(),
             buildReportService());
-        view.setReportGeneratePresenter(presenter);
+//        view.setReportGeneratePresenter(presenter);
         return view;
     }
 }

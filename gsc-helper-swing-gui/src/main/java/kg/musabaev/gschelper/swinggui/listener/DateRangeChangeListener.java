@@ -6,5 +6,5 @@ import java.util.EventListener;
 @FunctionalInterface
 public interface DateRangeChangeListener extends EventListener {
 
-    void dateRangeChanged(LocalDate startDate, LocalDate endDate);
+    void dateRangeChanged(LocalDate startDate, LocalDate endDate, String formattedDateRange);
 }

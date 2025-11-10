@@ -3,6 +3,7 @@ package kg.musabaev.gschelper.swinggui.model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+@Deprecated
 public class ReportGenerateFormModel {
 
     public final String DATE_RANGE_FIELD_NAME = "dateRange";

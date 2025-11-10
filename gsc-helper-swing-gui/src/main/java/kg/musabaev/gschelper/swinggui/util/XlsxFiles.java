@@ -8,6 +8,6 @@ public class XlsxFiles {
 
     public static final String NULL_FILENAME_TEMPLATE = "Отчет GSC за период (период).xlsx";
 
-    public static final Pattern FILENAME_PATTERN = Pattern.compile(".*Отчет GSC за период (.+)\\.xlsx$");
+    public static final Pattern FILENAME_PATTERN = Pattern.compile("Отчет GSC за период (.+)\\.xlsx$");
 
 }

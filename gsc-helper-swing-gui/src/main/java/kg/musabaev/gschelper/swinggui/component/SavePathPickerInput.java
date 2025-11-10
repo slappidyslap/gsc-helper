@@ -3,6 +3,7 @@ package kg.musabaev.gschelper.swinggui.component;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import kg.musabaev.gschelper.swinggui.listener.SavePathChangeListener;
 import kg.musabaev.gschelper.swinggui.model.ReportGenerateFormModel;
+import kg.musabaev.gschelper.swinggui.util.XlsxFiles;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -12,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -20,6 +22,7 @@ public class SavePathPickerInput extends JTextField {
     private final JToolBar toolBar;
     private final JButton button;
     private final List<SavePathChangeListener> savePathChangeListeners;
+    private Supplier<String> filenameSupplier;
 
     public SavePathPickerInput() {
         this.toolBar = new JToolBar();
@@ -52,10 +55,13 @@ public class SavePathPickerInput extends JTextField {
 
     private void onClickButton(ActionEvent event) {
         JFileChooser chooser = new JFileChooser();
-        String currentSavePath = super.getText();
 
-        if (!currentSavePath.isEmpty())
-            chooser.setSelectedFile(new File(currentSavePath));
+        if (super.getText().isEmpty())
+            if (filenameSupplier != null && !filenameSupplier.get().trim().isEmpty())
+                chooser.setSelectedFile(new File(filenameSupplier.get()));
+            else
+                chooser.setSelectedFile(new File(XlsxFiles.NULL_FILENAME_TEMPLATE));
+
         chooser.setFileFilter(new FileNameExtensionFilter("Файл Excel", "xlsx"));
 
         int result = chooser.showSaveDialog(button);
@@ -68,6 +74,11 @@ public class SavePathPickerInput extends JTextField {
 
     public Path savePath() {
         return Paths.get(super.getText());
+    }
+
+    public void setSavePath(Path savePath) {
+        if (super.getText().isEmpty()) return;
+        super.setText(savePath.toAbsolutePath().toString());
     }
 
 
@@ -120,6 +131,10 @@ public class SavePathPickerInput extends JTextField {
             model.setSavePath(updatedSavePath);
         }
     }*/
+
+    public void setFilenameSupplier(Supplier<String> supplier) {
+        filenameSupplier = supplier;
+    }
 
     public void addSavePathChangeListener(SavePathChangeListener l) {
         synchronized (savePathChangeListeners) {

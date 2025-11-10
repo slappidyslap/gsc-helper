@@ -17,7 +17,7 @@ public class ReportGenerateForm extends JPanel {
     private final JLabel dateRangePickerLabel;
     private final DateRangePickerInput dateRangePickerInput;
 
-    private final JLabel fileChooserLabel;
+    private final JLabel savePathPickerLabel;
     private final SavePathPickerInput savePathPickerInput;
 
     private final JButton submitButton;
@@ -27,7 +27,7 @@ public class ReportGenerateForm extends JPanel {
     public ReportGenerateForm() {
         this.dateRangePickerLabel = new JLabel();
         this.dateRangePickerInput = new DateRangePickerInput();
-        this.fileChooserLabel = new JLabel();
+        this.savePathPickerLabel = new JLabel();
         this.savePathPickerInput = new SavePathPickerInput();
         this.submitButton = new JButton();
         this.listeners = new ArrayList<>();
@@ -53,9 +53,9 @@ public class ReportGenerateForm extends JPanel {
     }
 
     private void setupFileChooserInput() {
-        fileChooserLabel.setText("Путь сохранения:");
+        savePathPickerLabel.setText("Путь сохранения:");
 
-        super.add(fileChooserLabel);
+        super.add(savePathPickerLabel);
         super.add(savePathPickerInput, "growx");
     }
 
@@ -87,8 +87,8 @@ public class ReportGenerateForm extends JPanel {
         return dateRangePickerInput;
     }
 
-    public JLabel fileChooserLabel() {
-        return fileChooserLabel;
+    public JLabel savePathPickerLabel() {
+        return savePathPickerLabel;
     }
 
     public SavePathPickerInput savePathPickerInput() {

@@ -33,7 +33,7 @@ public class ReportGenerateFormSubmitListenerImpl implements ReportGenerateFormS
      * Обрабатывает нажатие на кнопку подтверждения в форме {@link ReportGenerateForm}.
      * <p>
      * Передает выбранные пользователем параметры в метод
-     * {@link ReportGeneratePresenter#onClickGenerateReport(LocalDate, LocalDate, Path)}.
+     * {@link ReportGeneratePresenter#onGenerateReportFormSubmit(LocalDate, LocalDate, Path)}.
      *
      * @param startDate дата начала отчетного периода
      * @param endDate дата конца отчетного периода

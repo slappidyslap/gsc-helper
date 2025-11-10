@@ -15,8 +15,9 @@ import kg.musabaev.gschelper.swinggui.listener.impl.MenuBarListenerImpl;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
+import java.nio.file.Path;
 import java.time.LocalDate;
+import java.util.function.Supplier;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -85,11 +86,15 @@ public class ReportGenerateView extends JFrame {
             new AwtEventQueueExceptionHandler());
     }
 
-    public void onClickGenerateReport(LocalDate startDate, LocalDate endDate, File savePath) {
+    /*public void onClickGenerateReport(LocalDate startDate, LocalDate endDate, File savePath) {
         checkNotNull(startDate);
         checkNotNull(endDate);
         checkNotNull(savePath);
 //        presenter.onClickGenerateReport(startDate, endDate, savePath);
+    }*/
+
+    public void setSavePath(Path savePath) {
+        form.savePathPickerInput().setSavePath(savePath);
     }
 
     // ========= Методы для работы с модальными окнами =========
@@ -103,6 +108,10 @@ public class ReportGenerateView extends JFrame {
     }
 
     // ========= Методы для работы с дочерними компонентами =========
+
+    public void setSuggestedFilenameSupplier(Supplier<String> filenameSupplier) {
+        form.savePathPickerInput().setFilenameSupplier(filenameSupplier);
+    }
 
     public void disableSubmitButton() {
         if (form.submitButton().isEnabled())
