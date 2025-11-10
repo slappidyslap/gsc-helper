@@ -1,23 +1,25 @@
 package kg.musabaev.gschelper.swinggui.component;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import kg.musabaev.gschelper.swinggui.model.ReportGenerateFormModel;
+import kg.musabaev.gschelper.swinggui.listener.DateRangeChangeListener;
 import raven.datetime.component.date.DatePicker;
 
 import javax.swing.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static raven.datetime.component.date.DatePicker.DateSelectionMode.BETWEEN_DATE_SELECTED;
 
 public class DateRangePickerInput extends JTextField {
 
     private final DatePicker datePicker;
-    private final ReportGenerateFormModel model;
+    private final List<DateRangeChangeListener> dateRangeChangeListeners;
 
-    public DateRangePickerInput(ReportGenerateFormModel model) {
-        this.model = model;
-
+    public DateRangePickerInput() {
         this.datePicker = new DatePicker();
+        this.dateRangeChangeListeners = new ArrayList<>();
 
         setupUi();
         setupListeners();
@@ -46,15 +48,26 @@ public class DateRangePickerInput extends JTextField {
         // не вставляет новое значение в model (что абсолютно нормально).
         // Это строчка это исправляет
         datePicker.addDateSelectionListener(dateEvent ->
-            model.setDateRange(super.getText()));
-        // model -> TextField.text (dateRange)
-        model.addPropertyChangeListener(event -> {
-            if (model.DATE_RANGE_FIELD_NAME.equals(event.getPropertyName()))
-                super.setText(((String) event.getNewValue()));
-        });
+            fireDateRangeChange(startDate(), endDate()));
     }
 
-    public ReportGenerateFormModel model() {
-        return model;
+    public void addDateRangeChangeListener(DateRangeChangeListener l) {
+        synchronized (dateRangeChangeListeners) {
+            dateRangeChangeListeners.add(checkNotNull(l));
+        }
+    }
+
+    public void removeDateRangeChangeListener(DateRangeChangeListener l) {
+        synchronized (dateRangeChangeListeners) {
+            dateRangeChangeListeners.remove(checkNotNull(l));
+        }
+    }
+
+    public void fireDateRangeChange(LocalDate startDate, LocalDate endDate) {
+        synchronized (dateRangeChangeListeners) {
+            for (DateRangeChangeListener l : dateRangeChangeListeners) {
+                l.dateRangeChanged(startDate, endDate, super.getText());
+            }
+        }
     }
 }

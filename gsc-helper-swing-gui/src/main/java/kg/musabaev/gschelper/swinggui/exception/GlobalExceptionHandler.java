@@ -1,6 +1,6 @@
 package kg.musabaev.gschelper.swinggui.exception;
 
-import kg.musabaev.gschelper.swinggui.component.ExceptionDialog;
+import kg.musabaev.gschelper.swinggui.component.dialog.ExceptionDialog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

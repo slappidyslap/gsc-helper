@@ -4,11 +4,11 @@ import ch.qos.logback.classic.LoggerContext;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
-import kg.musabaev.gschelper.swinggui.component.ConfirmDialog;
-import kg.musabaev.gschelper.swinggui.component.ErrorDialog;
+import kg.musabaev.gschelper.swinggui.component.dialog.ConfirmDialog;
+import kg.musabaev.gschelper.swinggui.component.dialog.ErrorDialog;
 import kg.musabaev.gschelper.swinggui.listener.MenuBarListener;
 import kg.musabaev.gschelper.swinggui.util.Paths;
-import kg.musabaev.gschelper.swinggui.view.ReportGenerateView;
+import kg.musabaev.gschelper.swinggui.view.ReportLocalSaveView;
 import kg.musabaev.gschelper.swinggui.component.MenuBar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,9 +33,9 @@ public class MenuBarListenerImpl implements MenuBarListener {
 
     private static final Logger log = LoggerFactory.getLogger(MenuBarListenerImpl.class);
 
-    private final ReportGenerateView view;
+    private final ReportLocalSaveView view;
 
-    public MenuBarListenerImpl(ReportGenerateView view) {
+    public MenuBarListenerImpl(ReportLocalSaveView view) {
         this.view = view;
     }
 
@@ -78,6 +78,7 @@ public class MenuBarListenerImpl implements MenuBarListener {
     public void logoutGoogleItemMenuItemClicked() {
         if (ConfirmDialog.show("Вы правда хотите выйти из Google аккаунта?")) {
             try (Stream<Path> dirStream = Files.walk(Paths.APP_HOME)) {
+                //noinspection ResultOfMethodCallIgnored
                 dirStream
                     .sorted(Comparator.reverseOrder())
                     .map(Path::toFile)
