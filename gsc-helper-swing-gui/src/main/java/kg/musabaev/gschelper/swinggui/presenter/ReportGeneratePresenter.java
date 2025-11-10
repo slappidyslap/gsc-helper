@@ -5,6 +5,7 @@ import kg.musabaev.gschelper.core.gsc.exception.CredentialsFileNotFoundException
 import kg.musabaev.gschelper.core.gsc.exception.GscSitesNotFoundException;
 import kg.musabaev.gschelper.core.table.exception.LocalFileNotFoundException;
 import kg.musabaev.gschelper.core.table.output.file.local.TableDataOutputLocalFileSaver;
+import kg.musabaev.gschelper.swinggui.model.ReportGenerateFormModel;
 import kg.musabaev.gschelper.swinggui.view.ReportGenerateView;
 
 import java.io.File;
@@ -13,10 +14,16 @@ import java.time.LocalDate;
 public class ReportGeneratePresenter {
 
     private final ReportGenerateView view;
+    private final ReportGenerateFormModel model;
     private final ReportService reportService;
 
-    public ReportGeneratePresenter(ReportGenerateView view, ReportService reportService) {
+    public ReportGeneratePresenter(
+        ReportGenerateView view,
+        ReportGenerateFormModel model,
+        ReportService reportService
+        ) {
         this.view = view;
+        this.model = model;
         this.reportService = reportService;
     }
 

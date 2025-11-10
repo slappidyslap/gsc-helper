@@ -1,35 +1,38 @@
 package kg.musabaev.gschelper.swinggui.component;
 
-import kg.musabaev.gschelper.swinggui.listener.ReportGenerateFormListener;
-import kg.musabaev.gschelper.swinggui.model.ReportGenerateFormModel;
+import kg.musabaev.gschelper.swinggui.listener.DateRangeChangeListener;
+import kg.musabaev.gschelper.swinggui.listener.ReportGenerateFormSubmitListener;
+import kg.musabaev.gschelper.swinggui.listener.SavePathChangeListener;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.nio.file.Path;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ReportGenerateForm extends JPanel {
 
-    private final ReportGenerateFormModel model;
-
     private final JLabel dateRangePickerLabel;
     private final DateRangePickerInput dateRangePickerInput;
 
     private final JLabel fileChooserLabel;
-    private final FileChooserInput fileChooserInput;
+    private final SavePathPickerInput savePathPickerInput;
 
     private final JButton submitButton;
-    private ReportGenerateFormListener listener;
 
-    public ReportGenerateForm(ReportGenerateFormModel model) {
-        this.model = model;
+    private final List<ReportGenerateFormSubmitListener> listeners;
 
+    public ReportGenerateForm() {
         this.dateRangePickerLabel = new JLabel();
-        this.dateRangePickerInput = new DateRangePickerInput(model);
+        this.dateRangePickerInput = new DateRangePickerInput();
         this.fileChooserLabel = new JLabel();
-        this.fileChooserInput = new FileChooserInput(model);
+        this.savePathPickerInput = new SavePathPickerInput();
         this.submitButton = new JButton();
+        this.listeners = new ArrayList<>();
         setupUi();
     }
 
@@ -55,7 +58,7 @@ public class ReportGenerateForm extends JPanel {
         fileChooserLabel.setText("Путь сохранения:");
 
         super.add(fileChooserLabel);
-        super.add(fileChooserInput, "growx");
+        super.add(savePathPickerInput, "growx");
     }
 
     private void setupVerticalSpace() {
@@ -68,10 +71,10 @@ public class ReportGenerateForm extends JPanel {
     private void setupSubmitButton() {
         submitButton.setText("Принять");
         submitButton.addActionListener(e ->
-            listener.generateReportClicked(
+            fireGenerateReportFormSubmit(
                 dateRangePickerInput.startDate(),
                 dateRangePickerInput.endDate(),
-                fileChooserInput.savePath()));
+                savePathPickerInput.savePath()));
 
         super.add(submitButton, "span 2 4, growx");
     }
@@ -80,8 +83,39 @@ public class ReportGenerateForm extends JPanel {
         return submitButton;
     }
 
-    public void setListener(ReportGenerateFormListener listener) {
-        checkNotNull(listener);
-        this.listener = listener;
+    public void addGenerateReportFormSubmitListener(ReportGenerateFormSubmitListener l) {
+        synchronized (listeners) {
+            listeners.add(checkNotNull(l));
+        }
+    }
+
+    public void removeGenerateReportFormSubmitListener(ReportGenerateFormSubmitListener l) {
+        synchronized (listeners) {
+            listeners.add(checkNotNull(l));
+        }
+    }
+
+    public void fireGenerateReportFormSubmit(LocalDate startDate, LocalDate endDate, Path savePath) {
+        synchronized (listeners) {
+            for (ReportGenerateFormSubmitListener l : listeners) {
+                l.formSubmitted(startDate, endDate, savePath);
+            }
+        }
+    }
+
+    public void addSavePathChangedListener(SavePathChangeListener l) {
+        savePathPickerInput.addListener(l);
+    }
+
+    public void removeSavePathChangedListener(SavePathChangeListener l) {
+        savePathPickerInput.removeListener(l);
+    }
+
+    public void addDateRangeChangedListener(DateRangeChangeListener l) {
+        dateRangePickerInput.addListener(l);
+    }
+
+    public void removeDateRangeChangedListener(DateRangeChangeListener l) {
+        dateRangePickerInput.removeListener(l);
     }
 }

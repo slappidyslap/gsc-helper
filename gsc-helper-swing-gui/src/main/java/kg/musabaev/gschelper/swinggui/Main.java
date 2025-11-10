@@ -55,8 +55,11 @@ public class Main {
     }
 
     private static ReportGenerateView buildReportView() {
-        ReportGenerateView view = new ReportGenerateView(new ReportGenerateFormModel());
-        ReportGeneratePresenter presenter = new ReportGeneratePresenter(view, buildReportService());
+        ReportGenerateView view = new ReportGenerateView();
+        ReportGeneratePresenter presenter = new ReportGeneratePresenter(
+            view,
+            new ReportGenerateFormModel(),
+            buildReportService());
         view.setReportGeneratePresenter(presenter);
         return view;
     }

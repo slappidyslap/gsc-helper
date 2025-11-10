@@ -9,8 +9,6 @@ import kg.musabaev.gschelper.swinggui.component.WarningDialog;
 import kg.musabaev.gschelper.swinggui.exception.AwtEventQueueExceptionHandler;
 import kg.musabaev.gschelper.swinggui.exception.GlobalExceptionHandler;
 import kg.musabaev.gschelper.swinggui.listener.impl.MenuBarListenerImpl;
-import kg.musabaev.gschelper.swinggui.listener.impl.ReportGenerateFormListenerImpl;
-import kg.musabaev.gschelper.swinggui.model.ReportGenerateFormModel;
 import kg.musabaev.gschelper.swinggui.presenter.ReportGeneratePresenter;
 
 import javax.swing.*;
@@ -22,16 +20,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ReportGenerateView extends JFrame {
 
-    private final ReportGenerateFormModel model;
+    private final JMenuBar menuBar;
     private final ReportGenerateForm form;
 
     private ReportGeneratePresenter presenter;
 
-    public ReportGenerateView(ReportGenerateFormModel model) {
+    public ReportGenerateView() {
         setupLaf();
 
-        this.model = checkNotNull(model);
-        this.form = new ReportGenerateForm(model);
+        this.menuBar = new MenuBar();
+        this.form = new ReportGenerateForm();
 
         setupAppIcon();
         setupMenuBar();
@@ -53,7 +51,6 @@ public class ReportGenerateView extends JFrame {
         super.setSize(650, 200);
         super.setLocationRelativeTo(null);
 
-        form.setListener(new ReportGenerateFormListenerImpl(this));
         super.add(form);
     }
 

@@ -1,37 +1,33 @@
 package kg.musabaev.gschelper.swinggui.component;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import kg.musabaev.gschelper.swinggui.listener.SavePathChangeListener;
 import kg.musabaev.gschelper.swinggui.model.ReportGenerateFormModel;
-import kg.musabaev.gschelper.swinggui.util.XlsxFiles;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeEvent;
 import java.io.File;
-import java.util.regex.Matcher;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
-import static java.lang.String.format;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-public class FileChooserInput extends JTextField {
-
-    private final ReportGenerateFormModel model;
+public class SavePathPickerInput extends JTextField {
 
     private final JToolBar toolBar;
     private final JButton button;
+    private final List<SavePathChangeListener> listeners;
 
-    public FileChooserInput(ReportGenerateFormModel model) {
-        this.model = model;
-
+    public SavePathPickerInput() {
         this.toolBar = new JToolBar();
         this.button = new JButton();
+        this.listeners = new ArrayList<>();
 
         setupUi();
         setupListeners();
-    }
-
-    public File savePath() {
-        return new File(super.getText());
     }
 
     protected void setupUi() {
@@ -42,16 +38,36 @@ public class FileChooserInput extends JTextField {
     }
 
     private void setupListeners() {
-        //  model -> TextField.text (file)
+        button.addActionListener(this::onClickButton);
+
+        /*//  model -> TextField.text (file)
         model.addPropertyChangeListener(event -> {
             if (model.SAVE_PATH_FIELD_NAME.equals(event.getPropertyName())) {
                 super.setText((String) event.getNewValue());
             }
         });
 
-        button.addActionListener(this::onClickButton);
+        model.addPropertyChangeListener(this::onDateRangeModelChanged);*/
+    }
 
-        model.addPropertyChangeListener(this::onDateRangeModelChanged);
+    private void onClickButton(ActionEvent event) {
+        JFileChooser chooser = new JFileChooser();
+        String currentSavePath = super.getText();
+
+        if (!currentSavePath.isEmpty())
+            chooser.setSelectedFile(new File(currentSavePath));
+        chooser.setFileFilter(new FileNameExtensionFilter("Файл Excel", "xlsx"));
+
+        int result = chooser.showSaveDialog(button);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File newSelectedFile = chooser.getSelectedFile();
+            super.setText(newSelectedFile.getAbsolutePath());
+            fireSavePathChange(newSelectedFile.toPath());
+        }
+    }
+
+    public Path savePath() {
+        return Paths.get(super.getText());
     }
 
 
@@ -59,7 +75,7 @@ public class FileChooserInput extends JTextField {
      * При клике кнопки внутри TextField, открываем окно выбора файла.
      * Подставляем в названии файла выбранную дату из модели {@link ReportGenerateFormModel}.
      */
-    private void onClickButton(ActionEvent event) {
+    /*private void onClickButton(ActionEvent event) {
         String dateRangeAsString = model.dateRange();
 
         JFileChooser chooser = new JFileChooser();
@@ -75,13 +91,14 @@ public class FileChooserInput extends JTextField {
         if (result == JFileChooser.APPROVE_OPTION) {
             model.setSavePath(Matcher.quoteReplacement(chooser.getSelectedFile().getAbsolutePath()));
         }
-    }
+    }*/
 
+    /*
     /**
      * Подписываемся на изменения даты в модели {@link ReportGenerateFormModel}.
      * Когда дата изменяется, при определенных условиях подставляем новое название файла
      * @param event событие об изменении <b>всех</b> полей в модели {@link ReportGenerateFormModel}
-     */
+     *//*
     private void onDateRangeModelChanged(PropertyChangeEvent event) {
         if (model.DATE_RANGE_FIELD_NAME.equals(event.getPropertyName())) {
             // Если текста в JTextField нет/если пользователь не еще
@@ -102,9 +119,24 @@ public class FileChooserInput extends JTextField {
             String updatedSavePath = path.replace(savePathMatcher.group(1), model.dateRange());
             model.setSavePath(updatedSavePath);
         }
+    }*/
+
+    public void addListener(SavePathChangeListener l) {
+        synchronized (listeners) {
+            listeners.add(checkNotNull(l));
+        }
     }
 
-    public ReportGenerateFormModel model() {
-        return model;
+    public void removeListener(SavePathChangeListener l) {
+        synchronized (listeners) {
+            listeners.remove(checkNotNull(l));
+        }
+    }
+
+    public void fireSavePathChange(Path newSavePath) {
+        synchronized (listeners) {
+            for (SavePathChangeListener l : listeners)
+                l.savePathChanged(newSavePath);
+        }
     }
 }

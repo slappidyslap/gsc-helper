@@ -1,44 +1,50 @@
 package kg.musabaev.gschelper.swinggui.listener.impl;
 
-import kg.musabaev.gschelper.swinggui.listener.ReportGenerateFormListener;
-import kg.musabaev.gschelper.swinggui.presenter.ReportGeneratePresenter;
 import kg.musabaev.gschelper.swinggui.component.ReportGenerateForm;
+import kg.musabaev.gschelper.swinggui.listener.ReportGenerateFormSubmitListener;
+import kg.musabaev.gschelper.swinggui.presenter.ReportGeneratePresenter;
 import kg.musabaev.gschelper.swinggui.view.ReportGenerateView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.time.LocalDate;
 
 /**
- * Реализация {@link ReportGenerateFormListener}, отвечающая за обработку действий пользователя
+ * Реализация {@link ReportGenerateFormSubmitListener}, отвечающая за обработку действий пользователя
  * в форме генерации отчета (ReportGenerateView).
  */
-public class ReportGenerateFormListenerImpl implements ReportGenerateFormListener {
+@Deprecated
+public class ReportGenerateFormSubmitListenerImpl implements ReportGenerateFormSubmitListener {
 
-    private static final Logger log = LoggerFactory.getLogger(ReportGenerateFormListenerImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(ReportGenerateFormSubmitListenerImpl.class);
     private final ReportGenerateView view;
 
-    public ReportGenerateFormListenerImpl(ReportGenerateView view) {
+    public ReportGenerateFormSubmitListenerImpl(ReportGenerateView view) {
         this.view = view;
     }
 
-    /**
+    @Override
+    public void formSubmitted(LocalDate startDate, LocalDate endDate, Path savePath) {
+
+    }
+    /*
+    *//**
      * Обрабатывает нажатие на кнопку подтверждения в форме {@link ReportGenerateForm}.
      * <p>
      * Передает выбранные пользователем параметры в метод
-     * {@link ReportGeneratePresenter#onClickGenerateReport(LocalDate, LocalDate, File)}.
+     * {@link ReportGeneratePresenter#onClickGenerateReport(LocalDate, LocalDate, Path)}.
      *
      * @param startDate дата начала отчетного периода
      * @param endDate дата конца отчетного периода
      * @param savePath путь, по которому нужно сохранить сгенерированный отчет
-     */
+     *//*
     @Override
-    public void generateReportClicked(LocalDate startDate, LocalDate endDate, File savePath) {
+    public void formSubmitted(LocalDate startDate, LocalDate endDate, Path savePath) {
         view.onClickGenerateReport(startDate, endDate, savePath);
         log.info(
             "Запрос на создания отчета за период {} - {} отправлена." +
                 "Отчет будет сохранен в {}",
             savePath, endDate, savePath);
-    }
+    }*/
 }
