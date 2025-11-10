@@ -19,8 +19,6 @@ public interface ReportLocalSavePresenterViewContract {
 
     // ========= Методы для управления UI состоянием =========
 
-    void showFrame();
-
     void disableSubmitButton();
 
     void enableSubmitButton();

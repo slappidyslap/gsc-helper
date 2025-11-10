@@ -8,7 +8,7 @@ import kg.musabaev.gschelper.core.table.output.file.local.TableDataOutputLocalFi
 import kg.musabaev.gschelper.swinggui.listener.DateRangeChangeListener;
 import kg.musabaev.gschelper.swinggui.listener.ReportLocalSaveFormSubmitListener;
 import kg.musabaev.gschelper.swinggui.listener.SavePathChangeListener;
-import kg.musabaev.gschelper.swinggui.model.ReportLocalSaveModel;
+import kg.musabaev.gschelper.swinggui.model.ReportLocalSaveFormModel;
 import kg.musabaev.gschelper.swinggui.util.XlsxFiles;
 import kg.musabaev.gschelper.swinggui.view.contract.ReportLocalSavePresenterViewContract;
 
@@ -17,16 +17,15 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.regex.Matcher;
 
-public class ReportLocalSavePresenter {
+public class ReportLocalSaveFormPresenter {
 
     private final ReportLocalSavePresenterViewContract view;
-    private final ReportLocalSaveModel model;
-//    private final MenuBarService menuBarService;
+    private final ReportLocalSaveFormModel model;
     private final ReportService reportService;
 
-    public ReportLocalSavePresenter(
+    public ReportLocalSaveFormPresenter(
             ReportLocalSavePresenterViewContract view,
-            ReportLocalSaveModel model,
+            ReportLocalSaveFormModel model,
             ReportService reportService
     ) {
         this.view = view;
@@ -34,10 +33,6 @@ public class ReportLocalSavePresenter {
         this.reportService = reportService;
 
         attachListeners();
-    }
-
-    public void start() {
-        view.showFrame();
     }
 
     private void attachListeners() {

@@ -1,6 +1,11 @@
 package kg.musabaev.gschelper.swinggui.component;
 
+import kg.musabaev.gschelper.swinggui.component.dialog.ExceptionDialog;
+import kg.musabaev.gschelper.swinggui.component.dialog.WarningDialog;
+import kg.musabaev.gschelper.swinggui.listener.DateRangeChangeListener;
 import kg.musabaev.gschelper.swinggui.listener.ReportLocalSaveFormSubmitListener;
+import kg.musabaev.gschelper.swinggui.listener.SavePathChangeListener;
+import kg.musabaev.gschelper.swinggui.view.contract.ReportLocalSavePresenterViewContract;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -12,7 +17,7 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class ReportLocalSaveForm extends JPanel {
+public class ReportLocalSaveForm extends JPanel implements ReportLocalSavePresenterViewContract {
 
     private final JLabel dateRangePickerLabel;
     private final DateRangePickerInput dateRangePickerInput;
@@ -77,6 +82,93 @@ public class ReportLocalSaveForm extends JPanel {
         super.add(submitButton, "span 2 4, growx");
     }
 
+
+    // ========= Методы для изменения данных =========
+
+    @Override
+    public void setSavePath(Path savePath) {
+        savePathPickerInput().setSavePath(savePath);
+    }
+
+    @Override
+    public void setSuggestedFilename(String suggestedFilename) {
+        savePathPickerInput().setSuggestedFilename(suggestedFilename);
+    }
+
+    // ========= Методы для управления UI состоянием =========
+
+    @Override
+    public void disableSubmitButton() {
+        if (submitButton().isEnabled())
+            submitButton().setEnabled(false);
+        else
+            throw new IllegalStateException("Кнопка подтверждения в форме уже выключен");
+    }
+
+    @Override
+    public void enableSubmitButton() {
+        if (submitButton().isEnabled())
+            throw new IllegalStateException("Кнопка подтверждения в форме уже включен");
+        else
+            submitButton().setEnabled(true);
+    }
+
+    // ========= Методы для отображения диалоговых окон =========
+
+    @Override
+    public void showWarningDialog(String message) {
+        WarningDialog.show(message);
+    }
+
+    @Override
+    public void showExceptionDialog(Exception e) {
+        ExceptionDialog.show(e);
+    }
+
+    // ========= Методы для работы со слушателями =========
+
+    @Override
+    public void addGenerateReportFormSubmitListener(ReportLocalSaveFormSubmitListener l) {
+        synchronized (listeners) {
+            listeners.add(checkNotNull(l));
+        }
+    }
+
+    @Override
+    public void removeGenerateReportFormSubmitListener(ReportLocalSaveFormSubmitListener l) {
+        synchronized (listeners) {
+            listeners.add(checkNotNull(l));
+        }
+    }
+
+    public void fireGenerateReportFormSubmit(LocalDate startDate, LocalDate endDate, Path savePath) {
+        synchronized (listeners) {
+            for (ReportLocalSaveFormSubmitListener l : listeners) {
+                l.formSubmitted(startDate, endDate, savePath);
+            }
+        }
+    }
+
+    @Override
+    public void addDateRangeChangeListener(DateRangeChangeListener l) {
+        dateRangePickerInput().addDateRangeChangeListener(l);
+    }
+
+    @Override
+    public void removeDateRangeChangeListener(DateRangeChangeListener l) {
+        dateRangePickerInput().removeDateRangeChangeListener(l);
+    }
+
+    @Override
+    public void addSavePathChangeListener(SavePathChangeListener l) {
+        savePathPickerInput().addSavePathChangeListener(l);
+    }
+
+    @Override
+    public void removeSavePathChangeListener(SavePathChangeListener l) {
+        savePathPickerInput().removeSavePathChangeListener(l);
+    }
+
     // ========= Методы для обращения к дочерним компонентам =========
 
     public JLabel dateRangePickerLabel() {
@@ -97,27 +189,5 @@ public class ReportLocalSaveForm extends JPanel {
 
     public JButton submitButton() {
         return submitButton;
-    }
-
-    // ========= Методы для работы со слушателями в дочерних компонентах =========
-
-    public void addGenerateReportFormSubmitListener(ReportLocalSaveFormSubmitListener l) {
-        synchronized (listeners) {
-            listeners.add(checkNotNull(l));
-        }
-    }
-
-    public void removeGenerateReportFormSubmitListener(ReportLocalSaveFormSubmitListener l) {
-        synchronized (listeners) {
-            listeners.add(checkNotNull(l));
-        }
-    }
-
-    public void fireGenerateReportFormSubmit(LocalDate startDate, LocalDate endDate, Path savePath) {
-        synchronized (listeners) {
-            for (ReportLocalSaveFormSubmitListener l : listeners) {
-                l.formSubmitted(startDate, endDate, savePath);
-            }
-        }
     }
 }

@@ -2,8 +2,8 @@ package kg.musabaev.gschelper.swinggui;
 
 import kg.musabaev.gschelper.api.report.ReportService;
 import kg.musabaev.gschelper.swinggui.listener.DateRangeChangeListener;
-import kg.musabaev.gschelper.swinggui.model.ReportLocalSaveModel;
-import kg.musabaev.gschelper.swinggui.presenter.ReportLocalSavePresenter;
+import kg.musabaev.gschelper.swinggui.model.ReportLocalSaveFormModel;
+import kg.musabaev.gschelper.swinggui.presenter.ReportLocalSaveFormPresenter;
 import kg.musabaev.gschelper.swinggui.util.XlsxFiles;
 import kg.musabaev.gschelper.swinggui.view.contract.ReportLocalSavePresenterViewContract;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,17 +29,17 @@ import static org.mockito.Mockito.*;
 @SuppressWarnings("unused")
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class ReportLocalSavePresenterOnDateRangeChangeTest {
+public class ReportLocalSaveFormPresenterOnDateRangeChangeTest {
 
     @Mock
     private ReportLocalSavePresenterViewContract view;
     @Mock
-    private ReportLocalSaveModel model;
+    private ReportLocalSaveFormModel model;
     @Mock
     private ReportService service;
 
     @InjectMocks
-    private ReportLocalSavePresenter presenter;
+    private ReportLocalSaveFormPresenter presenter;
 
     @Captor
     private ArgumentCaptor<DateRangeChangeListener> dateRangeChangeListenerCaptor;

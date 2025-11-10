@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class ReportLocalSaveModel {
+public class ReportLocalSaveFormModel {
 
     private Path savePath;
     private LocalDate startDate;

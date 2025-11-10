@@ -10,9 +10,9 @@ import kg.musabaev.gschelper.core.report.ReportServiceImpl;
 import kg.musabaev.gschelper.core.table.xlsx.ApachePoiXlsxBuilder;
 import kg.musabaev.gschelper.swinggui.exception.GlobalExceptionHandler;
 import kg.musabaev.gschelper.swinggui.model.MenuBarModel;
-import kg.musabaev.gschelper.swinggui.model.ReportLocalSaveModel;
+import kg.musabaev.gschelper.swinggui.model.ReportLocalSaveFormModel;
 import kg.musabaev.gschelper.swinggui.presenter.MenuBarPresenter;
-import kg.musabaev.gschelper.swinggui.presenter.ReportLocalSavePresenter;
+import kg.musabaev.gschelper.swinggui.presenter.ReportLocalSaveFormPresenter;
 import kg.musabaev.gschelper.swinggui.util.Constants;
 import kg.musabaev.gschelper.swinggui.util.Paths;
 import kg.musabaev.gschelper.swinggui.view.MainView;
@@ -22,7 +22,6 @@ import kg.musabaev.gschelper.swinggui.view.contract.ReportLocalSavePresenterView
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 
@@ -38,7 +37,7 @@ public class Main {
             MenuBarViewWrapper menuBarViewWrapper = new MenuBarViewWrapper();
             MainView mainView = new MainView(menuBarViewWrapper);
             MenuBarPresenter presenter1 = buildMenuBarPresenter(menuBarViewWrapper);
-            ReportLocalSavePresenter presenter = buildReportLocalSavePresenter(mainView);
+            ReportLocalSaveFormPresenter presenter = buildReportLocalSavePresenter(mainView);
             mainView.showFrame();
         });
     }
@@ -85,10 +84,10 @@ public class Main {
             new MenuBarModel(true, true));
     }
 
-    private static ReportLocalSavePresenter buildReportLocalSavePresenter(ReportLocalSavePresenterViewContract view) {
-        return new ReportLocalSavePresenter(
+    private static ReportLocalSaveFormPresenter buildReportLocalSavePresenter(ReportLocalSavePresenterViewContract view) {
+        return new ReportLocalSaveFormPresenter(
             view,
-            new ReportLocalSaveModel(),
+            new ReportLocalSaveFormModel(),
             buildReportService());
     }
 }
