@@ -1,7 +1,7 @@
 package kg.musabaev.gschelper.swinggui.view;
 
 import kg.musabaev.gschelper.swinggui.listener.DateRangeChangeListener;
-import kg.musabaev.gschelper.swinggui.listener.ReportGenerateFormSubmitListener;
+import kg.musabaev.gschelper.swinggui.listener.ReportLocalSaveFormSubmitListener;
 import kg.musabaev.gschelper.swinggui.listener.SavePathChangeListener;
 
 import java.nio.file.Path;
@@ -9,7 +9,7 @@ import java.nio.file.Path;
 /**
  * Интерфейс определяющий контракт между View и Presenter.
  */
-public interface ReportGeneratePresenterViewContract {
+public interface ReportLocalSavePresenterViewContract {
 
     // ========= Методы для изменения данных =========
 
@@ -33,10 +33,10 @@ public interface ReportGeneratePresenterViewContract {
 
     // ========= Методы для работы со слушателями в дочерних компонентах =========
 
-    void addGenerateReportFormSubmitListener(ReportGenerateFormSubmitListener l);
+    void addGenerateReportFormSubmitListener(ReportLocalSaveFormSubmitListener l);
 
     @SuppressWarnings("unused")
-    void removeGenerateReportFormSubmitListener(ReportGenerateFormSubmitListener l);
+    void removeGenerateReportFormSubmitListener(ReportLocalSaveFormSubmitListener l);
 
     void addSavePathChangeListener(SavePathChangeListener l);
 

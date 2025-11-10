@@ -1,6 +1,7 @@
 package kg.musabaev.gschelper.swinggui.listener;
 
 import kg.musabaev.gschelper.swinggui.component.MenuBar;
+
 /**
  * Слушатель на нажатия элементы в {@link MenuBar}
  */

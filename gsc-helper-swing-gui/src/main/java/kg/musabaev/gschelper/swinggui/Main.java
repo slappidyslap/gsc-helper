@@ -8,12 +8,11 @@ import kg.musabaev.gschelper.core.gsc.GscApiAuthorizationCodeFlowBuilder;
 import kg.musabaev.gschelper.core.gsc.collector.GscMetricsBetweenDateCollectorImpl;
 import kg.musabaev.gschelper.core.report.ReportServiceImpl;
 import kg.musabaev.gschelper.core.table.xlsx.ApachePoiXlsxBuilder;
-import kg.musabaev.gschelper.swinggui.model.ReportGenerateFormModel;
-import kg.musabaev.gschelper.swinggui.model.ReportGenerateModel;
-import kg.musabaev.gschelper.swinggui.presenter.ReportGeneratePresenter;
+import kg.musabaev.gschelper.swinggui.model.ReportLocalSaveModel;
+import kg.musabaev.gschelper.swinggui.presenter.ReportLocalSavePresenter;
 import kg.musabaev.gschelper.swinggui.util.Constants;
 import kg.musabaev.gschelper.swinggui.util.Paths;
-import kg.musabaev.gschelper.swinggui.view.ReportGenerateView;
+import kg.musabaev.gschelper.swinggui.view.ReportLocalSaveView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +29,7 @@ public class Main {
 
         long startTime = currentTimeMillis();
 
-        ReportGenerateView gui = buildReportView();
+        ReportLocalSaveView gui = buildReportView();
         gui.showFrame();
 
         long duration = currentTimeMillis() - startTime;
@@ -55,11 +54,11 @@ public class Main {
                 new ApachePoiXlsxBuilder("Метрики")));
     }
 
-    private static ReportGenerateView buildReportView() {
-        ReportGenerateView view = new ReportGenerateView();
-        ReportGeneratePresenter presenter = new ReportGeneratePresenter(
+    private static ReportLocalSaveView buildReportView() {
+        ReportLocalSaveView view = new ReportLocalSaveView();
+        ReportLocalSavePresenter presenter = new ReportLocalSavePresenter(
             view,
-            new ReportGenerateModel(),
+            new ReportLocalSaveModel(),
             buildReportService());
 //        view.setReportGeneratePresenter(presenter);
         return view;

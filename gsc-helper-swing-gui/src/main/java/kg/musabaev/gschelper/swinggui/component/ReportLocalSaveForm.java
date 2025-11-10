@@ -1,6 +1,6 @@
 package kg.musabaev.gschelper.swinggui.component;
 
-import kg.musabaev.gschelper.swinggui.listener.ReportGenerateFormSubmitListener;
+import kg.musabaev.gschelper.swinggui.listener.ReportLocalSaveFormSubmitListener;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -12,7 +12,7 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class ReportGenerateForm extends JPanel {
+public class ReportLocalSaveForm extends JPanel {
 
     private final JLabel dateRangePickerLabel;
     private final DateRangePickerInput dateRangePickerInput;
@@ -22,9 +22,9 @@ public class ReportGenerateForm extends JPanel {
 
     private final JButton submitButton;
 
-    private final List<ReportGenerateFormSubmitListener> listeners;
+    private final List<ReportLocalSaveFormSubmitListener> listeners;
 
-    public ReportGenerateForm() {
+    public ReportLocalSaveForm() {
         this.dateRangePickerLabel = new JLabel();
         this.dateRangePickerInput = new DateRangePickerInput();
         this.savePathPickerLabel = new JLabel();
@@ -101,13 +101,13 @@ public class ReportGenerateForm extends JPanel {
 
     // ========= Методы для работы со слушателями в дочерних компонентах =========
 
-    public void addGenerateReportFormSubmitListener(ReportGenerateFormSubmitListener l) {
+    public void addGenerateReportFormSubmitListener(ReportLocalSaveFormSubmitListener l) {
         synchronized (listeners) {
             listeners.add(checkNotNull(l));
         }
     }
 
-    public void removeGenerateReportFormSubmitListener(ReportGenerateFormSubmitListener l) {
+    public void removeGenerateReportFormSubmitListener(ReportLocalSaveFormSubmitListener l) {
         synchronized (listeners) {
             listeners.add(checkNotNull(l));
         }
@@ -115,7 +115,7 @@ public class ReportGenerateForm extends JPanel {
 
     public void fireGenerateReportFormSubmit(LocalDate startDate, LocalDate endDate, Path savePath) {
         synchronized (listeners) {
-            for (ReportGenerateFormSubmitListener l : listeners) {
+            for (ReportLocalSaveFormSubmitListener l : listeners) {
                 l.formSubmitted(startDate, endDate, savePath);
             }
         }

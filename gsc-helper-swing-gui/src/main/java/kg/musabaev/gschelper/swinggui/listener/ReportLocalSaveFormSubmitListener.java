@@ -1,19 +1,17 @@
 package kg.musabaev.gschelper.swinggui.listener;
 
-import kg.musabaev.gschelper.swinggui.component.ReportGenerateForm;
+import kg.musabaev.gschelper.swinggui.component.ReportLocalSaveForm;
 
 import java.nio.file.Path;
 import java.time.LocalDate;
 
 /**
- * Слушатель нажатие кнопки подтверждения в форме {@link ReportGenerateForm}
+ * Слушатель нажатие кнопки подтверждения в форме {@link ReportLocalSaveForm}
  */
-public interface ReportGenerateFormSubmitListener {
+@FunctionalInterface
+public interface ReportLocalSaveFormSubmitListener {
 
     /**
-     * Обрабатывает нажатие на кнопку подтверждения в форме {@link ReportGenerateForm}.
-     * <p>
-     *
      * @param startDate дата начала отчетного периода
      * @param endDate дата конца отчетного периода
      * @param savePath путь, по которому нужно сохранить сгенерированный отчет

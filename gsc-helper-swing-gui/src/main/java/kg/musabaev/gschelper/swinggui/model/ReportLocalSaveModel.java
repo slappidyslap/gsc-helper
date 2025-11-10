@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class ReportGenerateModel {
+public class ReportLocalSaveModel {
 
     private Path savePath;
     private LocalDate startDate;
@@ -19,6 +19,7 @@ public class ReportGenerateModel {
         this.savePath = checkNotNull(savePath);
     }
 
+    @SuppressWarnings("unused")
     public LocalDate startDate() {
         return startDate;
     }
@@ -27,6 +28,7 @@ public class ReportGenerateModel {
         this.startDate = checkNotNull(startDate);
     }
 
+    @SuppressWarnings("unused")
     public LocalDate endDate() {
         return endDate;
     }

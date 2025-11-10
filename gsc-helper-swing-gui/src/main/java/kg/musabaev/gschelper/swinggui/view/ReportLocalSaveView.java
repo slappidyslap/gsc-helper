@@ -3,13 +3,13 @@ package kg.musabaev.gschelper.swinggui.view;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import kg.musabaev.gschelper.swinggui.component.MenuBar;
-import kg.musabaev.gschelper.swinggui.component.ReportGenerateForm;
+import kg.musabaev.gschelper.swinggui.component.ReportLocalSaveForm;
 import kg.musabaev.gschelper.swinggui.component.dialog.ExceptionDialog;
 import kg.musabaev.gschelper.swinggui.component.dialog.WarningDialog;
 import kg.musabaev.gschelper.swinggui.exception.AwtEventQueueExceptionHandler;
 import kg.musabaev.gschelper.swinggui.exception.GlobalExceptionHandler;
 import kg.musabaev.gschelper.swinggui.listener.DateRangeChangeListener;
-import kg.musabaev.gschelper.swinggui.listener.ReportGenerateFormSubmitListener;
+import kg.musabaev.gschelper.swinggui.listener.ReportLocalSaveFormSubmitListener;
 import kg.musabaev.gschelper.swinggui.listener.SavePathChangeListener;
 import kg.musabaev.gschelper.swinggui.listener.impl.MenuBarListenerImpl;
 
@@ -17,16 +17,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.nio.file.Path;
 
-public class ReportGenerateView extends JFrame implements ReportGeneratePresenterViewContract {
+public class ReportLocalSaveView extends JFrame implements ReportLocalSavePresenterViewContract {
 
     private final MenuBar menuBar;
-    private final ReportGenerateForm form;
+    private final ReportLocalSaveForm form;
 
-    public ReportGenerateView() {
+    public ReportLocalSaveView() {
         setupLaf();
 
         this.menuBar = new MenuBar();
-        this.form = new ReportGenerateForm();
+        this.form = new ReportLocalSaveForm();
 
         setupAppIcon();
         setupMenuBar();
@@ -123,12 +123,12 @@ public class ReportGenerateView extends JFrame implements ReportGeneratePresente
     // ========= Методы для работы со слушателями в дочерних компонентах =========
 
     @Override
-    public void addGenerateReportFormSubmitListener(ReportGenerateFormSubmitListener l) {
+    public void addGenerateReportFormSubmitListener(ReportLocalSaveFormSubmitListener l) {
         form.addGenerateReportFormSubmitListener(l);
     }
 
     @Override
-    public void removeGenerateReportFormSubmitListener(ReportGenerateFormSubmitListener l) {
+    public void removeGenerateReportFormSubmitListener(ReportLocalSaveFormSubmitListener l) {
         form.removeGenerateReportFormSubmitListener(l);
     }
 
