@@ -1,4 +1,4 @@
-package kg.musabaev.gschelper.swinggui.component;
+package kg.musabaev.gschelper.swinggui.component.dialog;
 
 import javax.swing.*;
 

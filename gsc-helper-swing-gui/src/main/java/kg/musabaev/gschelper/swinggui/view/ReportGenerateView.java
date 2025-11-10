@@ -2,10 +2,10 @@ package kg.musabaev.gschelper.swinggui.view;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
-import kg.musabaev.gschelper.swinggui.component.ExceptionDialog;
+import kg.musabaev.gschelper.swinggui.component.dialog.ExceptionDialog;
 import kg.musabaev.gschelper.swinggui.component.MenuBar;
 import kg.musabaev.gschelper.swinggui.component.ReportGenerateForm;
-import kg.musabaev.gschelper.swinggui.component.WarningDialog;
+import kg.musabaev.gschelper.swinggui.component.dialog.WarningDialog;
 import kg.musabaev.gschelper.swinggui.exception.AwtEventQueueExceptionHandler;
 import kg.musabaev.gschelper.swinggui.exception.GlobalExceptionHandler;
 import kg.musabaev.gschelper.swinggui.listener.DateRangeChangeListener;
