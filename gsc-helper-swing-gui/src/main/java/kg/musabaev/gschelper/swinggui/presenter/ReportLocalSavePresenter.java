@@ -36,6 +36,10 @@ public class ReportLocalSavePresenter {
         attachListeners();
     }
 
+    public void start() {
+        view.showFrame();
+    }
+
     private void attachListeners() {
         view.addGenerateReportFormSubmitListener(this::onGenerateReportFormSubmit);
         view.addDateRangeChangeListener(this::onDateRangeChange);
