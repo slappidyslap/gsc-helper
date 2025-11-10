@@ -11,7 +11,6 @@ import kg.musabaev.gschelper.swinggui.listener.SavePathChangeListener;
 import kg.musabaev.gschelper.swinggui.model.ReportLocalSaveModel;
 import kg.musabaev.gschelper.swinggui.util.XlsxFiles;
 import kg.musabaev.gschelper.swinggui.view.ReportLocalSavePresenterViewContract;
-import kg.musabaev.gschelper.swinggui.view.ReportLocalSaveView;
 
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -25,7 +24,7 @@ public class ReportLocalSavePresenter {
     private final ReportService reportService;
 
     public ReportLocalSavePresenter(
-        ReportLocalSaveView view,
+        ReportLocalSavePresenterViewContract view,
         ReportLocalSaveModel model,
         ReportService reportService
     ) {
