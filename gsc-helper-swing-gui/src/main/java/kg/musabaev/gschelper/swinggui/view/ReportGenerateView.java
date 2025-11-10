@@ -22,7 +22,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ReportGenerateView extends JFrame {
 
-    private final JMenuBar menuBar;
+    private final MenuBar menuBar;
     private final ReportGenerateForm form;
 
     public ReportGenerateView() {
@@ -69,7 +69,6 @@ public class ReportGenerateView extends JFrame {
     }
 
     private void setupMenuBar() {
-        MenuBar menuBar = new MenuBar();
         menuBar.setListener(new MenuBarListenerImpl(this));
         super.setJMenuBar(menuBar);
     }
