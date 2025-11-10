@@ -1,4 +1,4 @@
-package kg.musabaev.gschelper.swinggui.view;
+package kg.musabaev.gschelper.swinggui.view.contract;
 
 import kg.musabaev.gschelper.swinggui.listener.DateRangeChangeListener;
 import kg.musabaev.gschelper.swinggui.listener.ReportLocalSaveFormSubmitListener;

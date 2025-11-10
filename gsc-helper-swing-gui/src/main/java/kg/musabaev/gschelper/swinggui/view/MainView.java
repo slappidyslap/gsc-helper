@@ -2,7 +2,6 @@ package kg.musabaev.gschelper.swinggui.view;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
-import kg.musabaev.gschelper.swinggui.component.MenuBar;
 import kg.musabaev.gschelper.swinggui.component.ReportLocalSaveForm;
 import kg.musabaev.gschelper.swinggui.component.dialog.ExceptionDialog;
 import kg.musabaev.gschelper.swinggui.component.dialog.WarningDialog;
@@ -11,21 +10,23 @@ import kg.musabaev.gschelper.swinggui.exception.GlobalExceptionHandler;
 import kg.musabaev.gschelper.swinggui.listener.DateRangeChangeListener;
 import kg.musabaev.gschelper.swinggui.listener.ReportLocalSaveFormSubmitListener;
 import kg.musabaev.gschelper.swinggui.listener.SavePathChangeListener;
-import kg.musabaev.gschelper.swinggui.listener.impl.MenuBarListenerImpl;
+import kg.musabaev.gschelper.swinggui.listener.MenuBarItemsClickListener;
+import kg.musabaev.gschelper.swinggui.view.contract.MenuBarPresenterViewContract;
+import kg.musabaev.gschelper.swinggui.view.contract.ReportLocalSavePresenterViewContract;
 
 import javax.swing.*;
 import java.awt.*;
 import java.nio.file.Path;
 
-public class ReportLocalSaveView extends JFrame implements ReportLocalSavePresenterViewContract {
+public class MainView extends JFrame implements ReportLocalSavePresenterViewContract {
 
-    private final MenuBar menuBar;
+    private final JMenuBar menuBarViewWrapper;
     private final ReportLocalSaveForm form;
 
-    public ReportLocalSaveView() {
+    public MainView(JMenuBar menuBarViewWrapper) {
         setupLaf();
 
-        this.menuBar = new MenuBar();
+        this.menuBarViewWrapper = menuBarViewWrapper;
         this.form = new ReportLocalSaveForm();
 
         setupAppIcon();
@@ -57,8 +58,7 @@ public class ReportLocalSaveView extends JFrame implements ReportLocalSavePresen
     }
 
     private void setupMenuBar() {
-        menuBar.setListener(new MenuBarListenerImpl(this));
-        super.setJMenuBar(menuBar);
+        super.setJMenuBar(menuBarViewWrapper);
     }
 
     private void setupUncaughtExceptionHandler() {
@@ -121,6 +121,16 @@ public class ReportLocalSaveView extends JFrame implements ReportLocalSavePresen
     }
 
     // ========= Методы для работы со слушателями в дочерних компонентах =========
+
+    /*@Override
+    public void addMenuBarItemsClickListener(MenuBarItemsClickListener l) {
+        menuBarViewWrapper.addMenuBarItemsClickListener(l);
+    }
+
+    @Override
+    public void removeMenuBarItemsClickListener(MenuBarItemsClickListener l) {
+        menuBarViewWrapper.removeMenuBarItemsClickListener(l);
+    }*/
 
     @Override
     public void addGenerateReportFormSubmitListener(ReportLocalSaveFormSubmitListener l) {

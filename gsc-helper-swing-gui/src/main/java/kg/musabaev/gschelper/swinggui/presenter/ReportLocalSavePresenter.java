@@ -10,7 +10,7 @@ import kg.musabaev.gschelper.swinggui.listener.ReportLocalSaveFormSubmitListener
 import kg.musabaev.gschelper.swinggui.listener.SavePathChangeListener;
 import kg.musabaev.gschelper.swinggui.model.ReportLocalSaveModel;
 import kg.musabaev.gschelper.swinggui.util.XlsxFiles;
-import kg.musabaev.gschelper.swinggui.view.ReportLocalSavePresenterViewContract;
+import kg.musabaev.gschelper.swinggui.view.contract.ReportLocalSavePresenterViewContract;
 
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -21,12 +21,13 @@ public class ReportLocalSavePresenter {
 
     private final ReportLocalSavePresenterViewContract view;
     private final ReportLocalSaveModel model;
+//    private final MenuBarService menuBarService;
     private final ReportService reportService;
 
     public ReportLocalSavePresenter(
-        ReportLocalSavePresenterViewContract view,
-        ReportLocalSaveModel model,
-        ReportService reportService
+            ReportLocalSavePresenterViewContract view,
+            ReportLocalSaveModel model,
+            ReportService reportService
     ) {
         this.view = view;
         this.model = model;

@@ -5,7 +5,7 @@ import kg.musabaev.gschelper.swinggui.listener.DateRangeChangeListener;
 import kg.musabaev.gschelper.swinggui.model.ReportLocalSaveModel;
 import kg.musabaev.gschelper.swinggui.presenter.ReportLocalSavePresenter;
 import kg.musabaev.gschelper.swinggui.util.XlsxFiles;
-import kg.musabaev.gschelper.swinggui.view.ReportLocalSavePresenterViewContract;
+import kg.musabaev.gschelper.swinggui.view.contract.ReportLocalSavePresenterViewContract;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

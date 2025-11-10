@@ -9,14 +9,20 @@ import kg.musabaev.gschelper.core.gsc.collector.GscMetricsBetweenDateCollectorIm
 import kg.musabaev.gschelper.core.report.ReportServiceImpl;
 import kg.musabaev.gschelper.core.table.xlsx.ApachePoiXlsxBuilder;
 import kg.musabaev.gschelper.swinggui.exception.GlobalExceptionHandler;
+import kg.musabaev.gschelper.swinggui.model.MenuBarModel;
 import kg.musabaev.gschelper.swinggui.model.ReportLocalSaveModel;
+import kg.musabaev.gschelper.swinggui.presenter.MenuBarPresenter;
 import kg.musabaev.gschelper.swinggui.presenter.ReportLocalSavePresenter;
 import kg.musabaev.gschelper.swinggui.util.Constants;
 import kg.musabaev.gschelper.swinggui.util.Paths;
-import kg.musabaev.gschelper.swinggui.view.ReportLocalSaveView;
+import kg.musabaev.gschelper.swinggui.view.MainView;
+import kg.musabaev.gschelper.swinggui.view.MenuBarViewWrapper;
+import kg.musabaev.gschelper.swinggui.view.contract.MenuBarPresenterViewContract;
+import kg.musabaev.gschelper.swinggui.view.contract.ReportLocalSavePresenterViewContract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 
@@ -29,9 +35,11 @@ public class Main {
     public static void main(String[] args) {
         evaluateDuration(() -> {
             setupThreadSettings();
-
-            ReportLocalSavePresenter presenter = buildReportLocalSavePresenter();
-            presenter.start();
+            MenuBarViewWrapper menuBarViewWrapper = new MenuBarViewWrapper();
+            MainView mainView = new MainView(menuBarViewWrapper);
+            MenuBarPresenter presenter1 = buildMenuBarPresenter(menuBarViewWrapper);
+            ReportLocalSavePresenter presenter = buildReportLocalSavePresenter(mainView);
+            mainView.showFrame();
         });
     }
 
@@ -71,9 +79,15 @@ public class Main {
                 new ApachePoiXlsxBuilder("Метрики")));
     }
 
-    private static ReportLocalSavePresenter buildReportLocalSavePresenter() {
+    private static MenuBarPresenter buildMenuBarPresenter(MenuBarPresenterViewContract view) {
+        return new MenuBarPresenter(
+            view,
+            new MenuBarModel(true, true));
+    }
+
+    private static ReportLocalSavePresenter buildReportLocalSavePresenter(ReportLocalSavePresenterViewContract view) {
         return new ReportLocalSavePresenter(
-            new ReportLocalSaveView(),
+            view,
             new ReportLocalSaveModel(),
             buildReportService());
     }
