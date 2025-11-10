@@ -4,6 +4,7 @@ import kg.musabaev.gschelper.api.report.ReportService;
 import kg.musabaev.gschelper.core.gsc.exception.CredentialsFileNotFoundException;
 import kg.musabaev.gschelper.core.gsc.exception.GscSitesNotFoundException;
 import kg.musabaev.gschelper.core.table.exception.LocalFileNotFoundException;
+import kg.musabaev.gschelper.core.table.output.file.local.TableDataOutputLocalFileSaver;
 import kg.musabaev.gschelper.swinggui.model.ReportGenerateModel;
 import kg.musabaev.gschelper.swinggui.util.XlsxFiles;
 import kg.musabaev.gschelper.swinggui.view.ReportGenerateView;
@@ -40,16 +41,17 @@ public class ReportGeneratePresenter {
     // ========= Методы - реализации слушателей =========
 
     private void onGenerateReportFormSubmit(LocalDate startDate, LocalDate endDate, Path savePath) {
-//        disableFormButtonWhile(() -> {
-//            byte[] data = reportService.generateReport(startDate, endDate);
-//            reportService.processReportOutput(
-//                new TableDataOutputLocalFileSaver.Config(savePath.toFile()), data);
-//        });
+        disableFormButtonWhile(() -> {
+            byte[] data = reportService.generateReport(startDate, endDate);
+            reportService.processReportOutput(
+                new TableDataOutputLocalFileSaver.Config(savePath.toFile()), data);
+        });
     }
 
     private void onDateRangeChange(LocalDate startDate, LocalDate endDate, String formattedDateString) {
         model.setStartDate(startDate);
         model.setEndDate(endDate);
+        view.setSuggestedFilename(formattedDateString);
 
         Optional<Path> updatedSavePath = updateSavePathOnDateRangeChange(formattedDateString);
         updatedSavePath.ifPresent(sp -> {

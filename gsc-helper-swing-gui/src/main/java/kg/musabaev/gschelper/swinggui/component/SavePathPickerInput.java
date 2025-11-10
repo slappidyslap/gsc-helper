@@ -13,16 +13,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.String.format;
 
 public class SavePathPickerInput extends JTextField {
 
     private final JToolBar toolBar;
     private final JButton button;
     private final List<SavePathChangeListener> savePathChangeListeners;
-    private Supplier<String> filenameSupplier;
+
+    private String suggestedFilename;
 
     public SavePathPickerInput() {
         this.toolBar = new JToolBar();
@@ -57,11 +58,10 @@ public class SavePathPickerInput extends JTextField {
         JFileChooser chooser = new JFileChooser();
 
         if (super.getText().isEmpty())
-            if (filenameSupplier != null && !filenameSupplier.get().trim().isEmpty())
-                chooser.setSelectedFile(new File(filenameSupplier.get()));
-            else
+            if (suggestedFilename.isEmpty())
                 chooser.setSelectedFile(new File(XlsxFiles.NULL_FILENAME_TEMPLATE));
-
+            else
+                chooser.setSelectedFile(new File(format(XlsxFiles.FILENAME_TEMPLATE, suggestedFilename)));
         chooser.setFileFilter(new FileNameExtensionFilter("Файл Excel", "xlsx"));
 
         int result = chooser.showSaveDialog(button);
@@ -132,8 +132,8 @@ public class SavePathPickerInput extends JTextField {
         }
     }*/
 
-    public void setFilenameSupplier(Supplier<String> supplier) {
-        filenameSupplier = supplier;
+    public void setSuggestedFilename(String suggestedFilename) {
+        this.suggestedFilename = suggestedFilename;
     }
 
     public void addSavePathChangeListener(SavePathChangeListener l) {

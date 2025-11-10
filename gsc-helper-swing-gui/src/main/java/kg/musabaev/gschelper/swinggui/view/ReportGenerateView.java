@@ -2,9 +2,9 @@ package kg.musabaev.gschelper.swinggui.view;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
-import kg.musabaev.gschelper.swinggui.component.dialog.ExceptionDialog;
 import kg.musabaev.gschelper.swinggui.component.MenuBar;
 import kg.musabaev.gschelper.swinggui.component.ReportGenerateForm;
+import kg.musabaev.gschelper.swinggui.component.dialog.ExceptionDialog;
 import kg.musabaev.gschelper.swinggui.component.dialog.WarningDialog;
 import kg.musabaev.gschelper.swinggui.exception.AwtEventQueueExceptionHandler;
 import kg.musabaev.gschelper.swinggui.exception.GlobalExceptionHandler;
@@ -16,10 +16,6 @@ import kg.musabaev.gschelper.swinggui.listener.impl.MenuBarListenerImpl;
 import javax.swing.*;
 import java.awt.*;
 import java.nio.file.Path;
-import java.time.LocalDate;
-import java.util.function.Supplier;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ReportGenerateView extends JFrame {
 
@@ -93,10 +89,6 @@ public class ReportGenerateView extends JFrame {
 //        presenter.onClickGenerateReport(startDate, endDate, savePath);
     }*/
 
-    public void setSavePath(Path savePath) {
-        form.savePathPickerInput().setSavePath(savePath);
-    }
-
     // ========= Методы для работы с модальными окнами =========
 
     public void showWarningDialog(String message) {
@@ -109,8 +101,12 @@ public class ReportGenerateView extends JFrame {
 
     // ========= Методы для работы с дочерними компонентами =========
 
-    public void setSuggestedFilenameSupplier(Supplier<String> filenameSupplier) {
-        form.savePathPickerInput().setFilenameSupplier(filenameSupplier);
+    public void setSavePath(Path savePath) {
+        form.savePathPickerInput().setSavePath(savePath);
+    }
+
+    public void setSuggestedFilename(String suggestedFilename) {
+        form.savePathPickerInput().setSuggestedFilename(suggestedFilename);
     }
 
     public void disableSubmitButton() {
