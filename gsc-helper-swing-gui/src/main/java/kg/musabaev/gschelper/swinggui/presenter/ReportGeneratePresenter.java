@@ -25,6 +25,12 @@ public class ReportGeneratePresenter {
         this.view = view;
         this.model = model;
         this.reportService = reportService;
+
+        attachListeners();
+    }
+
+    private void attachListeners() {
+
     }
 
     public void onClickGenerateReport(LocalDate startDate, LocalDate endDate, File savePath) {

@@ -19,12 +19,12 @@ public class SavePathPickerInput extends JTextField {
 
     private final JToolBar toolBar;
     private final JButton button;
-    private final List<SavePathChangeListener> listeners;
+    private final List<SavePathChangeListener> savePathChangeListeners;
 
     public SavePathPickerInput() {
         this.toolBar = new JToolBar();
         this.button = new JButton();
-        this.listeners = new ArrayList<>();
+        this.savePathChangeListeners = new ArrayList<>();
 
         setupUi();
         setupListeners();
@@ -121,21 +121,21 @@ public class SavePathPickerInput extends JTextField {
         }
     }*/
 
-    public void addListener(SavePathChangeListener l) {
-        synchronized (listeners) {
-            listeners.add(checkNotNull(l));
+    public void addSavePathChangeListener(SavePathChangeListener l) {
+        synchronized (savePathChangeListeners) {
+            savePathChangeListeners.add(checkNotNull(l));
         }
     }
 
-    public void removeListener(SavePathChangeListener l) {
-        synchronized (listeners) {
-            listeners.remove(checkNotNull(l));
+    public void removeSavePathChangeListener(SavePathChangeListener l) {
+        synchronized (savePathChangeListeners) {
+            savePathChangeListeners.remove(checkNotNull(l));
         }
     }
 
     public void fireSavePathChange(Path newSavePath) {
-        synchronized (listeners) {
-            for (SavePathChangeListener l : listeners)
+        synchronized (savePathChangeListeners) {
+            for (SavePathChangeListener l : savePathChangeListeners)
                 l.savePathChanged(newSavePath);
         }
     }

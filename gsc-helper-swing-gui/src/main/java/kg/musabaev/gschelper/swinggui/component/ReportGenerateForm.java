@@ -1,8 +1,6 @@
 package kg.musabaev.gschelper.swinggui.component;
 
-import kg.musabaev.gschelper.swinggui.listener.DateRangeChangeListener;
 import kg.musabaev.gschelper.swinggui.listener.ReportGenerateFormSubmitListener;
-import kg.musabaev.gschelper.swinggui.listener.SavePathChangeListener;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -79,9 +77,29 @@ public class ReportGenerateForm extends JPanel {
         super.add(submitButton, "span 2 4, growx");
     }
 
+    // ========= Методы для обращения к дочерним компонентам =========
+
+    public JLabel dateRangePickerLabel() {
+        return dateRangePickerLabel;
+    }
+
+    public DateRangePickerInput dateRangePickerInput() {
+        return dateRangePickerInput;
+    }
+
+    public JLabel fileChooserLabel() {
+        return fileChooserLabel;
+    }
+
+    public SavePathPickerInput savePathPickerInput() {
+        return savePathPickerInput;
+    }
+
     public JButton submitButton() {
         return submitButton;
     }
+
+    // ========= Методы для работы со слушателями в дочерних компонентах =========
 
     public void addGenerateReportFormSubmitListener(ReportGenerateFormSubmitListener l) {
         synchronized (listeners) {
@@ -101,21 +119,5 @@ public class ReportGenerateForm extends JPanel {
                 l.formSubmitted(startDate, endDate, savePath);
             }
         }
-    }
-
-    public void addSavePathChangedListener(SavePathChangeListener l) {
-        savePathPickerInput.addListener(l);
-    }
-
-    public void removeSavePathChangedListener(SavePathChangeListener l) {
-        savePathPickerInput.removeListener(l);
-    }
-
-    public void addDateRangeChangedListener(DateRangeChangeListener l) {
-        dateRangePickerInput.addListener(l);
-    }
-
-    public void removeDateRangeChangedListener(DateRangeChangeListener l) {
-        dateRangePickerInput.removeListener(l);
     }
 }

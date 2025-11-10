@@ -8,8 +8,10 @@ import kg.musabaev.gschelper.swinggui.component.ReportGenerateForm;
 import kg.musabaev.gschelper.swinggui.component.WarningDialog;
 import kg.musabaev.gschelper.swinggui.exception.AwtEventQueueExceptionHandler;
 import kg.musabaev.gschelper.swinggui.exception.GlobalExceptionHandler;
+import kg.musabaev.gschelper.swinggui.listener.DateRangeChangeListener;
+import kg.musabaev.gschelper.swinggui.listener.ReportGenerateFormSubmitListener;
+import kg.musabaev.gschelper.swinggui.listener.SavePathChangeListener;
 import kg.musabaev.gschelper.swinggui.listener.impl.MenuBarListenerImpl;
-import kg.musabaev.gschelper.swinggui.presenter.ReportGeneratePresenter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,8 +25,6 @@ public class ReportGenerateView extends JFrame {
     private final JMenuBar menuBar;
     private final ReportGenerateForm form;
 
-    private ReportGeneratePresenter presenter;
-
     public ReportGenerateView() {
         setupLaf();
 
@@ -35,14 +35,6 @@ public class ReportGenerateView extends JFrame {
         setupMenuBar();
         setupUi();
         setupUncaughtExceptionHandler();
-    }
-
-    public void disableSubmitButton() {
-        form.submitButton().setEnabled(false);
-    }
-
-    public void enableSubmitButton() {
-        form.submitButton().setEnabled(true);
     }
 
     private void setupUi() {
@@ -82,10 +74,10 @@ public class ReportGenerateView extends JFrame {
         super.setJMenuBar(menuBar);
     }
 
-    public void setReportGeneratePresenter(ReportGeneratePresenter presenter) {
+    /*public void setReportGeneratePresenter(ReportGeneratePresenter presenter) {
         checkNotNull(presenter);
         this.presenter = presenter;
-    }
+    }*/
 
     private void setupUncaughtExceptionHandler() {
         Thread.setDefaultUncaughtExceptionHandler(
@@ -93,6 +85,15 @@ public class ReportGenerateView extends JFrame {
         Toolkit.getDefaultToolkit().getSystemEventQueue().push(
             new AwtEventQueueExceptionHandler());
     }
+
+    public void onClickGenerateReport(LocalDate startDate, LocalDate endDate, File savePath) {
+        checkNotNull(startDate);
+        checkNotNull(endDate);
+        checkNotNull(savePath);
+//        presenter.onClickGenerateReport(startDate, endDate, savePath);
+    }
+
+    // ========= Методы для работы с модальными окнами =========
 
     public void showWarningDialog(String message) {
         WarningDialog.show(message);
@@ -102,10 +103,45 @@ public class ReportGenerateView extends JFrame {
         ExceptionDialog.show(e);
     }
 
-    public void onClickGenerateReport(LocalDate startDate, LocalDate endDate, File savePath) {
-        checkNotNull(startDate);
-        checkNotNull(endDate);
-        checkNotNull(savePath);
-        presenter.onClickGenerateReport(startDate, endDate, savePath);
+    // ========= Методы для работы с дочерними компонентами =========
+
+    public void disableSubmitButton() {
+        if (form.submitButton().isEnabled())
+            form.submitButton().setEnabled(false);
+        else
+            throw new IllegalStateException("Кнопка подтверждения в форме уже выключен");
+    }
+
+    public void enableSubmitButton() {
+        if (form.submitButton().isEnabled())
+            throw new IllegalStateException("Кнопка подтверждения в форме уже включен");
+        else
+            form.submitButton().setEnabled(true);
+    }
+
+    // ========= Методы для работы со слушателями в дочерних компонентах =========
+
+    public void addGenerateReportFormSubmitListener(ReportGenerateFormSubmitListener l) {
+        form.addGenerateReportFormSubmitListener(l);
+    }
+
+    public void removeGenerateReportFormSubmitListener(ReportGenerateFormSubmitListener l) {
+        form.removeGenerateReportFormSubmitListener(l);
+    }
+
+    public void addSavePathChangeListener(SavePathChangeListener l) {
+        form.savePathPickerInput().addSavePathChangeListener(l);
+    }
+
+    public void removeSavePathChangeListener(SavePathChangeListener l) {
+        form.savePathPickerInput().removeSavePathChangeListener(l);
+    }
+
+    public void addDateRangeChangeListener(DateRangeChangeListener l) {
+        form.dateRangePickerInput().addDateRangeChangeListener(l);
+    }
+
+    public void removeDateRangeChangeListener(DateRangeChangeListener l) {
+        form.dateRangePickerInput().removeDateRangeChangeListener(l);
     }
 }

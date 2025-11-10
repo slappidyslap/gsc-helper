@@ -16,11 +16,11 @@ import static raven.datetime.component.date.DatePicker.DateSelectionMode.BETWEEN
 public class DateRangePickerInput extends JTextField {
 
     private final DatePicker datePicker;
-    private final List<DateRangeChangeListener> listeners;
+    private final List<DateRangeChangeListener> dateRangeChangeListener;
 
     public DateRangePickerInput() {
         this.datePicker = new DatePicker();
-        this.listeners = new ArrayList<>();
+        this.dateRangeChangeListener = new ArrayList<>();
 
         setupUi();
         setupListeners();
@@ -57,15 +57,15 @@ public class DateRangePickerInput extends JTextField {
         });*/
     }
 
-    public void addListener(DateRangeChangeListener l) {
-        synchronized (listeners) {
-            listeners.add(checkNotNull(l));
+    public void addDateRangeChangeListener(DateRangeChangeListener l) {
+        synchronized (dateRangeChangeListener) {
+            dateRangeChangeListener.add(checkNotNull(l));
         }
     }
 
-    public void removeListener(DateRangeChangeListener l) {
-        synchronized (listeners) {
-            listeners.remove(checkNotNull(l));
+    public void removeDateRangeChangeListener(DateRangeChangeListener l) {
+        synchronized (dateRangeChangeListener) {
+            dateRangeChangeListener.remove(checkNotNull(l));
         }
     }
 }
