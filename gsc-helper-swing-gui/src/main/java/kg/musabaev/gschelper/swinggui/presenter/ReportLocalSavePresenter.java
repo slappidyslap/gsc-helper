@@ -57,9 +57,10 @@ public class ReportLocalSavePresenter {
      * <p>
      * При подтверждении формы, выключает кнопку формы на время,
      * генерирует отчет и сохраняет по пути {@code savePath}
+     *
      * @param startDate дата начала отчетного периода
-     * @param endDate дата конца отчетного периода
-     * @param savePath путь, по которому нужно сохранить сгенерированный отчет
+     * @param endDate   дата конца отчетного периода
+     * @param savePath  путь, по которому нужно сохранить сгенерированный отчет
      */
     private void onGenerateReportFormSubmit(LocalDate startDate, LocalDate endDate, Path savePath) {
         disableFormButtonWhile(() -> {
@@ -75,8 +76,8 @@ public class ReportLocalSavePresenter {
      * При изменении даты, изменяет обновляем модель
      * и при определенных условиях обновляем и путь к сохранению {@link #updateSavePathOnDateRangeChange(String)}}
      *
-     * @param startDate дата начала отчетного периода
-     * @param endDate дата конца отчетного периода
+     * @param startDate          дата начала отчетного периода
+     * @param endDate            дата конца отчетного периода
      * @param formattedDateRange отформатированный диапазон дат
      */
     private void onDateRangeChange(LocalDate startDate, LocalDate endDate, String formattedDateRange) {
@@ -147,8 +148,10 @@ public class ReportLocalSavePresenter {
     }
 
     /**
-     * Отображает для определённых исключений нормальное диалоговое окно с одним сообщением
-     * Для других исключений отображает диалоговое окно со stack trace
+     * Отображает для определённых исключений нормальное диалоговое окно с одним сообщением.
+     * Для других исключений отображает диалоговое окно со stack trace.
+     * Важно: обрабатывает исключения из других сервисов. Не обрабатывает исключения из Swing
+     *
      * @param e пойманное исключение
      */
     public void handleException(Exception e) {

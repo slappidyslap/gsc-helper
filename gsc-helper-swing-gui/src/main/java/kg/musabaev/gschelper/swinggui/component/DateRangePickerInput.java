@@ -1,6 +1,7 @@
 package kg.musabaev.gschelper.swinggui.component;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import kg.musabaev.gschelper.swinggui.exception.DateRangeValidationException;
 import kg.musabaev.gschelper.swinggui.listener.DateRangeChangeListener;
 import raven.datetime.component.date.DatePicker;
 
@@ -26,10 +27,16 @@ public class DateRangePickerInput extends JTextField {
     }
 
     public LocalDate startDate() {
+        if (datePicker.getSelectedDateRange() == null)
+            throw new DateRangeValidationException("Диапазон дат не указан");
+
         return datePicker.getSelectedDateRange()[0];
     }
 
     public LocalDate endDate() {
+        if (datePicker.getSelectedDateRange() == null)
+            throw new DateRangeValidationException("Диапазон дат не указан");
+
         return datePicker.getSelectedDateRange()[1];
     }
 

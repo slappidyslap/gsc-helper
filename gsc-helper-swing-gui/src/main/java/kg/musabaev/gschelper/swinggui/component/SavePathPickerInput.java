@@ -1,6 +1,7 @@
 package kg.musabaev.gschelper.swinggui.component;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import kg.musabaev.gschelper.swinggui.exception.SavePathValidationException;
 import kg.musabaev.gschelper.swinggui.listener.SavePathChangeListener;
 import kg.musabaev.gschelper.swinggui.util.XlsxFiles;
 
@@ -48,11 +49,10 @@ public class SavePathPickerInput extends JTextField {
     private void onClickButton(ActionEvent event) {
         JFileChooser chooser = new JFileChooser();
 
-        if (super.getText().isEmpty())
-            if (suggestedFilename.isEmpty())
-                chooser.setSelectedFile(new File(XlsxFiles.NULL_FILENAME_TEMPLATE));
-            else
-                chooser.setSelectedFile(new File(format(XlsxFiles.FILENAME_TEMPLATE, suggestedFilename)));
+        if (suggestedFilename == null || suggestedFilename.trim().isEmpty())
+            chooser.setSelectedFile(new File(XlsxFiles.NULL_FILENAME_TEMPLATE));
+        else
+            chooser.setSelectedFile(new File(format(XlsxFiles.FILENAME_TEMPLATE, suggestedFilename)));
         chooser.setFileFilter(new FileNameExtensionFilter("Файл Excel", "xlsx"));
 
         int result = chooser.showSaveDialog(button);
@@ -64,11 +64,12 @@ public class SavePathPickerInput extends JTextField {
     }
 
     public Path savePath() {
+        if (super.getText() == null || super.getText().trim().isEmpty())
+            throw new SavePathValidationException("Путь к сохранению не указан");
         return Paths.get(super.getText());
     }
 
     public void setSavePath(Path savePath) {
-        if (super.getText().isEmpty()) return;
         super.setText(savePath.toAbsolutePath().toString());
     }
 

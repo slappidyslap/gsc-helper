@@ -1,6 +1,7 @@
 package kg.musabaev.gschelper.swinggui.exception;
 
 import kg.musabaev.gschelper.swinggui.component.dialog.ExceptionDialog;
+import kg.musabaev.gschelper.swinggui.component.dialog.WarningDialog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,10 +16,15 @@ public class AwtEventQueueExceptionHandler extends EventQueue {
         try {
             super.dispatchEvent(newEvent);
         } catch (Throwable t) {
-            log.error(
-                "Произошло исключение в AWT Event Queue при обработке события {}",
-                newEvent.getClass().getName(), t);
-            ExceptionDialog.show(t);
+
+            if (t instanceof ValidationException)
+                WarningDialog.show(t.getMessage());
+            else {
+                log.error(
+                    "Произошло исключение в AWT Event Queue при обработке события {}",
+                    newEvent.getClass().getName(), t);
+                ExceptionDialog.show(t);
+            }
             super.dispatchEvent(newEvent);
         }
     }
