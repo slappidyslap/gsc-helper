@@ -68,14 +68,6 @@ public class GscMetricsBetweenDateCollectorImpl extends BaseGscMetricsBetweenDat
                     startDate,
                     endDate);
 
-                if (response == null) {
-                    log.warn("Сайт {} пропущен - не подтвержден", siteUrl);
-                    failedSites.add(
-                        createFailedSiteMetrics(siteUrl,
-                            createSiteNotVerifiedException(siteUrl)));
-                    continue;
-                }
-
                 SiteMetrics metrics = gsc.getMetrics(response);
                 collectedMetrics.add(metrics);
 
@@ -85,6 +77,7 @@ public class GscMetricsBetweenDateCollectorImpl extends BaseGscMetricsBetweenDat
             } catch (Exception e) {
                 log.error("Ошибка при обработке сайта: {}", siteUrl, e);
                 failedSites.add(createFailedSiteMetrics(siteUrl, e));
+                continue;
             }
         }
 

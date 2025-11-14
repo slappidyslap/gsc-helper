@@ -10,6 +10,8 @@ import kg.musabaev.gschelper.api.gsc.domain.GscResourceType;
 import kg.musabaev.gschelper.api.gsc.domain.SiteMetrics;
 import kg.musabaev.gschelper.core.gsc.exception.GscApiException;
 import kg.musabaev.gschelper.core.gsc.exception.GscSitesNotFoundException;
+import kg.musabaev.gschelper.core.gsc.exception.MetricsNotFoundException;
+import kg.musabaev.gschelper.core.gsc.exception.SiteNotVerifiedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,9 +78,9 @@ public class GscServiceImpl implements GscService {
      * @param startDate дата начала периода
      * @param endDate   дата окончания периода
      * @return объект {@link GscAnalyticsResponse} с ответом от API и ссылкой на сайт
-     * или {@code null}, если сайт не подтверждён (HTTP 403)
      * @throws NullPointerException если параметры {@code siteUrl}, {@code startDate} или {@code endDate} равны {@code null}
-     * @throws GscApiException      при ошибках API
+     * @throws SiteNotVerifiedException если сайт не подтвержден
+     * @throws GscApiException      при ошибках с API или IO
      */
     @Override
     public GscAnalyticsResponse getAnalytics(
@@ -107,8 +109,10 @@ public class GscServiceImpl implements GscService {
         } catch (GoogleJsonResponseException e) {
             if (e.getStatusCode() == 403) {
                 log.warn("Сайт {} не подтвержден (403 Forbidden)", siteUrl);
-                return null;
+                throw new SiteNotVerifiedException(
+                    getResourceType(siteUrl), getCleanUrl(siteUrl));
             }
+
             log.error("Ошибка GSC API для сайта {}. HTTP Status Code: {}. Сообщение: {}",
                 siteUrl, e.getStatusCode(), e.getStatusMessage(), e);
             throw new GscApiException(e);
@@ -124,6 +128,7 @@ public class GscServiceImpl implements GscService {
      * @param response объект {@link GscAnalyticsResponse} с ответом от API и ссылкой на сайт
      * @return объект {@link SiteMetrics} с ключевыми метриками сайта
      * @throws NullPointerException если {@code siteUrl}, {@code response} или {@code response.getRows()} равны {@code null}
+     * @throws MetricsNotFoundException если метрики сайта не найдены
      */
     @Override
     public SiteMetrics getMetrics(GscAnalyticsResponse response) {
@@ -131,7 +136,11 @@ public class GscServiceImpl implements GscService {
         SearchAnalyticsQueryResponse analytics = response.analytics();
         checkNotNull(siteUrl);
         checkNotNull(response);
-        checkNotNull(analytics.getRows());
+
+        if (analytics.getRows() == null) {
+            log.error("Метрики сайта {} не найдены", siteUrl);
+            throw new MetricsNotFoundException(siteUrl);
+        }
 
         log.info("Извлечение метрик для сайта: {}", siteUrl);
 
@@ -164,6 +173,7 @@ public class GscServiceImpl implements GscService {
      * @param siteUrl URL сайта
      * @return тип ресурса {@link GscResourceType}
      */
+    @Override
     public GscResourceType getResourceType(String siteUrl) {
         return siteUrl.contains("sc-domain:") ?
             GscResourceType.DOMAIN :
@@ -177,6 +187,7 @@ public class GscServiceImpl implements GscService {
      * @param siteUrl URL сайта с возможным префиксом
      * @return URL без префикса.
      */
+    @Override
     public String getCleanUrl(String siteUrl) {
         if (siteUrl.contains("sc-domain:"))
             return siteUrl.substring("sc-domain:".length());
