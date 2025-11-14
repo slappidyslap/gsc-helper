@@ -20,6 +20,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.nio.file.Path;
 
+import static javax.swing.SwingUtilities.invokeLater;
+
 public class ReportLocalSaveView extends JFrame implements ReportLocalSavePresenterViewContract {
 
     private final MenuBar menuBar;
@@ -74,19 +76,19 @@ public class ReportLocalSaveView extends JFrame implements ReportLocalSavePresen
 
     @Override
     public void setSavePath(Path savePath) {
-        form.savePathPickerInput().setSavePath(savePath);
+        invokeLater(() -> form.savePathPickerInput().setSavePath(savePath));
     }
 
     @Override
     public void setSuggestedFilename(String suggestedFilename) {
-        form.savePathPickerInput().setSuggestedFilename(suggestedFilename);
+        invokeLater(() -> form.savePathPickerInput().setSuggestedFilename(suggestedFilename));
     }
 
     // ========= Методы для управления UI состоянием =========
 
     @Override
     public void showFrame() {
-        SwingUtilities.invokeLater(() -> {
+        invokeLater(() -> {
             super.pack();
             SwingUtilities.updateComponentTreeUI(this);
             super.setVisible(true);
@@ -96,30 +98,34 @@ public class ReportLocalSaveView extends JFrame implements ReportLocalSavePresen
 
     @Override
     public void disableSubmitButton() {
-        if (form.submitButton().isEnabled())
-            form.submitButton().setEnabled(false);
-        else
-            throw new IllegalStateException("Кнопка подтверждения в форме уже выключен");
+        invokeLater(() -> {
+            if (form.submitButton().isEnabled())
+                form.submitButton().setEnabled(false);
+            else
+                throw new IllegalStateException("Кнопка подтверждения в форме уже выключен");
+        });
     }
 
     @Override
     public void enableSubmitButton() {
-        if (form.submitButton().isEnabled())
-            throw new IllegalStateException("Кнопка подтверждения в форме уже включен");
-        else
-            form.submitButton().setEnabled(true);
+        invokeLater(() -> {
+            if (form.submitButton().isEnabled())
+                throw new IllegalStateException("Кнопка подтверждения в форме уже включен");
+            else
+                form.submitButton().setEnabled(true);
+        });
     }
 
     // ========= Методы для отображения диалоговых окон =========
 
     @Override
     public void showWarningDialog(String message) {
-        WarningDialog.show(message);
+        invokeLater(() -> WarningDialog.show(message));
     }
 
     @Override
     public void showExceptionDialog(Exception e) {
-        ExceptionDialog.show(e);
+        invokeLater(() -> ExceptionDialog.show(e));
     }
 
     // ========= Методы для работы со слушателями в дочерних компонентах =========
