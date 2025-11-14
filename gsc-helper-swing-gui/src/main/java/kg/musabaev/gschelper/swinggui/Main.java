@@ -2,6 +2,7 @@ package kg.musabaev.gschelper.swinggui;
 
 import kg.musabaev.gschelper.api.report.ReportService;
 import kg.musabaev.gschelper.core.adapter.GscMetricsXlsxTableAdapter;
+import kg.musabaev.gschelper.core.auth.GscAuthInputStreamCredentialsLoader;
 import kg.musabaev.gschelper.core.auth.GscAuthLocalFileCredentialsLoader;
 import kg.musabaev.gschelper.core.auth.GscAuthLocalFileDataStoreFactoryLoader;
 import kg.musabaev.gschelper.core.gsc.GscApiAuthorizationCodeFlowBuilder;
@@ -18,6 +19,7 @@ import kg.musabaev.gschelper.swinggui.view.ReportLocalSaveView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 
@@ -53,7 +55,7 @@ public class Main {
         Thread.setDefaultUncaughtExceptionHandler(new GlobalExceptionHandler());
     }
 
-    @SuppressWarnings("ALL")
+    @Deprecated
     private static Path getPathToGoogleCredentials() {
         try {
             return java.nio.file.Paths.get(
@@ -61,7 +63,10 @@ public class Main {
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    private static InputStream getInputStreamToGoogleCredentials() {
+        return Main.class.getClassLoader().getResourceAsStream("credentials.json");
     }
 
     private static ReportService buildReportService() {
@@ -70,7 +75,7 @@ public class Main {
                 new GscApiAuthorizationCodeFlowBuilder(
                     Constants.APP_NAME,
                     new GscAuthLocalFileDataStoreFactoryLoader(Paths.DATA_STORE_FOLDER),
-                    new GscAuthLocalFileCredentialsLoader(getPathToGoogleCredentials()))),
+                    new GscAuthInputStreamCredentialsLoader(getInputStreamToGoogleCredentials()))),
             new GscMetricsXlsxTableAdapter(
                 new ApachePoiXlsxBuilder("Метрики")));
     }
