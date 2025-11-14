@@ -1,6 +1,8 @@
 package kg.musabaev.gschelper.swinggui.view;
 
 import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import kg.musabaev.gschelper.swinggui.component.MenuBar;
 import kg.musabaev.gschelper.swinggui.component.ReportLocalSaveForm;
@@ -44,9 +46,9 @@ public class ReportLocalSaveView extends JFrame implements ReportLocalSavePresen
     }
 
     private void setupLaf() {
-        FlatDarkLaf.setup();
+        FlatLightLaf.setup();
         FlatRobotoFont.install();
-        UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 15));
+        UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 14));
         UIManager.put("TextComponent.arc", 7);
         UIManager.put("Button.arc", 7);
     }

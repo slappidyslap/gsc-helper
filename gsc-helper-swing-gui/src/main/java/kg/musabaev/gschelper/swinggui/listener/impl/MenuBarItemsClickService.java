@@ -53,7 +53,7 @@ public class MenuBarItemsClickService implements MenuBarItemsClickListener {
         else
             FlatDarkLaf.setup();
         SwingUtilities.updateComponentTreeUI(view);
-        log.info("Текущая тема переключена на {}", isDarkMode ? "темную" : "светлую");
+        log.info("Текущая тема переключена на {}", isDarkMode ? "светлую" : "темную");
     }
 
     /**
