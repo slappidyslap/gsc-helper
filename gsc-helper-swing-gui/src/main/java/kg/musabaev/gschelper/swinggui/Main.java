@@ -25,16 +25,19 @@ import static java.lang.System.currentTimeMillis;
 
 public class Main {
 
-    private static final Logger log = LoggerFactory.getLogger(Main.class);
-
     public static void main(String[] args) {
         evaluateDuration(() -> {
             setupThreadSettings();
 
-            ReportLocalSavePresenter presenter = buildReportLocalSavePresenter();
-            presenter.start();
+            buildReportLocalSavePresenter().start();
         });
     }
+
+
+
+    // ========= Методы для подготовки старта программы =========
+
+    private static final Logger log = LoggerFactory.getLogger(Main.class);
 
     private static void evaluateDuration(Runnable runnable) {
         long startTime = currentTimeMillis();
