@@ -49,7 +49,6 @@ public class ReportServiceImpl implements ReportService {
 
         SiteMetricsList collectedMetrics = metricsCollector
             .collectBetweenDate(startDate, endDate);
-        metricsCollector.collect();
 
         byte[] report = gscXlsxAdapter.adapt(collectedMetrics);
 
