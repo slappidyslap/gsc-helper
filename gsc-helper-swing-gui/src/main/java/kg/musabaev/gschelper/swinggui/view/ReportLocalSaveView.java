@@ -14,6 +14,7 @@ import kg.musabaev.gschelper.swinggui.listener.DateRangeChangeListener;
 import kg.musabaev.gschelper.swinggui.listener.MenuBarItemsClickListener;
 import kg.musabaev.gschelper.swinggui.listener.ReportLocalSaveFormSubmitListener;
 import kg.musabaev.gschelper.swinggui.listener.SavePathChangeListener;
+import kg.musabaev.gschelper.swinggui.util.Constants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,9 +38,9 @@ public class ReportLocalSaveView extends JFrame implements ReportLocalSavePresen
     }
 
     private void setupUi() {
-        super.setTitle("GSC Helper");
+        super.setTitle(Constants.APP_NAME);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        super.setSize(650, 200);
+        super.setSize(Constants.APP_WIDTH, Constants.APP_HEIGHT);
         super.setLocationRelativeTo(null);
 
         super.add(form);
