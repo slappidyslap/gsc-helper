@@ -9,9 +9,9 @@ import kg.musabaev.gschelper.swinggui.component.dialog.WarningDialog;
 import kg.musabaev.gschelper.swinggui.exception.AwtEventQueueExceptionHandler;
 import kg.musabaev.gschelper.swinggui.exception.GlobalExceptionHandler;
 import kg.musabaev.gschelper.swinggui.listener.DateRangeChangeListener;
+import kg.musabaev.gschelper.swinggui.listener.MenuBarItemsClickListener;
 import kg.musabaev.gschelper.swinggui.listener.ReportLocalSaveFormSubmitListener;
 import kg.musabaev.gschelper.swinggui.listener.SavePathChangeListener;
-import kg.musabaev.gschelper.swinggui.listener.impl.MenuBarListenerImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -57,7 +57,6 @@ public class ReportLocalSaveView extends JFrame implements ReportLocalSavePresen
     }
 
     private void setupMenuBar() {
-        menuBar.setListener(new MenuBarListenerImpl(this));
         super.setJMenuBar(menuBar);
     }
 
@@ -121,6 +120,11 @@ public class ReportLocalSaveView extends JFrame implements ReportLocalSavePresen
     }
 
     // ========= Методы для работы со слушателями в дочерних компонентах =========
+
+    @Override
+    public void setMenuBarItemsClickListener(MenuBarItemsClickListener menuBarItemsClickListener) {
+        menuBar.setItemsClickListener(menuBarItemsClickListener);
+    }
 
     @Override
     public void addGenerateReportFormSubmitListener(ReportLocalSaveFormSubmitListener l) {

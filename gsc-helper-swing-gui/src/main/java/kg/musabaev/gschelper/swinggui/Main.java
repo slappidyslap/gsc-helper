@@ -9,6 +9,7 @@ import kg.musabaev.gschelper.core.gsc.collector.GscMetricsBetweenDateCollectorIm
 import kg.musabaev.gschelper.core.report.ReportServiceImpl;
 import kg.musabaev.gschelper.core.table.xlsx.ApachePoiXlsxBuilder;
 import kg.musabaev.gschelper.swinggui.exception.GlobalExceptionHandler;
+import kg.musabaev.gschelper.swinggui.listener.impl.MenuBarItemsClickService;
 import kg.musabaev.gschelper.swinggui.model.ReportLocalSaveModel;
 import kg.musabaev.gschelper.swinggui.presenter.ReportLocalSavePresenter;
 import kg.musabaev.gschelper.swinggui.util.Constants;
@@ -72,9 +73,12 @@ public class Main {
     }
 
     private static ReportLocalSavePresenter buildReportLocalSavePresenter() {
+        ReportLocalSaveView view = new ReportLocalSaveView();
+        ReportLocalSaveModel model = new ReportLocalSaveModel();
         return new ReportLocalSavePresenter(
-            new ReportLocalSaveView(),
-            new ReportLocalSaveModel(),
+            view,
+            model,
+            new MenuBarItemsClickService(view, model),
             buildReportService());
     }
 }

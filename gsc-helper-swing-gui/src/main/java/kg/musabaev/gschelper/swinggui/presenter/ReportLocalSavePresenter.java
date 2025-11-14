@@ -6,6 +6,7 @@ import kg.musabaev.gschelper.core.gsc.exception.GscSitesNotFoundException;
 import kg.musabaev.gschelper.core.table.exception.LocalFileNotFoundException;
 import kg.musabaev.gschelper.core.table.output.file.local.TableDataOutputLocalFileSaver;
 import kg.musabaev.gschelper.swinggui.listener.DateRangeChangeListener;
+import kg.musabaev.gschelper.swinggui.listener.MenuBarItemsClickListener;
 import kg.musabaev.gschelper.swinggui.listener.ReportLocalSaveFormSubmitListener;
 import kg.musabaev.gschelper.swinggui.listener.SavePathChangeListener;
 import kg.musabaev.gschelper.swinggui.model.ReportLocalSaveModel;
@@ -21,15 +22,18 @@ public class ReportLocalSavePresenter {
 
     private final ReportLocalSavePresenterViewContract view;
     private final ReportLocalSaveModel model;
+    private final MenuBarItemsClickListener menuBarItemsClickListener;
     private final ReportService reportService;
 
     public ReportLocalSavePresenter(
         ReportLocalSavePresenterViewContract view,
         ReportLocalSaveModel model,
+        MenuBarItemsClickListener menuBarItemsClickListener,
         ReportService reportService
     ) {
         this.view = view;
         this.model = model;
+        this.menuBarItemsClickListener = menuBarItemsClickListener;
         this.reportService = reportService;
 
         attachListeners();
@@ -40,6 +44,7 @@ public class ReportLocalSavePresenter {
     }
 
     private void attachListeners() {
+        view.setMenuBarItemsClickListener(menuBarItemsClickListener); // делегируем обработка событий сервису
         view.addGenerateReportFormSubmitListener(this::onGenerateReportFormSubmit);
         view.addDateRangeChangeListener(this::onDateRangeChange);
         view.addSavePathChangeListener(this::onSavePathChange);

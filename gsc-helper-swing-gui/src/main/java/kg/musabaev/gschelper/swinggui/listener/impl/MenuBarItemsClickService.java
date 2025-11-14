@@ -4,12 +4,13 @@ import ch.qos.logback.classic.LoggerContext;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import kg.musabaev.gschelper.swinggui.component.MenuBar;
 import kg.musabaev.gschelper.swinggui.component.dialog.ConfirmDialog;
 import kg.musabaev.gschelper.swinggui.component.dialog.ErrorDialog;
-import kg.musabaev.gschelper.swinggui.listener.MenuBarListener;
+import kg.musabaev.gschelper.swinggui.listener.MenuBarItemsClickListener;
+import kg.musabaev.gschelper.swinggui.model.ReportLocalSaveModel;
 import kg.musabaev.gschelper.swinggui.util.Paths;
 import kg.musabaev.gschelper.swinggui.view.ReportLocalSaveView;
-import kg.musabaev.gschelper.swinggui.component.MenuBar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,17 +27,19 @@ import static java.lang.String.format;
 import static kg.musabaev.gschelper.swinggui.util.Paths.paths;
 
 /**
- * Реализация {@link MenuBarListener},
+ * Реализация {@link MenuBarItemsClickListener},
  * обрабатывающая клики по элементам {@link MenuBar}
  */
-public class MenuBarListenerImpl implements MenuBarListener {
+public class MenuBarItemsClickService implements MenuBarItemsClickListener {
 
-    private static final Logger log = LoggerFactory.getLogger(MenuBarListenerImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(MenuBarItemsClickService.class);
 
     private final ReportLocalSaveView view;
+    private final ReportLocalSaveModel model;
 
-    public MenuBarListenerImpl(ReportLocalSaveView view) {
+    public MenuBarItemsClickService(ReportLocalSaveView view, ReportLocalSaveModel model) {
         this.view = view;
+        this.model = model;
     }
 
     /**

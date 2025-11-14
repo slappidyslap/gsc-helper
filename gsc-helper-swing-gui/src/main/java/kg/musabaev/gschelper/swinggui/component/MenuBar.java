@@ -1,6 +1,6 @@
 package kg.musabaev.gschelper.swinggui.component;
 
-import kg.musabaev.gschelper.swinggui.listener.MenuBarListener;
+import kg.musabaev.gschelper.swinggui.listener.MenuBarItemsClickListener;
 
 import javax.swing.*;
 
@@ -13,7 +13,7 @@ public class MenuBar extends JMenuBar {
     private final JMenuItem openLogItem;
     private final JMenuItem logoutGoogleItem;
 
-    private MenuBarListener listener;
+    private MenuBarItemsClickListener listener;
 
     public MenuBar() {
         this.usefulMenu = new JMenu("Полезное");
@@ -40,7 +40,7 @@ public class MenuBar extends JMenuBar {
             checkNotNull(listener).logoutGoogleItemMenuItemClicked());
     }
 
-    public void setListener(MenuBarListener listener) {
+    public void setItemsClickListener(MenuBarItemsClickListener listener) {
         checkNotNull(listener);
         this.listener = listener;
     }

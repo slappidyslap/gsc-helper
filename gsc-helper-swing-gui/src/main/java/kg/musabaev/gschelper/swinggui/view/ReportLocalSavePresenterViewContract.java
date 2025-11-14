@@ -1,6 +1,7 @@
 package kg.musabaev.gschelper.swinggui.view;
 
 import kg.musabaev.gschelper.swinggui.listener.DateRangeChangeListener;
+import kg.musabaev.gschelper.swinggui.listener.MenuBarItemsClickListener;
 import kg.musabaev.gschelper.swinggui.listener.ReportLocalSaveFormSubmitListener;
 import kg.musabaev.gschelper.swinggui.listener.SavePathChangeListener;
 
@@ -32,6 +33,8 @@ public interface ReportLocalSavePresenterViewContract {
     void showWarningDialog(String message);
 
     // ========= Методы для работы со слушателями в дочерних компонентах =========
+
+    void setMenuBarItemsClickListener(MenuBarItemsClickListener menuBarItemsClickListener);
 
     void addGenerateReportFormSubmitListener(ReportLocalSaveFormSubmitListener l);
 

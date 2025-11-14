@@ -5,7 +5,7 @@ import kg.musabaev.gschelper.swinggui.component.MenuBar;
 /**
  * Слушатель на нажатия элементы в {@link MenuBar}
  */
-public interface MenuBarListener {
+public interface MenuBarItemsClickListener {
 
     /**
      * Клик по элементу в {@link MenuBar} для переключения темы приложения между тёмной и светлой.
