@@ -143,3 +143,6 @@ java -jar "gsc-helper-swing-gui/target/GSC Helper Swing GUI.jar"
 ```
 
 Запустится графический интерфейс, позволяющий выбрать диапазон дат и место сохранения отчета о метриках GSC.
+
+<img src="https://github.com/user-attachments/assets/eeccfe5b-b303-443f-aba9-2b8e3b216c4b" />
+
